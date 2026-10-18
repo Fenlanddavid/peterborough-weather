@@ -51,7 +51,7 @@ function App() {
 
       <main className="app-main">
         {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} />}
-        {view === 'summary' && <Summary runs={runs} />}
+        {view === 'summary' && <Summary runs={runs} loading={loading} hasError={!!error} />}
         {view === 'trends' && <Trends runs={runs} />}
         {view === 'models' && <Models runs={runs} />}
         {view === 'ensembles' && <Ensembles ensembles={ensembles} />}

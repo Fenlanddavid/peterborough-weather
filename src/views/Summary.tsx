@@ -1,119 +1,74 @@
 import { useMemo } from 'react';
 import type { CachedRun } from '../types';
-import { DETERMINISTIC_MODELS, VARIABLES } from '../config/models';
-import { getModelRuns, getValueAtTime } from '../metrics/utils';
-import { calcChange } from '../metrics/metrics';
-import { generateHeadlines } from '../commentary/commentary';
-import { toLocalTime } from '../hooks/useLocalTime';
+import { conditionForCode } from '../metrics/hourlyWeather';
+import { buildForecastBriefing } from '../metrics/forecastSummary';
+import { getLocalDate, toLocalTime, useLocalNow } from '../hooks/useLocalTime';
+import { WeatherIcon, type IconName } from '../components/WeatherIcon';
+import './Summary.css';
 
 interface Props {
   runs: CachedRun[];
+  loading: boolean;
+  hasError: boolean;
 }
 
-function getNext7DayNoons(): string[] {
-  const now = new Date();
-  const times: string[] = [];
-  for (let d = 0; d < 7; d++) {
-    const date = new Date(Date.UTC(
-      now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + d, 12
-    ));
-    times.push(date.toISOString().slice(0, 16));
-  }
-  return times;
-}
+const dateLabel = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'Europe/London' });
 
-export function Summary({ runs }: Props) {
-  const noons = useMemo(() => getNext7DayNoons(), []);
+export function Summary({ runs, loading, hasError }: Props) {
+  const now = useLocalNow();
+  const hour = Math.floor(now.getTime() / 3600_000);
+  const briefing = useMemo(() => buildForecastBriefing(runs, new Date(hour * 3600_000)), [runs, hour]);
+  const topics: { title: string; icon: IconName; text: string }[] = [
+    { title: 'Temperatures & how they change', icon: 'sun', text: briefing.temperature },
+    { title: 'Rainfall & drier spells', icon: 'drop', text: briefing.rainfall },
+    { title: 'Wind & strongest gusts', icon: 'wind', text: briefing.wind },
+    { title: 'Cold & snowfall signals', icon: 'snow', text: briefing.cold },
+  ];
 
-  const summaryData = useMemo(() => {
-    const models = DETERMINISTIC_MODELS.filter((m) => !m.isOverlay);
-    const results: {
-      time: string;
-      values: Record<string, Record<string, { value: number | null; change24h: number | null }>>;
-    }[] = [];
+  return <div className="view-summary">
+    <header className="summary-intro">
+      <p className="summary-eyebrow">Peterborough · The next seven days</p>
+      <h1>Your forecast, in detail.</h1>
+      <p>{dateLabel(getLocalDate(now))} – {dateLabel(briefing.days.at(-1)!.date)} · All times are local to Peterborough.</p>
+    </header>
 
-    for (const t of noons) {
-      const row: Record<string, Record<string, { value: number | null; change24h: number | null }>> = {};
+    {!briefing.hasData ? <div className="summary-status" role="status">
+      {loading ? 'Gathering the forecast for your detailed summary…' : hasError ? 'The forecast could not be loaded. Use Refresh above to try again.' : 'No forecast data is available for the coming seven days. Use Refresh above to check again.'}
+    </div> : <>
+      {(hasError || briefing.stale) && <p className="summary-status" role="status">{hasError ? 'The latest refresh failed. This briefing uses the forecast data already saved on this device.' : 'The newest model run in this briefing is more than 24 hours old. Refresh for newer forecasts.'}</p>}
+      <section className="summary-lead" aria-labelledby="summary-overview-title">
+        <p className="summary-eyebrow">The bigger picture</p>
+        <h2 id="summary-overview-title">The week ahead</h2>
+        <p>{briefing.overview}</p>
+        <span>Today covers the current hour onwards; later days cover the full local day.</span>
+      </section>
 
-      for (const model of models) {
-        row[model.id] = {};
-        for (const v of VARIABLES) {
-          const modelRuns = getModelRuns(runs, model.id, v.id);
-          const latest = modelRuns.length > 0 ? modelRuns[modelRuns.length - 1] : null;
-          const value = latest ? getValueAtTime(latest, t) : null;
-          const change = calcChange(modelRuns, t);
-          row[model.id][v.id] = { value, change24h: change.change24h };
-        }
-      }
-      results.push({ time: t, values: row });
-    }
+      <div className="summary-topics">
+        {topics.map((topic) => <section className="summary-topic" key={topic.title}>
+          <div className="summary-topic-heading"><WeatherIcon name={topic.icon} /><h2>{topic.title}</h2></div>
+          <p>{topic.text}</p>
+        </section>)}
+      </div>
 
-    return results;
-  }, [runs, noons]);
+      <section className="summary-agreement" aria-labelledby="summary-agreement-title">
+        <h2 id="summary-agreement-title">Where the forecast is less settled</h2>
+        <p>{briefing.agreement}</p>
+      </section>
 
-  const headlines = useMemo(() => {
-    const allHeadlines: string[] = [];
-    for (const v of VARIABLES) {
-      const h = generateHeadlines(runs, v.id, noons.slice(0, 4));
-      allHeadlines.push(...h);
-    }
-    return allHeadlines.slice(0, 6);
-  }, [runs, noons]);
-
-  const models = DETERMINISTIC_MODELS.filter((m) => !m.isOverlay);
-
-  return (
-    <div className="view-summary">
-      {headlines.length > 0 && (
-        <div className="headlines-card">
-          <h3>Headlines</h3>
-          {headlines.map((h, i) => (
-            <p key={i} className="headline">{h}</p>
-          ))}
+      <section className="summary-daily" aria-labelledby="summary-daily-title">
+        <div className="summary-daily-heading"><h2 id="summary-daily-title">Day by day</h2><span>Temperatures · rain timing · wind · model agreement</span></div>
+        <div className="summary-days">
+          {briefing.days.map((day) => <article className="summary-day" key={day.date}>
+            <div className="summary-day-heading">
+              <div><h3>{day.label}</h3><p>{dateLabel(day.date)}{day.remainingToday ? ' · From this hour onwards' : ''}</p></div>
+              {day.high !== null && <span className="summary-day-temperature">{Math.round(day.high)}°<small> / {Math.round(day.low!)}°</small></span>}
+            </div>
+            {day.weatherCode !== null && conditionForCode(day.weatherCode, null).label !== 'Weather conditions unavailable' && <p className="summary-day-condition">Most frequent forecast condition: {conditionForCode(day.weatherCode, null).label.toLowerCase()}.</p>}
+            {day.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+          </article>)}
         </div>
-      )}
-
-      <h3>7-Day Overview (12:00 local)</h3>
-
-      {VARIABLES.map((v) => (
-        <div key={v.id} className="summary-table-wrap">
-          <h4>{v.label} ({v.unit})</h4>
-          <div className="table-scroll">
-            <table className="summary-table">
-              <thead>
-                <tr>
-                  <th>Model</th>
-                  {summaryData.map((d) => (
-                    <th key={d.time}>{toLocalTime(d.time, 'short').split(',')[0]}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {models.map((model) => (
-                  <tr key={model.id}>
-                    <td style={{ color: model.colour, fontWeight: 600 }}>{model.label}</td>
-                    {summaryData.map((d) => {
-                      const cell = d.values[model.id]?.[v.id];
-                      if (!cell || cell.value === null) {
-                        return <td key={d.time} className="no-data">—</td>;
-                      }
-                      const changeStr = cell.change24h !== null
-                        ? ` (${cell.change24h > 0 ? '+' : ''}${cell.change24h.toFixed(v.precision)})`
-                        : '';
-                      return (
-                        <td key={d.time}>
-                          {cell.value.toFixed(v.precision)}
-                          {changeStr && <span className="change-badge">{changeStr}</span>}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+      </section>
+      <p className="summary-method">Based on the latest available ECMWF, GFS and UKMO model forecasts, excluding the UKV overlay. Hourly values are averaged across the models available for each variable; rainfall and snowfall are then totalled over the forecast period. These are model estimates, not probabilities. {briefing.latestRun && <>Newest contributing model run: {toLocalTime(briefing.latestRun, 'short')}.</>} Explore Models and Ensembles for more detail.</p>
+    </>}
+  </div>;
 }

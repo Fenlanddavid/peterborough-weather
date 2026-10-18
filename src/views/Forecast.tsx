@@ -269,7 +269,7 @@ export function Forecast({ runs, loading, hasError, lastUpdated = null }: Props)
         <div>
           <p className="eyebrow">A little local perspective</p>
           <h1>Your weather, at a glance.</h1>
-          <p>A clearer outlook for Peterborough and the days ahead.</p>
+          <p>A clearer outlook for the Savory's and the days ahead.</p>
         </div>
         <span className="forecast-today"><WeatherIcon name="calendar" />{now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/London' })}</span>
       </div>

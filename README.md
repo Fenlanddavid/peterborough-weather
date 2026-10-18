@@ -1,6 +1,6 @@
 # Peterborough Weather
 
-A mobile-friendly seven-day forecast for Peterborough, UK, with weather model comparisons, a four-week outlook, wind alerts for gusts of 30 mph or more, and snowfall alerts.
+A mobile-friendly seven-day forecast for Peterborough, UK, with a detailed forecast briefing, weather model comparisons, a four-week outlook, wind alerts for gusts of 30 mph or more, and snowfall alerts.
 
 ## Use on a phone
 
@@ -40,4 +40,6 @@ The monthly outlook uses ECMWF EC46 weekly temperature and rainfall anomalies vi
 
 The Drivers tab shows the latest reported teleconnection indices and MJO observations via the [Global Teleconnections Dashboard](https://iamelnino.com/teleconnections). Observation dates may lag behind the time the app checks for updates. Regime labels are simple index-based estimates, and the MJO temperature guidance is limited to winter outlooks; neither replaces the local forecast. A separate cache retains successful index data for offline use.
 
-Run the teleconnection data and cache regression checks with `npm test`.
+The Summary tab gives a detailed briefing on temperatures, rainfall timing, wind, cold and snowfall signals, model agreement, and each of the next seven days. Today covers the current hour onwards; subsequent days use full Peterborough calendar days, including clock changes. Missing data and incomplete rainfall totals are identified explicitly.
+
+Run the forecast summary and teleconnection regression checks with `npm test`.
