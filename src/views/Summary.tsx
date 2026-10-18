@@ -22,8 +22,8 @@ export function Summary({ runs, loading, hasError }: Props) {
     { title: 'Temperatures & how they change', icon: 'sun', text: briefing.temperature },
     { title: 'Rainfall & drier spells', icon: 'drop', text: briefing.rainfall },
     { title: 'Wind & strongest gusts', icon: 'wind', text: briefing.wind },
-    { title: 'Cold & snowfall signals', icon: 'snow', text: briefing.cold },
   ];
+  if (briefing.cold) topics.push({ title: 'Cold & snowfall signals', icon: 'snow', text: briefing.cold });
 
   return <div className="view-summary">
     <header className="summary-intro">

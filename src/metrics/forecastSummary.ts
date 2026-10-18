@@ -194,10 +194,10 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date): ForecastBri
   const gusty = days.filter((day) => day.gustMph !== null && day.gustMph >= 30);
   if (gusty.length) wind += ` Gusts of 30 mph or more are indicated for ${joinDays(gusty)}.`;
 
-  let cold = freezing.length ? `Freezing or below-freezing air temperatures are indicated for ${joinDays(freezing)}.`
-    : completeTemp.length === 7 ? 'The available temperature forecasts stay above freezing throughout the seven periods.'
-    : 'No below-freezing air temperatures appear in the available hours, but temperature coverage is incomplete.';
-  cold += snowy.length ? ` A snowfall signal appears for ${joinDays(snowy)}. Forecast snowfall does not guarantee snow will settle.` : ' No snowfall signal appears in the available data; missing snowfall data does not rule it out.';
+  const cold = [
+    freezing.length ? `Freezing or below-freezing air temperatures are indicated for ${joinDays(freezing)}.` : '',
+    snowy.length ? `A snowfall signal appears for ${joinDays(snowy)}. Forecast snowfall does not guarantee snow will settle.` : '',
+  ].filter(Boolean).join(' ');
 
   const compared = days.filter((day) => day.temperatureSpread !== null);
   const divergent = compared.filter((day) => day.temperatureSpread! >= 4);

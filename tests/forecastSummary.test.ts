@@ -36,6 +36,7 @@ test('does not describe missing rain or wind data as dry or calm', () => {
   assert.doesNotMatch(briefing.days[0].paragraphs.join(' '), /Little or no rain/);
   assert.match(briefing.rainfall, /full-week total is not available/);
   assert.match(briefing.agreement, /not enough overlapping/);
+  assert.equal(briefing.cold, '');
 });
 
 test('marks partial rainfall totals and does not rank them as fully covered dry days', () => {
@@ -61,6 +62,20 @@ test('totals the local seven-day forecast and reports rain timing, snow and free
   assert.match(briefing.cold, /snowfall signal/);
   assert.equal(briefing.days[0].snowCm, 0.2);
   assert.equal(briefing.days[6].temperatureHours, 24);
+  const coldOnly = buildForecastBriefing([run('temperature_2m', times, times.map(() => -2))], winterNow);
+  assert.match(coldOnly.cold, /below-freezing/);
+  assert.doesNotMatch(coldOnly.cold, /snowfall/);
+  const snowOnly = buildForecastBriefing([
+    run('temperature_2m', times, times.map(() => 2)),
+    run('snowfall', times, times.map(() => 0.1)),
+  ], winterNow);
+  assert.match(snowOnly.cold, /snowfall signal/);
+  assert.doesNotMatch(snowOnly.cold, /freezing/);
+  const noSignals = buildForecastBriefing([
+    run('temperature_2m', times, times.map(() => 10)),
+    run('snowfall', times, times.map(() => 0)),
+  ], winterNow);
+  assert.equal(noSignals.cold, '');
 });
 
 test('starts today at the current hour and includes BST midnight in the correct local day', () => {

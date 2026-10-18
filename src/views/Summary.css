@@ -10,6 +10,7 @@
 .summary-lead > span { display: block; margin-top: 16px; font-size: 12px; color: #adc3b9; }
 .summary-topics, .summary-days { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .summary-topic, .summary-day { border: 1px solid var(--border); border-radius: 15px; padding: 22px 24px; background: var(--bg-card); min-width: 0; }
+.summary-topic:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .summary-topic-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .summary-topic-heading .weather-icon { width: 21px; height: 21px; flex-shrink: 0; color: #b6d0e6; }
 .summary-topic > p, .summary-agreement > p, .summary-day > p { line-height: 1.85; color: #c0cbda; }
