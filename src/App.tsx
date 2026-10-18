@@ -13,6 +13,7 @@ import { useWeatherData } from './hooks/useWeatherData';
 import { timeAgo } from './hooks/useLocalTime';
 import { LOCATION } from './config/models';
 import { WeatherIcon } from './components/WeatherIcon';
+import './App.css';
 import './Home.css';
 
 function App() {
