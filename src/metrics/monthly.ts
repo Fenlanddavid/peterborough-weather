@@ -1,4 +1,5 @@
 import type { OutlookWeek } from '../types';
+import type { TeleconnectionContext } from './regime';
 
 export function temperatureSignal(anomaly: number | null): string {
   if (anomaly === null) return 'Temperature uncertain';
@@ -11,7 +12,7 @@ export function rainfallSignal(total: number | null, anomaly: number | null): st
   return ratio >= 0.2 && anomaly >= 2 ? 'Wetter than usual' : ratio <= -0.2 && anomaly <= -2 ? 'Drier than usual' : 'Near usual rainfall';
 }
 
-export function monthlySummary(weeks: OutlookWeek[]): string {
+export function monthlySummary(weeks: OutlookWeek[], teleconnections?: TeleconnectionContext | null): string {
   if (weeks.length < 4) return 'Only part of the four-week outlook is available. Check the weekly signals below.';
   const temperature = weeks.every((week) => week.temperatureAnomaly !== null)
     ? temperatureSignal(weeks.reduce((sum, week) => sum + week.temperatureAnomaly!, 0) / weeks.length) : null;
@@ -23,5 +24,24 @@ export function monthlySummary(weeks: OutlookWeek[]): string {
   const rainText = rainfall === 'Wetter than usual' ? 'Rainfall leans wetter than usual.'
     : rainfall === 'Drier than usual' ? 'Rainfall leans drier than usual.'
     : rainfall === 'Near usual rainfall' ? 'Rainfall looks close to the seasonal average.' : 'The rainfall signal is uncertain.';
-  return `${tempText} ${rainText}`;
+
+  let tcText = '';
+  // The temperature interpretation below is winter guidance, not an all-season rule.
+  const winterOutlook = weeks.every((week) => [11, 12, 1, 2, 3].includes(Number(week.date.slice(5, 7))));
+  if (winterOutlook && teleconnections?.mjoOutlook?.strong) {
+    const mjo = teleconnections.mjoOutlook;
+    // Check if MJO outlook aligns with or contradicts the model outlook
+    const modelSaysCold = temperature === 'Cooler than usual';
+    const modelSaysWarm = temperature === 'Warmer than usual';
+    const mjoSaysCold = mjo.phase >= 6 && mjo.phase <= 8;
+    const mjoSaysWarm = mjo.phase >= 2 && mjo.phase <= 3;
+
+    if ((modelSaysCold && mjoSaysCold) || (modelSaysWarm && mjoSaysWarm)) {
+      tcText = ` The active MJO in Phase ${mjo.phase} may support this temperature signal.`;
+    } else if ((modelSaysCold && mjoSaysWarm) || (modelSaysWarm && mjoSaysCold)) {
+      tcText = ` Note: the MJO in Phase ${mjo.phase} may work against this signal in the coming weeks.`;
+    }
+  }
+
+  return `${tempText} ${rainText}${tcText}`;
 }

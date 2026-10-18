@@ -7,6 +7,7 @@ import { Summary } from './views/Summary';
 import { Trends } from './views/Trends';
 import { Models } from './views/Models';
 import { Ensembles } from './views/Ensembles';
+import { Teleconnections } from './views/Teleconnections';
 import { About } from './views/About';
 import { useWeatherData } from './hooks/useWeatherData';
 import { timeAgo } from './hooks/useLocalTime';
@@ -53,6 +54,7 @@ function App() {
         {view === 'trends' && <Trends runs={runs} />}
         {view === 'models' && <Models runs={runs} />}
         {view === 'ensembles' && <Ensembles ensembles={ensembles} />}
+        {view === 'teleconnections' && <Teleconnections />}
         {view === 'about' && <About runs={runs} ensembles={ensembles} lastUpdated={lastUpdated} />}
       </main>
 

@@ -37,3 +37,7 @@ The deployment sets Vite's base path to the repository name. The manifest, icons
 Weather forecasts are provided by [Open-Meteo](https://open-meteo.com/). The home screen combines available ECMWF, GFS and UKMO model forecasts. Wind and snow banners reflect the app's forecasts.
 
 The monthly outlook uses ECMWF EC46 weekly temperature and rainfall anomalies via Open-Meteo. It covers the next four full weeks and describes broad regional trends compared with seasonal averages. Its separate cache keeps the last successful outlook available offline.
+
+The Drivers tab shows the latest reported teleconnection indices and MJO observations via the [Global Teleconnections Dashboard](https://iamelnino.com/teleconnections). Observation dates may lag behind the time the app checks for updates. Regime labels are simple index-based estimates, and the MJO temperature guidance is limited to winter outlooks; neither replaces the local forecast. A separate cache retains successful index data for offline use.
+
+Run the teleconnection data and cache regression checks with `npm test`.

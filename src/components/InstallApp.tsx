@@ -9,8 +9,12 @@ interface InstallPrompt extends Event {
 let state: { prompt: InstallPrompt | null; error: boolean } = { prompt: null, error: false };
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((listener) => listener());
-const standalone = () => window.matchMedia('(display-mode: standalone)').matches
-  || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+const standalone = () => {
+  try {
+    return window.matchMedia('(display-mode: standalone)').matches
+      || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+  } catch { return false; }
+};
 
 window.addEventListener('beforeinstallprompt', (event) => {
   if (standalone()) return;
@@ -28,9 +32,11 @@ const subscribe = (listener: () => void) => {
   return () => { listeners.delete(listener); };
 };
 const getState = () => state;
+const serverState: typeof state = { prompt: null, error: false };
+const getServerState = () => serverState;
 
 export function InstallApp() {
-  const { prompt, error } = useSyncExternalStore(subscribe, getState);
+  const { prompt, error } = useSyncExternalStore(subscribe, getState, getServerState);
 
   async function install() {
     if (!prompt || state.prompt !== prompt) return;

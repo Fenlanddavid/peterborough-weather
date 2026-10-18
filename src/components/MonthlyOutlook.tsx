@@ -1,4 +1,5 @@
 import { useMonthlyOutlook } from '../hooks/useMonthlyOutlook';
+import { useTeleconnections } from '../hooks/useTeleconnections';
 import { monthlySummary, rainfallSignal, temperatureSignal } from '../metrics/monthly';
 import { WeatherIcon } from './WeatherIcon';
 
@@ -7,6 +8,7 @@ const weekEnd = (date: string) => new Date(Date.parse(`${date}T12:00:00Z`) + 6 *
 
 export function MonthlyOutlook({ today, refreshKey }: { today: string; refreshKey: number | null }) {
   const { data, loading, failed, refresh } = useMonthlyOutlook(today, refreshKey);
+  const { context: tcContext } = useTeleconnections();
   const weeks = data?.weeks.filter((week) => week.date >= today).slice(0, 4) ?? [];
   return <section className="monthly-outlook" aria-labelledby="monthly-title" aria-busy={loading}>
     <div className="monthly-heading">
@@ -15,7 +17,7 @@ export function MonthlyOutlook({ today, refreshKey }: { today: string; refreshKe
     </div>
     {weeks.length > 0 ? <>
       <p className="monthly-period">{dateLabel(weeks[0].date)} – {dateLabel(weekEnd(weeks[weeks.length - 1].date))} · {weeks.length === 4 ? 'The next four full weeks' : 'Partial outlook'}</p>
-      <p className="monthly-summary">{monthlySummary(weeks)}</p>
+      <p className="monthly-summary">{monthlySummary(weeks, tcContext)}</p>
       <div className="monthly-weeks">
         {weeks.map((week, index) => <div className="monthly-week" key={week.date}>
           <h3><span>Week {index + 1}</span>{dateLabel(week.date)} – {dateLabel(weekEnd(week.date))}</h3>

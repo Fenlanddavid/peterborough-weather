@@ -10,6 +10,7 @@ const technicalTabs = [
   { id: 'trends', label: 'Trends' },
   { id: 'models', label: 'Models' },
   { id: 'ensembles', label: 'Ensembles' },
+  { id: 'teleconnections', label: 'Drivers' },
 ];
 
 export function Nav({ active, onNavigate }: NavProps) {

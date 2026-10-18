@@ -6,6 +6,7 @@ import { getHourlyCondition } from '../metrics/hourlyWeather';
 import { getHourlyForecastTimes, getLocalDate, toLocalTime, useLocalNow } from '../hooks/useLocalTime';
 import { SkyIllustration, WeatherIcon } from '../components/WeatherIcon';
 import { MonthlyOutlook } from '../components/MonthlyOutlook';
+import { RegimeBadge } from '../components/RegimeBadge';
 
 interface Props {
   runs: CachedRun[];
@@ -332,6 +333,7 @@ export function Forecast({ runs, loading, hasError, lastUpdated = null }: Props)
       </div>
 
       <MonthlyOutlook today={today} refreshKey={lastUpdated} />
+      <RegimeBadge />
 
       <section className="weekly-section" aria-labelledby="weekly-title">
         <div className="section-heading"><h2 id="weekly-title">The next 7 days</h2><span><span className="desktop-hint">Select a day to explore</span><span className="mobile-hint">Swipe & select</span> <WeatherIcon name="arrow" /></span></div>
