@@ -109,7 +109,7 @@ body:has(.app--home) {
 .app--home .hourly-section .eyebrow { font-size: 8px; margin-bottom: 5px; }
 .app--home .hourly-section .section-heading { margin-bottom: 22px; }
 .app--home .hourly-scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: #3a4b60 transparent; }
-.app--home .hourly-grid { display: grid; grid-template-columns: repeat(8, minmax(70px, 1fr)); }
+.app--home .hourly-grid { display: grid; grid-auto-flow: column; grid-auto-columns: 90px; width: max-content; min-width: 100%; }
 .app--home .hourly-item { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 4px 10px; border-right: 1px solid var(--home-line); }
 .app--home .hourly-item:last-child { border: 0; }
 .app--home .hourly-time { color: var(--home-muted); font-size: 10px; }
@@ -213,7 +213,7 @@ body:has(.app--home) {
   .app--home .hourly-section .section-heading h2 { font-size: 16px; }
   .app--home .hourly-section .section-heading > span { font-size: 10px; white-space: nowrap; padding-bottom: 2px; }
   .app--home .hourly-scroll { margin-right: -17px; padding-bottom: 9px; }
-  .app--home .hourly-grid { grid-template-columns: repeat(8, 75px); padding-right: 17px; width: max-content; }
+  .app--home .hourly-grid { grid-auto-columns: 75px; padding-right: 17px; }
   .app--home .hourly-item { gap: 13px; }
   .app--home .hourly-item strong { font-size: 24px; }
   .app--home .hourly-time { font-size: 11px; }

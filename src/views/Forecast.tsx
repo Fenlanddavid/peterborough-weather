@@ -3,7 +3,7 @@ import type { CachedRun } from '../types';
 import { DETERMINISTIC_MODELS } from '../config/models';
 import { getModelRuns, getValueAtTime } from '../metrics/utils';
 import { getHourlyCondition } from '../metrics/hourlyWeather';
-import { toLocalTime } from '../hooks/useLocalTime';
+import { getLocalDayHours, toLocalTime } from '../hooks/useLocalTime';
 import { SkyIllustration, WeatherIcon } from '../components/WeatherIcon';
 
 interface Props {
@@ -240,8 +240,7 @@ export function Forecast({ runs, loading, hasError }: Props) {
   const modelCount = DETERMINISTIC_MODELS.filter((model) =>
     !model.isOverlay && runs.some((run) => run.modelId === model.id && run.variable === 'temperature_2m')
   ).length;
-  const hourly = useMemo(() => Array.from({ length: 8 }, (_, index) => {
-    const time = `${selectedDay.date}T${String(index * 3).padStart(2, '0')}:00`;
+  const hourly = useMemo(() => getLocalDayHours(selectedDay.date).map((time) => {
     return {
       time,
       temperature: consensus(runs, 'temperature_2m', time),
@@ -357,7 +356,7 @@ export function Forecast({ runs, loading, hasError }: Props) {
             </div>)}
           </div>
         </div>
-        <p className="hourly-caption">Three-hourly snapshots · Rainfall is the forecast total for that hour.</p>
+        <p className="hourly-caption">Hourly forecast · Rainfall is the forecast total for that hour.</p>
       </section>
       <p className="forecast-note"><span className="note-mark">i</span> Based on available ECMWF, GFS and UKMO forecasts. Explore the model tabs for the full picture.</p>
     </div>

@@ -1,3 +1,19 @@
+/** UTC forecast hours belonging to a calendar day in Peterborough, including clock changes. */
+export function getLocalDayHours(dateISO: string): string[] {
+  const formatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit',
+  });
+  const midnightUTC = Date.parse(`${dateISO}T00:00:00Z`);
+  const selectedDate = formatter.format(new Date(`${dateISO}T12:00:00Z`));
+  const hours: string[] = [];
+  // UK local midnight is either 23:00 UTC on the previous day or 00:00 UTC.
+  for (let offset = -1; offset < 25; offset++) {
+    const time = new Date(midnightUTC + offset * 3600_000);
+    if (formatter.format(time) === selectedDate) hours.push(time.toISOString().slice(0, 16));
+  }
+  return hours;
+}
+
 /** Format a UTC ISO string to Europe/London local time */
 export function toLocalTime(utcISO: string, formatStr: 'short' | 'long' | 'time' = 'short'): string {
   const date = new Date(utcISO.endsWith('Z') ? utcISO : utcISO + 'Z');
