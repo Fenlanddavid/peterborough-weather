@@ -14,3 +14,7 @@ body {
 }
 
 a { color: inherit; }
+
+.install-offer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 18px; padding: 12px 16px; border: 1px solid #bbddc930; border-radius: 12px; background: #172b26; color: #dfede4; font-size: 12px; }
+.install-offer button { min-height: 44px; padding: 8px 14px; border: 1px solid #bbddc950; border-radius: 8px; background: #bbddc9; color: #14231c; font: inherit; cursor: pointer; }
+.install-offer button:focus-visible { outline: 2px solid #bbddc9; outline-offset: 4px; }

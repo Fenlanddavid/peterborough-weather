@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Nav } from './components/Nav';
 import { LoadingBar } from './components/LoadingBar';
+import { InstallApp } from './components/InstallApp';
 import { Forecast } from './views/Forecast';
 import { Summary } from './views/Summary';
 import { Trends } from './views/Trends';
@@ -44,6 +45,7 @@ function App() {
       {error && <div className="error-banner">{error}</div>}
 
       <Nav active={view} onNavigate={setView} />
+      <InstallApp />
 
       <main className="app-main">
         {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} />}

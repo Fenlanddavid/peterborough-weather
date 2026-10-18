@@ -7,7 +7,7 @@ A mobile-friendly seven-day forecast for Peterborough, UK, with weather model co
 Open the published GitHub Pages link in your phone's browser.
 
 - **iPhone:** open in Safari, tap Share, then **Add to Home Screen**.
-- **Android:** open in Chrome, open the menu, then **Add to Home screen** or **Install app**.
+- **Android:** open in Chrome and tap **Install weather app** when it appears. The browser menu also offers **Add to Home screen** or **Install app**.
 
 Forecasts are fetched from Open-Meteo. Cached forecasts remain available offline after an online visit; refresh online for current information. Each phone keeps its own forecast cache.
 
