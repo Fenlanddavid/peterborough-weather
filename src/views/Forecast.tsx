@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import type { CachedRun } from '../types';
 import { DETERMINISTIC_MODELS } from '../config/models';
 import { getModelRuns, getValueAtTime } from '../metrics/utils';
+import { getHourlyCondition } from '../metrics/hourlyWeather';
 import { toLocalTime } from '../hooks/useLocalTime';
 import { SkyIllustration, WeatherIcon } from '../components/WeatherIcon';
 
@@ -245,6 +246,8 @@ export function Forecast({ runs, loading, hasError }: Props) {
       time,
       temperature: consensus(runs, 'temperature_2m', time),
       rain: consensus(runs, 'precipitation', time),
+      wind: consensus(runs, 'wind_speed_10m', time),
+      condition: getHourlyCondition(runs, time),
     };
   }), [runs, selectedDay.date]);
   const dateLabel = (date: string, long = false) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', {
@@ -345,14 +348,18 @@ export function Forecast({ runs, loading, hasError }: Props) {
           <div className="hourly-grid">
             {hourly.map((hour) => <div className="hourly-item" key={hour.time}>
               <span className="hourly-time">{toLocalTime(hour.time, 'time')}</span>
+              <span className={`hourly-condition hourly-condition--${hour.condition.icon ?? 'unknown'}`} role="img" aria-label={hour.condition.label} title={hour.condition.label}>
+                {hour.condition.icon ? <WeatherIcon name={hour.condition.icon} /> : <span aria-hidden="true">—</span>}
+              </span>
               <strong>{number(hour.temperature)}°</strong>
               <span className="hourly-rain"><WeatherIcon name="drop" />{hour.rain === null ? '—' : hour.rain.toFixed(1)} mm</span>
+              <span className="hourly-wind" title="Wind speed" aria-label={hour.wind === null ? 'Wind speed unavailable' : `Wind speed: ${number(hour.wind)} miles per hour`}><WeatherIcon name="wind" />{number(hour.wind)} mph</span>
             </div>)}
           </div>
         </div>
         <p className="hourly-caption">Three-hourly snapshots · Rainfall is the forecast total for that hour.</p>
       </section>
-      <p className="forecast-note"><span className="note-mark">i</span> An average of available ECMWF, GFS and UKMO forecasts. Explore the model tabs for the full picture.</p>
+      <p className="forecast-note"><span className="note-mark">i</span> Based on available ECMWF, GFS and UKMO forecasts. Explore the model tabs for the full picture.</p>
     </div>
   );
 }

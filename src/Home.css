@@ -113,9 +113,15 @@ body:has(.app--home) {
 .app--home .hourly-item { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 4px 10px; border-right: 1px solid var(--home-line); }
 .app--home .hourly-item:last-child { border: 0; }
 .app--home .hourly-time { color: var(--home-muted); font-size: 10px; }
+.app--home .hourly-condition { display: grid; place-items: center; width: 32px; height: 32px; color: #bad0e2; }
+.app--home .hourly-condition .weather-icon { width: 29px; height: 29px; }
+.app--home .hourly-condition--sun, .app--home .hourly-condition--storm { color: #f4d28a; }
+.app--home .hourly-condition--rain, .app--home .hourly-condition--snow { color: #a9d9f6; }
+.app--home .hourly-condition--unknown { color: var(--home-muted); }
 .app--home .hourly-item strong { font-size: 24px; letter-spacing: -.6px; font-weight: 400; }
-.app--home .hourly-rain { display: flex; align-items: center; gap: 4px; color: #9cbdd6; font-size: 9px; white-space: nowrap; }
-.app--home .hourly-rain .weather-icon { width: 11px; height: 11px; }
+.app--home .hourly-rain, .app--home .hourly-wind { display: flex; align-items: center; gap: 4px; color: #9cbdd6; font-size: 9px; white-space: nowrap; }
+.app--home .hourly-wind { color: var(--home-muted); }
+.app--home .hourly-rain .weather-icon, .app--home .hourly-wind .weather-icon { width: 11px; height: 11px; }
 .app--home .hourly-caption { font-size: 9px; color: var(--home-muted); margin-top: 23px; border-top: 1px solid var(--home-line); padding-top: 12px; }
 .app--home .forecast-note { display: flex; justify-content: center; align-items: baseline; gap: 7px; color: var(--home-muted); text-align: center; font-size: 10px; margin: 21px 0 10px; line-height: 1.8; }
 .app--home .note-mark { display: inline-flex; align-items: center; justify-content: center; font-size: 8px; border: 1px solid #8294a6; border-radius: 50%; width: 12px; height: 12px; flex-shrink: 0; }
@@ -211,7 +217,7 @@ body:has(.app--home) {
   .app--home .hourly-item { gap: 13px; }
   .app--home .hourly-item strong { font-size: 24px; }
   .app--home .hourly-time { font-size: 11px; }
-  .app--home .hourly-rain { font-size: 10px; }
+  .app--home .hourly-rain, .app--home .hourly-wind { font-size: 10px; }
   .app--home .hourly-caption { margin-top: 10px; font-size: 10px; line-height: 1.7; }
   .app--home .week-briefing { order: 4; padding: 22px; border-radius: 16px; }
   .app--home .briefing-heading { margin-bottom: 13px; }

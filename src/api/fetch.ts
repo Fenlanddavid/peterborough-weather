@@ -40,7 +40,7 @@ async function fetchSingleRun(modelId: string, runTime: string, variable: Variab
   const params = new URLSearchParams({
     latitude: String(LOCATION.latitude),
     longitude: String(LOCATION.longitude),
-    hourly: variable,
+    hourly: variable === 'weather_code' ? 'weather_code,is_day' : variable,
     models: modelId,
     run: runTime,
     forecast_days: '7',
@@ -68,6 +68,14 @@ async function fetchSingleRun(modelId: string, runTime: string, variable: Variab
     };
 
     await putCachedRun(run);
+    if (variable === 'weather_code' && Array.isArray(hourly.is_day)) {
+      await putCachedRun({
+        ...run,
+        key: makeRunKey(modelId, runTime, 'is_day'),
+        variable: 'is_day',
+        values: hourly.is_day,
+      });
+    }
     return run;
   } catch {
     return null; // Network error, skip silently
@@ -85,9 +93,9 @@ export async function fetchAllDeterministicRuns(
   for (const model of DETERMINISTIC_MODELS) {
     const runTimes = generateRunTimes(model.runCycles, RUN_LOOKBACK_HOURS);
     for (const runTime of runTimes) {
-      // Alerts only need recent snowfall runs; retain fallbacks while a new run is publishing.
+      // Home conditions only need recent runs; retain fallbacks while a new run is publishing.
       const variables: VariableId[] = VARIABLES.map((v) => v.id);
-      if (!model.isOverlay && runTimes.slice(-4).includes(runTime)) variables.push('snowfall');
+      if (!model.isOverlay && runTimes.slice(-4).includes(runTime)) variables.push('snowfall', 'weather_code');
       for (const variable of variables) {
         const key = makeRunKey(model.id, runTime, variable);
         const cached = await getCachedRun(key);
