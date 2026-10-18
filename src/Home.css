@@ -80,6 +80,25 @@ body:has(.app--home) {
 .app--home .week-briefing h2 { font-size: 26px; font-weight: 400; letter-spacing: -.7px; line-height: 1.25; margin-bottom: 13px; color: #e0ece5; }
 .app--home .week-briefing > p { font-size: 12px; color: #a7bcb0; line-height: 1.8; }
 .app--home .briefing-source { display: flex; gap: 7px; align-items: center; color: #b4cdbf; font-size: 9px; padding-top: 18px; margin-top: auto; }
+.app--home .monthly-outlook { padding: 25px 28px; margin-bottom: 30px; border: 1px solid #adbfdf24; border-radius: 20px; background: #192332; }
+.app--home .monthly-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
+.app--home .monthly-heading .eyebrow { color: #b1c5e6; margin-bottom: 6px; }
+.app--home .monthly-heading h2 { font-size: 24px; font-weight: 400; letter-spacing: -.6px; }
+.app--home .monthly-heading > .weather-icon { width: 26px; height: 26px; color: #b1c5e6; }
+.app--home .monthly-period { color: #a9bad0; font-size: 11px; margin-bottom: 14px; }
+.app--home .monthly-summary { color: #d2ddeb; font-size: 12px; line-height: 1.8; }
+.app--home .monthly-weeks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.app--home .monthly-week { min-width: 0; padding: 15px 12px; background: #ffffff04; border: 1px solid #ffffff09; border-radius: 10px; }
+.app--home .monthly-week h3 { font-size: 10px; font-weight: 400; color: #a9bad0; margin-bottom: 12px; }
+.app--home .monthly-week h3 span { display: block; color: #e0e9f5; font-size: 12px; margin-bottom: 4px; }
+.app--home .monthly-week p { font-size: 11px; line-height: 1.6; color: #d2ddeb; }
+.app--home .monthly-week p + p { display: flex; align-items: baseline; gap: 5px; color: #a8c9e1; margin-top: 6px; }
+.app--home .monthly-week p .weather-icon { width: 12px; height: 12px; align-self: flex-start; margin-top: 3px; }
+.app--home .monthly-note { color: #a9bad0; font-size: 10px; line-height: 1.7; margin-top: 16px; }
+.app--home .monthly-source { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 12px; font-size: 10px; color: #a9bad0; }
+.app--home .monthly-source a { text-underline-offset: 3px; }
+.app--home .monthly-source button { border: 1px solid #adbfdf30; border-radius: 8px; background: transparent; color: #d2ddeb; min-height: 44px; padding: 6px 10px; cursor: pointer; }
+.app--home .monthly-source button:disabled { opacity: .6; cursor: wait; }
 .app--home .status-dot { display: inline-block; height: 5px; width: 5px; flex-shrink: 0; border-radius: 50%; background: var(--home-accent); }
 .app--home .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
 .app--home .section-heading h2 { font-weight: 500; font-size: 18px; letter-spacing: -.4px; }
@@ -225,7 +244,12 @@ body:has(.app--home) {
   .app--home .week-briefing h2 br { display: none; }
   .app--home .week-briefing > p { font-size: 12px; }
   .app--home .briefing-source { font-size: 11px; }
-  .app--home .forecast-note { order: 5; font-size: 11px; text-align: left; margin: 20px 0 23px; }
+  .app--home .monthly-outlook { order: 5; margin-top: 20px; margin-bottom: 0; padding: 22px; border-radius: 16px; }
+  .app--home .monthly-weeks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .app--home .monthly-period { font-size: 10px; line-height: 1.7; }
+  .app--home .monthly-source { align-items: flex-start; }
+  .app--home .monthly-source button { flex-shrink: 0; }
+  .app--home .forecast-note { order: 6; font-size: 11px; text-align: left; margin: 20px 0 23px; }
   .app--home .app-footer { flex-direction: column; align-items: center; gap: 9px; padding: 20px 0 25px; font-size: 10px; }
 }
 

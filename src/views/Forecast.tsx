@@ -5,11 +5,13 @@ import { getModelRuns, getValueAtTime } from '../metrics/utils';
 import { getHourlyCondition } from '../metrics/hourlyWeather';
 import { getHourlyForecastTimes, getLocalDate, toLocalTime, useLocalNow } from '../hooks/useLocalTime';
 import { SkyIllustration, WeatherIcon } from '../components/WeatherIcon';
+import { MonthlyOutlook } from '../components/MonthlyOutlook';
 
 interface Props {
   runs: CachedRun[];
   loading: boolean;
   hasError: boolean;
+  lastUpdated?: number | null;
 }
 
 interface DayForecast {
@@ -129,7 +131,7 @@ function buildWeekSummary(days: DayForecast[]): string {
   return lines.join(' ');
 }
 
-export function Forecast({ runs, loading, hasError }: Props) {
+export function Forecast({ runs, loading, hasError, lastUpdated = null }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const now = useLocalNow();
   const today = getLocalDate(now);
@@ -328,6 +330,8 @@ export function Forecast({ runs, loading, hasError }: Props) {
           <div className="briefing-source"><span className="status-dot" /><span>{hasData ? `${modelCount} weather model${modelCount === 1 ? '' : 's'}. One local outlook.` : 'Powered by Open-Meteo'}</span></div>
         </aside>
       </div>
+
+      <MonthlyOutlook today={today} refreshKey={lastUpdated} />
 
       <section className="weekly-section" aria-labelledby="weekly-title">
         <div className="section-heading"><h2 id="weekly-title">The next 7 days</h2><span><span className="desktop-hint">Select a day to explore</span><span className="mobile-hint">Swipe & select</span> <WeatherIcon name="arrow" /></span></div>

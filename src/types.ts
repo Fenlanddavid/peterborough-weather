@@ -1,5 +1,17 @@
 import type { VariableId } from './config/models';
 
+export interface OutlookWeek {
+  date: string;
+  temperatureAnomaly: number | null;
+  rainfallMm: number | null;
+  rainfallAnomaly: number | null;
+}
+
+export interface MonthlyOutlookData {
+  fetchedAt: number;
+  weeks: OutlookWeek[];
+}
+
 /** A single model run's forecast data for one variable */
 export interface RunData {
   modelId: string;

@@ -46,7 +46,7 @@ function App() {
       <Nav active={view} onNavigate={setView} />
 
       <main className="app-main">
-        {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} />}
+        {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} />}
         {view === 'summary' && <Summary runs={runs} />}
         {view === 'trends' && <Trends runs={runs} />}
         {view === 'models' && <Models runs={runs} />}

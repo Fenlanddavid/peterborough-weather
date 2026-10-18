@@ -1,6 +1,6 @@
 # Peterborough Weather
 
-A mobile-friendly seven-day forecast for Peterborough, UK, with weather model comparisons, wind alerts for gusts of 30 mph or more, and snowfall alerts.
+A mobile-friendly seven-day forecast for Peterborough, UK, with weather model comparisons, a four-week outlook, wind alerts for gusts of 30 mph or more, and snowfall alerts.
 
 ## Use on a phone
 
@@ -35,3 +35,5 @@ The deployment sets Vite's base path to the repository name. The manifest, icons
 ## Data
 
 Weather forecasts are provided by [Open-Meteo](https://open-meteo.com/). The home screen combines available ECMWF, GFS and UKMO model forecasts. Wind and snow banners reflect the app's forecasts.
+
+The monthly outlook uses ECMWF EC46 weekly temperature and rainfall anomalies via Open-Meteo. It covers the next four full weeks and describes broad regional trends compared with seasonal averages. Its separate cache keeps the last successful outlook available offline.
