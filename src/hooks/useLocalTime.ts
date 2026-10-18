@@ -1,3 +1,32 @@
+import { useEffect, useState } from 'react';
+
+/** Refresh the browsing time while open and when returning to the app. */
+export function useLocalNow(): Date {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const update = () => setNow(new Date());
+    const onVisible = () => { if (!document.hidden) update(); };
+    const timer = window.setInterval(update, 60_000);
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', update);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', update);
+    };
+  }, []);
+  return now;
+}
+
+/** Calendar date in Peterborough rather than the device's time zone. */
+export function getLocalDate(date: Date): string {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date);
+  const value = (type: string) => parts.find((part) => part.type === type)!.value;
+  return `${value('year')}-${value('month')}-${value('day')}`;
+}
+
 /** UTC forecast hours belonging to a calendar day in Peterborough, including clock changes. */
 export function getLocalDayHours(dateISO: string): string[] {
   const formatter = new Intl.DateTimeFormat('en-GB', {
@@ -12,6 +41,15 @@ export function getLocalDayHours(dateISO: string): string[] {
     if (formatter.format(time) === selectedDate) hours.push(time.toISOString().slice(0, 16));
   }
   return hours;
+}
+
+/** Today starts with the current hour; other selected days start at 09:00 local time. */
+export function getHourlyForecastTimes(dateISO: string, now: Date): string[] {
+  const isToday = dateISO === getLocalDate(now);
+  const currentHour = Math.floor(now.getTime() / 3600_000) * 3600_000;
+  return getLocalDayHours(dateISO).filter((time) => isToday
+    ? Date.parse(`${time}Z`) >= currentHour
+    : Number(toLocalTime(time, 'time').slice(0, 2)) >= 9);
 }
 
 /** Format a UTC ISO string to Europe/London local time */

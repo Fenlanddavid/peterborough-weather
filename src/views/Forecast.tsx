@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CachedRun } from '../types';
 import { DETERMINISTIC_MODELS } from '../config/models';
 import { getModelRuns, getValueAtTime } from '../metrics/utils';
 import { getHourlyCondition } from '../metrics/hourlyWeather';
-import { getLocalDayHours, toLocalTime } from '../hooks/useLocalTime';
+import { getHourlyForecastTimes, getLocalDate, toLocalTime, useLocalNow } from '../hooks/useLocalTime';
 import { SkyIllustration, WeatherIcon } from '../components/WeatherIcon';
 
 interface Props {
@@ -131,14 +131,15 @@ function buildWeekSummary(days: DayForecast[]): string {
 
 export function Forecast({ runs, loading, hasError }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [now] = useState(() => new Date());
+  const now = useLocalNow();
+  const today = getLocalDate(now);
+  const hourlyScroll = useRef<HTMLDivElement>(null);
   const days = useMemo(() => {
     const result: DayForecast[] = [];
+    const todayUTC = Date.parse(`${today}T00:00:00Z`);
 
     for (let d = 0; d < 7; d++) {
-      const date = new Date(Date.UTC(
-        now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + d
-      ));
+      const date = new Date(todayUTC + d * 24 * 3600_000);
       const dateStr = date.toISOString().slice(0, 10);
 
       // Collect hourly consensus values
@@ -229,7 +230,7 @@ export function Forecast({ runs, loading, hasError }: Props) {
     }
 
     return result;
-  }, [runs, now]);
+  }, [runs, today]);
 
   const weekSummary = useMemo(() => buildWeekSummary(days), [days]);
   const windyDays = days.filter((day) => day.gustMph !== null && day.gustMph >= 30);
@@ -240,7 +241,7 @@ export function Forecast({ runs, loading, hasError }: Props) {
   const modelCount = DETERMINISTIC_MODELS.filter((model) =>
     !model.isOverlay && runs.some((run) => run.modelId === model.id && run.variable === 'temperature_2m')
   ).length;
-  const hourly = useMemo(() => getLocalDayHours(selectedDay.date).map((time) => {
+  const hourly = useMemo(() => getHourlyForecastTimes(selectedDay.date, now).map((time) => {
     return {
       time,
       temperature: consensus(runs, 'temperature_2m', time),
@@ -248,7 +249,11 @@ export function Forecast({ runs, loading, hasError }: Props) {
       wind: consensus(runs, 'wind_speed_10m', time),
       condition: getHourlyCondition(runs, time),
     };
-  }), [runs, selectedDay.date]);
+  }), [runs, selectedDay.date, now]);
+  const firstHour = hourly[0]?.time;
+  useEffect(() => {
+    if (hourlyScroll.current) hourlyScroll.current.scrollLeft = 0;
+  }, [selectedDay.date, firstHour]);
   const dateLabel = (date: string, long = false) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', {
     day: 'numeric', month: long ? 'long' : 'short', timeZone: 'Europe/London',
   });
@@ -343,7 +348,7 @@ export function Forecast({ runs, loading, hasError }: Props) {
 
       <section className="hourly-section" aria-labelledby="hourly-title">
         <div className="section-heading"><div><p className="eyebrow">A closer look</p><h2 id="hourly-title">{selectedDay.dayName}, hour by hour</h2></div><span>Local time · °C</span></div>
-        <div className="hourly-scroll" tabIndex={0} role="region" aria-label={`${selectedDay.dayName} hourly forecast, scroll for more`}>
+        <div className="hourly-scroll" ref={hourlyScroll} tabIndex={0} role="region" aria-label={`${selectedDay.dayName} hourly forecast, scroll for more`}>
           <div className="hourly-grid">
             {hourly.map((hour) => <div className="hourly-item" key={hour.time}>
               <span className="hourly-time">{toLocalTime(hour.time, 'time')}</span>

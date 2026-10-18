@@ -2,7 +2,7 @@
   "name": "Peterborough Weather",
   "short_name": "PB Weather",
   "description": "Your seven-day Peterborough forecast, with wind and snow alerts.",
-  "id": "./",
+  "id": "/peterborough-weather/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
