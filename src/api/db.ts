@@ -3,14 +3,19 @@ import type { CachedRun, EnsembleData } from '../types';
 import { RUN_LOOKBACK_HOURS, MS_PER_HOUR } from '../config/models';
 
 const DB_NAME = 'weather-trends';
-const DB_VERSION = 1;
+const DB_VERSION = 2; // v2: wind units fixed (km/h → m/s)
 
 let dbPromise: Promise<IDBPDatabase> | null = null;
 
 function getDb() {
   if (!dbPromise) {
     dbPromise = openDB(DB_NAME, DB_VERSION, {
-      upgrade(db) {
+      upgrade(db, oldVersion) {
+        // Wipe stale stores on version bump (v1 had wrong wind units)
+        if (oldVersion < 2) {
+          if (db.objectStoreNames.contains('runs')) db.deleteObjectStore('runs');
+          if (db.objectStoreNames.contains('ensembles')) db.deleteObjectStore('ensembles');
+        }
         if (!db.objectStoreNames.contains('runs')) {
           const store = db.createObjectStore('runs', { keyPath: 'key' });
           store.createIndex('by-model', 'modelId');

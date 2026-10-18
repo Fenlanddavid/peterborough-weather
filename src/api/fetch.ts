@@ -45,6 +45,7 @@ async function fetchSingleRun(modelId: string, runTime: string, variable: Variab
     run: runTime,
     forecast_days: '7',
     timezone: 'UTC',
+    wind_speed_unit: 'ms',
   });
 
   try {
@@ -84,11 +85,14 @@ export async function fetchAllDeterministicRuns(
   for (const model of DETERMINISTIC_MODELS) {
     const runTimes = generateRunTimes(model.runCycles, RUN_LOOKBACK_HOURS);
     for (const runTime of runTimes) {
-      for (const v of VARIABLES) {
-        const key = makeRunKey(model.id, runTime, v.id);
+      // Alerts only need recent snowfall runs; retain fallbacks while a new run is publishing.
+      const variables: VariableId[] = VARIABLES.map((v) => v.id);
+      if (!model.isOverlay && runTimes.slice(-4).includes(runTime)) variables.push('snowfall');
+      for (const variable of variables) {
+        const key = makeRunKey(model.id, runTime, variable);
         const cached = await getCachedRun(key);
         if (!cached) {
-          tasks.push({ modelId: model.id, runTime, variable: v.id });
+          tasks.push({ modelId: model.id, runTime, variable });
         }
       }
     }
@@ -139,6 +143,7 @@ export async function fetchEnsembles(
         models: t.modelId,
         forecast_days: '7',
         timezone: 'UTC',
+        wind_speed_unit: 'ms',
       });
 
       const res = await fetch(`${ENSEMBLE_BASE}?${params}`);

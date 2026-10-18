@@ -1,11 +1,13 @@
 {
-  "name": "Peterborough Weather Trends",
+  "name": "Peterborough Weather",
   "short_name": "PB Weather",
-  "description": "Compare weather model runs for Peterborough",
+  "description": "Your seven-day Peterborough forecast, with wind and snow alerts.",
+  "id": "./",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0f0f1a",
-  "theme_color": "#0f0f1a",
+  "background_color": "#0e1724",
+  "theme_color": "#0e1724",
   "icons": [
     {
       "src": "icon-192.png",

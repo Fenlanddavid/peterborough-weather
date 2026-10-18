@@ -95,6 +95,27 @@ body {
   background: var(--bg-card);
   font-weight: 600;
 }
+.nav-tab-primary {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.nav-tab-primary.active {
+  background: var(--accent-dim);
+  color: #fff;
+}
+.nav-tab-secondary {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  opacity: 0.8;
+}
+.nav-tab-secondary:hover { opacity: 1; }
+.nav-tab-secondary.active { opacity: 1; }
+.nav-separator {
+  width: 1px;
+  background: var(--border);
+  margin: 4px 6px;
+  align-self: stretch;
+}
 
 /* Loading bar */
 .loading-bar {
@@ -392,8 +413,159 @@ h3 {
   background: var(--bg-card) !important;
 }
 
+/* ===== Forecast view ===== */
+.view-forecast {
+  max-width: 900px;
+}
+
+.week-summary-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  border-left: 4px solid var(--success);
+}
+.week-summary-card h2 {
+  color: var(--text-bright);
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+}
+.week-summary-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.day-cards {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.day-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+  border-top: 3px solid var(--success);
+  transition: transform 0.15s;
+}
+.day-card:hover {
+  transform: translateY(-2px);
+  background: var(--bg-card-hover);
+}
+.day-card--wet {
+  border-top-color: var(--accent);
+}
+.day-card--windy {
+  border-top-color: var(--warning);
+}
+
+.day-card-header {
+  margin-bottom: 8px;
+}
+.day-name {
+  display: block;
+  font-weight: 600;
+  color: var(--text-bright);
+  font-size: 0.85rem;
+}
+.day-date {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.day-card-icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin: 6px 0;
+}
+
+.day-card-condition {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  min-height: 1.4em;
+}
+
+.day-card-temps {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.temp-high {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-bright);
+}
+.temp-low {
+  font-size: 1rem;
+  color: var(--text-dim);
+  align-self: flex-end;
+}
+
+.day-card-details {
+  font-size: 0.75rem;
+  color: var(--text);
+}
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 1px 0;
+}
+.detail-icon {
+  font-size: 0.7rem;
+}
+
+.day-card-summary {
+  margin-top: 8px;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.forecast-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  padding: 8px 0;
+}
+
+.forecast-loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 900px) {
+  .day-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media (max-width: 640px) {
   .app-header h1 { font-size: 1.1rem; }
   .metrics-grid { grid-template-columns: 1fr; }
   .spread-cards { grid-template-columns: repeat(2, 1fr); }
+
+  .day-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .day-card-summary {
+    display: none;
+  }
+  .nav {
+    gap: 2px;
+  }
+  .nav-tab {
+    padding: 6px 10px;
+  }
+  .nav-tab-secondary {
+    font-size: 0.72rem;
+  }
 }

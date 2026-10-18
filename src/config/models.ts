@@ -40,7 +40,8 @@ export const VARIABLES = [
   { id: 'pressure_msl', label: 'Pressure', unit: 'hPa', precision: 0 },
 ] as const;
 
-export type VariableId = (typeof VARIABLES)[number]['id'];
+// Snowfall is used by home-screen alerts, outside the model comparison tabs.
+export type VariableId = (typeof VARIABLES)[number]['id'] | 'snowfall';
 
 export const LOCATION = {
   name: 'Peterborough',

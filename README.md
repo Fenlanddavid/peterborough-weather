@@ -1,32 +1,37 @@
-# React + TypeScript + Vite
+# Peterborough Weather
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A mobile-friendly seven-day forecast for Peterborough, UK, with weather model comparisons, wind alerts for gusts of 30 mph or more, and snowfall alerts.
 
-Currently, two official plugins are available:
+## Use on a phone
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Open the published GitHub Pages link in your phone's browser.
 
-## React Compiler
+- **iPhone:** open in Safari, tap Share, then **Add to Home Screen**.
+- **Android:** open in Chrome, open the menu, then **Add to Home screen** or **Install app**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Forecasts are fetched from Open-Meteo. Cached forecasts remain available offline after an online visit; refresh online for current information. Each phone keeps its own forecast cache.
 
-## Expanding the Oxlint configuration
+## Development
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+Requires Node.js 22.12 or later (the deployment uses Node.js 24).
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm ci
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Build the production app:
+
+```sh
+npm run build
+```
+
+## GitHub Pages
+
+The workflow in `.github/workflows/deploy.yml` builds and publishes changes pushed to `main`. Enable **Settings → Pages → Source → GitHub Actions** in the GitHub repository.
+
+The deployment sets Vite's base path to the repository name. The manifest, icons and service worker work beneath that path.
+
+## Data
+
+Weather forecasts are provided by [Open-Meteo](https://open-meteo.com/). The home screen combines available ECMWF, GFS and UKMO model forecasts. Wind and snow banners reflect the app's forecasts.

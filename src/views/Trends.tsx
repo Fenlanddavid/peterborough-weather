@@ -27,10 +27,6 @@ function getValidTimes(): string[] {
   return times;
 }
 
-function getCycleFilter(runs: CachedRun[]): number | null {
-  return null; // No filter by default
-}
-
 export function Trends({ runs }: Props) {
   const [variable, setVariable] = useState<VariableId>('temperature_2m');
   const [validTimeIdx, setValidTimeIdx] = useState(4); // ~24h ahead

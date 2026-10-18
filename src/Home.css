@@ -1,0 +1,234 @@
+/* The forecast home has its own visual theme; other views retain their styles. */
+body:has(.app--home) {
+  background: #0e1724;
+  color: #e9eff5;
+  color-scheme: dark;
+}
+
+.app--home {
+  --home-muted: #a0afc0;
+  --home-line: #ffffff12;
+  --home-accent: #bbddc9;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  font-family: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app--home button, .app--home a { touch-action: manipulation; }
+.app--home button { font: inherit; }
+.app--home button:focus-visible, .app--home a:focus-visible, .app--home [tabindex]:focus-visible {
+  outline: 2px solid var(--home-accent);
+  outline-offset: 5px;
+}
+.app--home .weather-icon { width: 20px; height: 20px; flex-shrink: 0; }
+.app--home .home-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 105px; }
+.app--home .home-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-size: 20px; font-weight: 600; letter-spacing: -.6px; line-height: 1.3; }
+.app--home .brand-mark { display: grid; place-items: center; height: 43px; width: 43px; background: #bbddc90c; color: var(--home-accent); border: 1px solid #bbddc930; border-radius: 14px; }
+.app--home .brand-mark .weather-icon { width: 27px; height: 27px; }
+.app--home .brand-subtitle { display: block; margin-top: 4px; font-size: 9px; letter-spacing: 2px; font-weight: 500; color: var(--home-muted); }
+.app--home .home-header-meta { display: flex; gap: 20px; align-items: center; font-size: 12px; }
+.app--home .home-location { display: flex; gap: 7px; align-items: center; color: #c6d2df; }
+.app--home .home-location .weather-icon { width: 15px; height: 15px; color: var(--home-accent); }
+.app--home .home-data-age { color: var(--home-muted); }
+.app--home .home-refresh { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 0 13px; border: 1px solid #ffffff1f; border-radius: 9px; color: #d8e1eb; background: #ffffff04; cursor: pointer; font-size: 12px; }
+.app--home .home-refresh .weather-icon { width: 15px; height: 15px; }
+.app--home .home-refresh:hover:not(:disabled) { background: #ffffff0c; }
+.app--home .home-refresh:disabled { opacity: .6; cursor: wait; }
+.app--home .nav { display: flex; gap: 25px; align-items: center; border-bottom: 1px solid var(--home-line); overflow-x: auto; scrollbar-width: none; }
+.app--home .nav::-webkit-scrollbar { display: none; }
+.app--home .nav-tab { position: relative; min-height: 51px; flex-shrink: 0; padding: 0 5px; background: none; border: 0; color: var(--home-muted); font-size: 12px; cursor: pointer; }
+.app--home .nav-tab:hover { color: #edf4f9; }
+.app--home .nav-tab.active { color: var(--home-accent); font-weight: 600; }
+.app--home .nav-tab.active::after { content: ''; position: absolute; bottom: 0; height: 2px; border-radius: 2px; background: var(--home-accent); left: 4px; right: 4px; }
+.app--home .nav-separator { display: none; }
+.app--home .app-main { padding: 34px 0 20px; }
+.app--home .forecast-intro { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 26px; }
+.app--home .eyebrow { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.6px; color: var(--home-muted); }
+.app--home .forecast-intro .eyebrow { color: var(--home-accent); margin-bottom: 7px; }
+.app--home .forecast-intro h1 { font-size: clamp(26px, 3vw, 32px); line-height: 1.25; letter-spacing: -1.1px; font-weight: 500; margin-bottom: 7px; }
+.app--home .forecast-intro p:last-child { color: var(--home-muted); font-size: 12px; }
+.app--home .forecast-today { display: flex; align-items: center; gap: 9px; font-size: 11px; color: var(--home-muted); white-space: nowrap; }
+.app--home .forecast-today .weather-icon { width: 16px; height: 16px; }
+.app--home .forecast-overview { display: grid; grid-template-columns: 1.75fr 1fr; gap: 20px; margin-bottom: 32px; }
+.app--home .outlook-card { position: relative; min-width: 0; padding: 25px 28px 0; border-radius: 20px; background: radial-gradient(ellipse at 80% 10%, #45627a55, transparent 65%), linear-gradient(120deg, #21354c, #1a2b40 65%, #253d50); border: 1px solid #8bb3d625; overflow: hidden; }
+.app--home .outlook-topline { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.app--home .outlook-topline .eyebrow { color: #cfdeec; }
+.app--home .outlook-date { font-size: 11px; color: #afc1d2; }
+.app--home .outlook-main { position: relative; display: flex; align-items: center; min-height: 228px; }
+.app--home .outlook-weather { z-index: 1; padding: 16px 0 23px; }
+.app--home .daily-high-label { font-size: 10px; color: #b2c6d9; }
+.app--home .outlook-temperature { font-size: 84px; font-weight: 300; line-height: 1.1; letter-spacing: -6px; margin: 3px 0 9px; font-variant-numeric: tabular-nums; }
+.app--home .outlook-temperature > span { font-size: 34px; vertical-align: top; display: inline-block; margin: 12px 0 0 5px; letter-spacing: -2px; color: #c9d8e6; }
+.app--home .outlook-weather h2 { font-size: 20px; font-weight: 500; letter-spacing: -.3px; margin-bottom: 4px; }
+.app--home .outlook-weather p { font-size: 11px; color: #afc1d2; }
+.app--home .sky-illustration { position: absolute; width: 56%; height: auto; right: -8px; top: 0; pointer-events: none; }
+.app--home .outlook-card--pending .sky-illustration { opacity: .25; }
+.app--home .outlook-stats { border-top: 1px solid #ffffff15; display: grid; grid-template-columns: repeat(3, 1fr); padding: 19px 0 21px; gap: 10px; }
+.app--home .outlook-stats > div { display: flex; gap: 9px; align-items: center; }
+.app--home .outlook-stats .weather-icon { color: #a6c6de; width: 22px; height: 22px; }
+.app--home .outlook-stats span { font-size: 9px; color: #afc1d2; }
+.app--home .outlook-stats strong { display: block; font-size: 17px; font-weight: 500; color: #edf4fa; margin-top: 2px; }
+.app--home .outlook-stats small { font-size: 10px; color: #afc1d2; font-weight: 400; }
+.app--home .week-briefing { display: flex; flex-direction: column; padding: 25px 28px; border: 1px solid #bbddc919; border-radius: 20px; background: radial-gradient(ellipse at 100% 0%, #b5d2bf0b, transparent 80%), #172320; }
+.app--home .briefing-heading { display: flex; align-items: center; gap: 9px; margin-bottom: 20px; }
+.app--home .briefing-heading .eyebrow { font-size: 8px; color: #b4cdbf; }
+.app--home .briefing-icon { display: grid; place-items: center; width: 27px; height: 27px; border: 1px solid #bbddc928; border-radius: 8px; color: var(--home-accent); }
+.app--home .briefing-icon .weather-icon { width: 16px; height: 16px; }
+.app--home .week-briefing h2 { font-size: 26px; font-weight: 400; letter-spacing: -.7px; line-height: 1.25; margin-bottom: 13px; color: #e0ece5; }
+.app--home .week-briefing > p { font-size: 12px; color: #a7bcb0; line-height: 1.8; }
+.app--home .briefing-source { display: flex; gap: 7px; align-items: center; color: #b4cdbf; font-size: 9px; padding-top: 18px; margin-top: auto; }
+.app--home .status-dot { display: inline-block; height: 5px; width: 5px; flex-shrink: 0; border-radius: 50%; background: var(--home-accent); }
+.app--home .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+.app--home .section-heading h2 { font-weight: 500; font-size: 18px; letter-spacing: -.4px; }
+.app--home .section-heading > span { display: flex; gap: 7px; align-items: center; color: var(--home-muted); font-size: 10px; }
+.app--home .section-heading > span > .weather-icon { width: 14px; height: 14px; }
+.app--home .mobile-hint { display: none; }
+.app--home .day-cards { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin-bottom: 30px; }
+.app--home .day-card { display: flex; align-items: center; flex-direction: column; padding: 18px 6px 16px; background: #172332; border: 1px solid #ffffff09; border-radius: 13px; color: #e7eef5; cursor: pointer; min-width: 0; transition: border-color .18s, background .18s, transform .18s; }
+.app--home .day-card:hover { background: #203144; border-color: #bbddc950; }
+.app--home .day-card--selected { background: #25382f; border-color: #b6d6c2; }
+.app--home .day-card--selected:hover { background: #2b4035; border-color: #b6d6c2; }
+.app--home .day-name { font-size: 12px; font-weight: 600; }
+.app--home .day-card--selected .day-name { color: #c7e5d2; }
+.app--home .day-date { font-size: 9px; color: var(--home-muted); margin-top: 3px; }
+.app--home .day-weather-icon { width: 35px; height: 35px; margin: 19px 0 12px; color: #efce89; stroke-width: 1.2; }
+.app--home .icon-sun { color: #efce89; }
+.app--home .icon-cloud { color: #d2e1ed; }
+.app--home .icon-rain { color: #8cbfe1; }
+.app--home .day-card-condition { font-size: 9px; color: #b6c4d2; min-height: 30px; max-width: 95px; }
+.app--home .day-card-temps { display: flex; gap: 8px; align-items: baseline; margin: 6px 0 13px; }
+.app--home .day-card-temps strong { font-size: 23px; font-weight: 500; letter-spacing: -1px; }
+.app--home .day-card-temps > span { font-size: 15px; color: var(--home-muted); }
+.app--home .day-card-rain, .app--home .day-card-wind { display: flex; align-items: center; gap: 5px; font-size: 9px; color: #9daec0; line-height: 1.8; }
+.app--home .day-card-rain .weather-icon, .app--home .day-card-wind .weather-icon { width: 11px; height: 11px; }
+.app--home .day-card-rain { color: #a8c9e1; }
+.app--home .hourly-section { background: #15212f; border: 1px solid var(--home-line); border-radius: 16px; padding: 23px 24px 15px; }
+.app--home .hourly-section .eyebrow { font-size: 8px; margin-bottom: 5px; }
+.app--home .hourly-section .section-heading { margin-bottom: 22px; }
+.app--home .hourly-scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: #3a4b60 transparent; }
+.app--home .hourly-grid { display: grid; grid-template-columns: repeat(8, minmax(70px, 1fr)); }
+.app--home .hourly-item { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 4px 10px; border-right: 1px solid var(--home-line); }
+.app--home .hourly-item:last-child { border: 0; }
+.app--home .hourly-time { color: var(--home-muted); font-size: 10px; }
+.app--home .hourly-item strong { font-size: 24px; letter-spacing: -.6px; font-weight: 400; }
+.app--home .hourly-rain { display: flex; align-items: center; gap: 4px; color: #9cbdd6; font-size: 9px; white-space: nowrap; }
+.app--home .hourly-rain .weather-icon { width: 11px; height: 11px; }
+.app--home .hourly-caption { font-size: 9px; color: var(--home-muted); margin-top: 23px; border-top: 1px solid var(--home-line); padding-top: 12px; }
+.app--home .forecast-note { display: flex; justify-content: center; align-items: baseline; gap: 7px; color: var(--home-muted); text-align: center; font-size: 10px; margin: 21px 0 10px; line-height: 1.8; }
+.app--home .note-mark { display: inline-flex; align-items: center; justify-content: center; font-size: 8px; border: 1px solid #8294a6; border-radius: 50%; width: 12px; height: 12px; flex-shrink: 0; }
+.app--home .app-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--home-line); padding: 21px 0 25px; color: #94a6b9; font-size: 9px; }
+.app--home .footer-local { display: flex; align-items: center; gap: 6px; }
+.app--home .footer-local .weather-icon { width: 12px; height: 12px; }
+.app--home .app-footer a { color: #b9cfdf; text-underline-offset: 3px; }
+.app--home .forecast-status { display: flex; align-items: center; gap: 9px; background: #bbddc908; border: 1px solid #bbddc91c; padding: 12px 16px; border-radius: 10px; margin-bottom: 18px; font-size: 12px; color: #bdcfc4; }
+.app--home .forecast-warning { --warning-border: #e9b65b66; --warning-background: #30291e; --warning-text: #f5d69b; --warning-icon: #efbd66; --warning-strong: #ffe7bc; display: flex; align-items: flex-start; gap: 12px; padding: 16px; margin-bottom: 22px; border: 1px solid var(--warning-border); border-radius: 13px; background: var(--warning-background); color: var(--warning-text); }
+.app--home .snow-warning { --warning-border: #9bc9ec; --warning-background: #dceefd; --warning-text: #22475f; --warning-icon: #356e96; --warning-strong: #15374e; }
+.app--home .forecast-warning > .weather-icon { margin-top: 2px; color: var(--warning-icon); }
+.app--home .forecast-warning > div { min-width: 0; }
+.app--home .forecast-warning h2 { font-size: 15px; font-weight: 600; }
+.app--home .forecast-warning p { font-size: 12px; margin-top: 3px; }
+.app--home .forecast-warning ul { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; list-style: none; font-size: 12px; }
+.app--home .forecast-warning strong { font-weight: 600; color: var(--warning-strong); }
+.app--home .loading-bar { height: 24px; position: relative; margin-top: 6px; background: #172533; border-radius: 5px; overflow: hidden; }
+.app--home .loading-bar-fill { background: #bbddc91b; height: 100%; transition: width .3s; }
+.app--home .loading-bar-text { position: absolute; inset: 0; display: grid; place-items: center; color: var(--home-muted); font-size: 9px; }
+.app--home .error-banner { margin-top: 12px; padding: 10px 14px; background: #502e35; color: #f1c4ca; border-radius: 8px; font-size: 12px; }
+
+@media (max-width: 1000px) {
+  .app--home { padding: 0 24px; }
+  .app--home .home-location { display: none; }
+  .app--home .forecast-overview { grid-template-columns: 1.5fr 1fr; gap: 16px; }
+  .app--home .outlook-card { padding: 22px 22px 0; }
+  .app--home .week-briefing { padding: 22px; }
+  .app--home .outlook-stats > div { gap: 5px; }
+  .app--home .outlook-stats .weather-icon { width: 18px; height: 18px; }
+  .app--home .sky-illustration { width: 65%; right: -28px; top: 14px; }
+  .app--home .forecast-today { display: none; }
+}
+
+@media (max-width: 700px) {
+  .app--home { padding: 0 20px; }
+  .app--home .home-header { min-height: 84px; gap: 10px; }
+  .app--home .home-brand { gap: 9px; font-size: 18px; }
+  .app--home .brand-mark { width: 35px; height: 35px; border-radius: 11px; }
+  .app--home .brand-mark .weather-icon { width: 23px; height: 23px; }
+  .app--home .brand-subtitle { font-size: 7px; letter-spacing: 1.8px; margin-top: 3px; }
+  .app--home .home-header-meta { gap: 0; }
+  .app--home .home-data-age { display: none; }
+  .app--home .home-refresh { height: 44px; min-width: 44px; padding: 0 10px; font-size: 10px; border-radius: 12px; gap: 6px; }
+  .app--home .nav { gap: 24px; margin-right: -20px; padding-right: 20px; }
+  .app--home .nav-tab { min-height: 46px; font-size: 12px; padding: 0 2px; }
+  .app--home .nav-tab.active::after { left: 0; right: 0; }
+  .app--home .app-main { padding: 23px 0 0; }
+  .app--home .view-forecast { display: flex; flex-direction: column; }
+  .app--home .forecast-intro { order: 0; margin-bottom: 20px; }
+  .app--home .forecast-intro .eyebrow { font-size: 8px; letter-spacing: 1.4px; margin-bottom: 6px; }
+  .app--home .forecast-intro h1 { font-size: 26px; letter-spacing: -.8px; margin-bottom: 6px; }
+  .app--home .forecast-intro p:last-child { font-size: 12px; max-width: 280px; line-height: 1.7; }
+  .app--home .forecast-status { order: 0; font-size: 11px; }
+  .app--home .forecast-overview { display: contents; }
+  .app--home .outlook-card { order: 1; border-radius: 19px; padding: 20px 21px 0; margin-bottom: 27px; }
+  .app--home .outlook-topline .eyebrow { font-size: 8px; letter-spacing: 1.5px; }
+  .app--home .outlook-date { font-size: 10px; }
+  .app--home .outlook-main { min-height: 215px; }
+  .app--home .outlook-temperature { font-size: 79px; }
+  .app--home .outlook-temperature > span { font-size: 29px; }
+  .app--home .outlook-weather { padding: 15px 0 20px; }
+  .app--home .outlook-weather h2 { font-size: 19px; }
+  .app--home .outlook-weather p { font-size: 10px; }
+  .app--home .sky-illustration { width: 70%; top: 12px; right: -33px; }
+  .app--home .outlook-stats { padding: 16px 0 18px; gap: 8px; }
+  .app--home .outlook-stats > div { gap: 7px; align-items: flex-start; }
+  .app--home .outlook-stats .weather-icon { width: 17px; height: 17px; margin-top: 2px; }
+  .app--home .outlook-stats span { font-size: 10px; }
+  .app--home .outlook-stats strong { font-size: 18px; }
+  .app--home .outlook-stats small { font-size: 10px; }
+  .app--home .weekly-section { order: 2; }
+  .app--home .section-heading { margin-bottom: 14px; }
+  .app--home .section-heading h2 { font-size: 17px; }
+  .app--home .section-heading > span { font-size: 10px; gap: 4px; }
+  .app--home .desktop-hint { display: none; }
+  .app--home .mobile-hint { display: inline; }
+  .app--home .day-cards { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 32px) / 3); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; gap: 10px; margin-right: -20px; margin-left: -2px; padding: 2px 20px 6px 2px; margin-bottom: 23px; scrollbar-width: none; }
+  .app--home .day-cards::-webkit-scrollbar { display: none; }
+  .app--home .day-card { scroll-snap-align: start; padding: 15px 5px; border-radius: 13px; }
+  .app--home .day-name { font-size: 12px; }
+  .app--home .day-date { font-size: 10px; }
+  .app--home .day-weather-icon { margin: 17px 0 11px; width: 32px; height: 32px; }
+  .app--home .day-card-condition { font-size: 11px; min-height: 33px; }
+  .app--home .day-card-temps { margin: 4px 0 10px; }
+  .app--home .day-card-temps strong { font-size: 24px; }
+  .app--home .day-card-rain, .app--home .day-card-wind { font-size: 11px; }
+  .app--home .hourly-section { order: 3; padding: 19px 17px 13px; border-radius: 16px; margin-bottom: 22px; }
+  .app--home .hourly-section .section-heading { align-items: flex-end; }
+  .app--home .hourly-section .section-heading h2 { font-size: 16px; }
+  .app--home .hourly-section .section-heading > span { font-size: 10px; white-space: nowrap; padding-bottom: 2px; }
+  .app--home .hourly-scroll { margin-right: -17px; padding-bottom: 9px; }
+  .app--home .hourly-grid { grid-template-columns: repeat(8, 75px); padding-right: 17px; width: max-content; }
+  .app--home .hourly-item { gap: 13px; }
+  .app--home .hourly-item strong { font-size: 24px; }
+  .app--home .hourly-time { font-size: 11px; }
+  .app--home .hourly-rain { font-size: 10px; }
+  .app--home .hourly-caption { margin-top: 10px; font-size: 10px; line-height: 1.7; }
+  .app--home .week-briefing { order: 4; padding: 22px; border-radius: 16px; }
+  .app--home .briefing-heading { margin-bottom: 13px; }
+  .app--home .week-briefing h2 { font-size: 23px; margin-bottom: 11px; }
+  .app--home .week-briefing h2 br { display: none; }
+  .app--home .week-briefing > p { font-size: 12px; }
+  .app--home .briefing-source { font-size: 11px; }
+  .app--home .forecast-note { order: 5; font-size: 11px; text-align: left; margin: 20px 0 23px; }
+  .app--home .app-footer { flex-direction: column; align-items: center; gap: 9px; padding: 20px 0 25px; font-size: 10px; }
+}
+
+@media (max-width: 359px) {
+  .app--home { padding: 0 16px; }
+  .app--home .home-refresh > span { display: none; }
+  .app--home .forecast-intro h1 { font-size: 23px; }
+  .app--home .outlook-card { padding: 18px 17px 0; }
+  .app--home .outlook-stats { gap: 5px; }
+  .app--home .outlook-stats > div { gap: 4px; }
+  .app--home .sky-illustration { right: -35px; top: 20px; }
+}

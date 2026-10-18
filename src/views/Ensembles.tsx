@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { EnsembleData } from '../types';
 import type { VariableId } from '../config/models';
-import { ENSEMBLE_MODELS, VARIABLES } from '../config/models';
+import { ENSEMBLE_MODELS } from '../config/models';
 import { ensembleExceedance } from '../metrics/ensemble';
 import { VariableSelector } from '../components/VariableSelector';
 import { toLocalTime, timeAgo } from '../hooks/useLocalTime';
@@ -60,7 +60,6 @@ export function Ensembles({ ensembles }: Props) {
           // For temperature/pressure events with '<', we need to flip the comparison
           if (event.label.startsWith('<')) {
             // Count members BELOW threshold
-            const result = ensembleExceedance(ens, w, -event.threshold, variable, event.mode);
             // Actually, let's use the raw data differently
             // We need a custom check. For now, use exceedance as >threshold
             // and handle < separately

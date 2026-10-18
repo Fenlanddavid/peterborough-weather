@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import type { CachedRun } from '../types';
-import type { VariableId } from '../config/models';
 import { DETERMINISTIC_MODELS, VARIABLES } from '../config/models';
-import { getModelRuns, getValueAtTime, sortByRunTime } from '../metrics/utils';
+import { getModelRuns, getValueAtTime } from '../metrics/utils';
 import { calcChange } from '../metrics/metrics';
 import { generateHeadlines } from '../commentary/commentary';
 import { toLocalTime } from '../hooks/useLocalTime';
