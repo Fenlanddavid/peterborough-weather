@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 interface NavProps {
   active: string;
   onNavigate: (view: string) => void;
@@ -7,6 +9,7 @@ const primaryTab = { id: 'forecast', label: 'Forecast' };
 
 const technicalTabs = [
   { id: 'summary', label: 'Summary' },
+  { id: 'nightsky', label: 'Night Sky' },
   { id: 'trends', label: 'Trends' },
   { id: 'models', label: 'Models' },
   { id: 'ensembles', label: 'Ensembles' },
@@ -14,8 +17,19 @@ const technicalTabs = [
 ];
 
 export function Nav({ active, onNavigate }: NavProps) {
+  const nav = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const selected = nav.current?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (selected && nav.current) {
+      const bounds = nav.current.getBoundingClientRect();
+      const tab = selected.getBoundingClientRect();
+      if (tab.left < bounds.left || tab.right > bounds.right) {
+        nav.current.scrollLeft += tab.left < bounds.left ? tab.left - bounds.left : tab.right - bounds.right;
+      }
+    }
+  }, [active]);
   return (
-    <nav className="nav" aria-label="Main navigation">
+    <nav className="nav" aria-label="Main navigation" ref={nav}>
       <button
         className={`nav-tab nav-tab-primary ${active === primaryTab.id ? 'active' : ''}`}
         aria-current={active === primaryTab.id ? 'page' : undefined}

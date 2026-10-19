@@ -1,4 +1,4 @@
-export type IconName = 'sun' | 'moon' | 'cloud' | 'partly-cloudy' | 'cloud-moon' | 'fog' | 'storm' | 'rain' | 'showers' | 'wind' | 'snow' | 'drop' | 'arrow' | 'refresh' | 'pin' | 'calendar';
+export type IconName = 'sun' | 'moon' | 'cloud' | 'partly-cloudy' | 'cloud-moon' | 'fog' | 'storm' | 'rain' | 'showers' | 'wind' | 'snow' | 'drop' | 'arrow' | 'refresh' | 'pin' | 'calendar' | 'star' | 'eye' | 'telescope';
 
 export function WeatherIcon({ name, className = '' }: { name: IconName; className?: string }) {
   const sun = <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></>;
@@ -24,6 +24,9 @@ export function WeatherIcon({ name, className = '' }: { name: IconName; classNam
       {name === 'refresh' && <><path d="M20 7v5h-5M4 17v-5h5" /><path d="M6.1 6a8 8 0 0 1 13 3L20 12M4 12l.9 3a8 8 0 0 0 13 3" /></>}
       {name === 'pin' && <><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" /><circle cx="12" cy="10" r="2.5" /></>}
       {name === 'calendar' && <><rect x="4" y="5" width="16" height="16" rx="3" /><path d="M8 3v4m8-4v4M4 11h16m-12 4h2m4 0h2" /></>}
+      {name === 'star' && <path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.27 5.82 21 7 14.14l-5-4.87 6.91-1.01Z" />}
+      {name === 'eye' && <><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></>}
+      {name === 'telescope' && <><path d="m21 3-6.5 12M7 15l2-4m-5 7 4-8m4 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-4 8v-6l4-2v6" /></>}
     </svg>
   );
 }

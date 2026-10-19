@@ -2,10 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 import type { CachedRun, EnsembleData } from '../types';
 import { fetchAllDeterministicRuns, fetchEnsembles } from '../api/fetch';
 import { getAllCachedRuns, getAllEnsembles } from '../api/db';
+import { fetchReferenceForecast, type ReferenceForecast } from '../api/reference';
 
 interface WeatherDataState {
   runs: CachedRun[];
   ensembles: EnsembleData[];
+  reference: ReferenceForecast | null;
   loading: boolean;
   progress: { done: number; total: number; phase: string } | null;
   lastUpdated: number | null;
@@ -16,6 +18,7 @@ export function useWeatherData() {
   const [state, setState] = useState<WeatherDataState>({
     runs: [],
     ensembles: [],
+    reference: null,
     loading: true,
     progress: null,
     lastUpdated: null,
@@ -43,10 +46,14 @@ export function useWeatherData() {
         setState((s) => ({ ...s, progress: { done, total, phase: 'Fetching model runs' } }));
       });
 
-      // Fetch ensemble snapshots
-      await fetchEnsembles((done, total) => {
-        setState((s) => ({ ...s, progress: { done, total, phase: 'Fetching ensembles' } }));
-      });
+      // Fetch ensemble snapshots and reference forecast in parallel
+      const [, , ref] = await Promise.all([
+        fetchEnsembles((done, total) => {
+          setState((s) => ({ ...s, progress: { done, total, phase: 'Fetching ensembles' } }));
+        }),
+        Promise.resolve(), // placeholder for parallel slot
+        fetchReferenceForecast(),
+      ]);
 
       // Reload from DB
       const allRuns = await getAllCachedRuns();
@@ -55,6 +62,7 @@ export function useWeatherData() {
       setState({
         runs: allRuns,
         ensembles: allEnsembles,
+        reference: ref,
         loading: false,
         progress: null,
         lastUpdated: Date.now(),

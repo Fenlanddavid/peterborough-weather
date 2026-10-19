@@ -50,38 +50,42 @@ export function About({ runs, ensembles, lastUpdated }: Props) {
 
       <div className="about-section">
         <h4>Deterministic Models</h4>
-        <table className="about-table">
-          <thead>
-            <tr><th>Model</th><th>Latest Run</th><th>Cached Runs</th></tr>
-          </thead>
-          <tbody>
-            {modelStatus.map(({ model, latestRun, runCount }) => (
-              <tr key={model.id}>
-                <td style={{ color: model.colour }}>{model.label}</td>
-                <td>{latestRun ? toLocalTime(latestRun, 'short') : 'No data'}</td>
-                <td>{runCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="table-scroll" tabIndex={0} role="region" aria-label="Deterministic models, scroll for more">
+          <table className="about-table">
+            <thead>
+              <tr><th>Model</th><th>Latest Run</th><th>Cached Runs</th></tr>
+            </thead>
+            <tbody>
+              {modelStatus.map(({ model, latestRun, runCount }) => (
+                <tr key={model.id}>
+                  <td style={{ color: model.colour }}>{model.label}</td>
+                  <td>{latestRun ? toLocalTime(latestRun, 'short') : 'No data'}</td>
+                  <td>{runCount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="about-section">
         <h4>Ensemble Models</h4>
-        <table className="about-table">
-          <thead>
-            <tr><th>Model</th><th>Members</th><th>Last Fetch</th></tr>
-          </thead>
-          <tbody>
-            {ensembleStatus.map(({ model, fetchedAt }) => (
-              <tr key={model.id}>
-                <td style={{ color: model.colour }}>{model.label}</td>
-                <td>{model.members}</td>
-                <td>{fetchedAt ? timeAgo(fetchedAt) : 'No data'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="table-scroll" tabIndex={0} role="region" aria-label="Ensemble models, scroll for more">
+          <table className="about-table">
+            <thead>
+              <tr><th>Model</th><th>Members</th><th>Last Fetch</th></tr>
+            </thead>
+            <tbody>
+              {ensembleStatus.map(({ model, fetchedAt }) => (
+                <tr key={model.id}>
+                  <td style={{ color: model.colour }}>{model.label}</td>
+                  <td>{model.members}</td>
+                  <td>{fetchedAt ? timeAgo(fetchedAt) : 'No data'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="about-section">

@@ -1,4 +1,4 @@
-/* The forecast home has its own visual theme; other views retain their styles. */
+/* Shared shell for the forecast, detailed briefing and night sky views. */
 body:has(.app--home) {
   background: #0e1724;
   color: #e9eff5;
@@ -364,6 +364,8 @@ body:has(.app--home) {
 
 @media (max-width: 359px) {
   .app--home { padding: 0 16px; }
+  .app--home .nav { margin-right: -16px; padding-right: 16px; }
+  .app--home .day-cards { margin-right: -16px; padding-right: 16px; }
   .app--home .home-refresh > span { display: none; }
   .app--home .forecast-intro h1 { font-size: 23px; }
   .app--home .outlook-card { padding: 18px 17px 0; }
