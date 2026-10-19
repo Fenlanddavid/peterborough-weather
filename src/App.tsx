@@ -6,10 +6,8 @@ import { Forecast } from './views/Forecast';
 import { Summary } from './views/Summary';
 import { NightSky } from './views/NightSky';
 import { Trends } from './views/Trends';
-import { Models } from './views/Models';
-import { Ensembles } from './views/Ensembles';
+import { Seasonal } from './views/Seasonal';
 import { Teleconnections } from './views/Teleconnections';
-import { About } from './views/About';
 import { useWeatherData } from './hooks/useWeatherData';
 import { timeAgo } from './hooks/useLocalTime';
 import { LOCATION } from './config/models';
@@ -17,14 +15,15 @@ import { WeatherIcon } from './components/WeatherIcon';
 import './App.css';
 import './Home.css';
 import './views/NightSky.css';
+import './views/Seasonal.css';
 
 function App() {
   const [view, setView] = useState('forecast');
-  const isOverview = ['forecast', 'summary', 'nightsky'].includes(view);
-  const { runs, ensembles, reference, loading, progress, lastUpdated, error, refresh } = useWeatherData();
+  const isOverview = ['forecast', 'summary', 'nightsky', 'seasonal'].includes(view);
+  const { runs, reference, loading, progress, lastUpdated, error, refresh } = useWeatherData();
 
   return (
-    <div className={`app ${isOverview ? 'app--home' : ''} ${view === 'nightsky' ? 'app--nightsky' : ''}`}>
+    <div className={`app ${isOverview ? 'app--home' : ''} ${view === 'nightsky' ? 'app--nightsky' : view === 'seasonal' ? 'app--seasonal' : ''}`}>
       {isOverview ? <header className="home-header">
         <a className="home-brand" href="#" aria-label="Peterborough Weather home" onClick={(event) => { event.preventDefault(); setView('forecast'); }}>
           <span className="brand-mark"><WeatherIcon name="sun" /></span>
@@ -57,10 +56,8 @@ function App() {
         {view === 'summary' && <Summary runs={runs} loading={loading} hasError={!!error} />}
         {view === 'nightsky' && <NightSky runs={runs} loading={loading} hasError={!!error} />}
         {view === 'trends' && <Trends runs={runs} />}
-        {view === 'models' && <Models runs={runs} />}
-        {view === 'ensembles' && <Ensembles ensembles={ensembles} />}
+        {view === 'seasonal' && <Seasonal />}
         {view === 'teleconnections' && <Teleconnections />}
-        {view === 'about' && <About runs={runs} ensembles={ensembles} lastUpdated={lastUpdated} />}
       </main>
 
       <footer className="app-footer">

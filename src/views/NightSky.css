@@ -90,6 +90,60 @@
 .nightsky-hour-rain, .nightsky-hour-wind { display: flex; align-items: center; gap: 4px; color: #adbed5; font-size: 10px; white-space: nowrap; }
 .nightsky-hour-rain .weather-icon, .nightsky-hour-wind .weather-icon { width: 11px; height: 11px; }
 .nightsky-hourly-caption { font-size: 11px; color: var(--ns-muted); margin-top: 12px; line-height: 1.8; }
+/* Events section */
+.nightsky-events { margin-bottom: 28px; }
+.nightsky-showers { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 16px; }
+.nightsky-shower { border: 1px solid var(--ns-line); border-radius: 14px; background: #172332; padding: 18px 20px 16px; }
+.nightsky-shower.is-peak { border-color: #eed49d50; background: linear-gradient(135deg, #1e2538, #252233); }
+.nightsky-shower-header { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 12px; }
+.nightsky-shower-header .weather-icon { width: 22px; height: 22px; color: var(--ns-accent); margin-top: 1px; flex-shrink: 0; }
+.nightsky-shower-header strong { display: block; color: #e9ecf5; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.nightsky-shower-status { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 5px; }
+.nightsky-shower-status--peak-tonight { background: #eed49d20; color: #eed49d; }
+.nightsky-shower-status--peak-approaching { background: #b5dacd18; color: #b5dacd; }
+.nightsky-shower-status--active-now { background: #c8c2ec15; color: var(--ns-accent); }
+.nightsky-shower-status--coming-soon { background: #a6b2c510; color: var(--ns-muted); }
+.nightsky-shower-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 11px; color: var(--ns-muted); margin-bottom: 10px; }
+.nightsky-shower-meta .weather-icon { width: 12px; height: 12px; }
+.nightsky-shower-meta > span { display: flex; align-items: center; gap: 4px; }
+.nightsky-shower-tip { font-size: 12px; color: #c3cadd; line-height: 1.75; }
+.nightsky-shower-parent { font-size: 11px; color: var(--ns-muted); margin-top: 8px; opacity: .7; }
+.nightsky-sky-events { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.nightsky-sky-event { display: grid; grid-template-columns: auto 1fr; gap: 4px 11px; align-items: start; border: 1px solid var(--ns-line); border-radius: 12px; background: #172332; padding: 15px 18px; }
+.nightsky-sky-event .weather-icon { width: 18px; height: 18px; color: #e7ce92; margin-top: 1px; grid-row: span 2; }
+.nightsky-sky-event strong { color: #e4e8f3; font-size: 13px; }
+.nightsky-event-date { color: var(--ns-muted); font-size: 11px; margin-left: 8px; }
+.nightsky-sky-event p { grid-column: 2; font-size: 12px; color: #bac5d6; line-height: 1.7; margin-top: 2px; }
+
+/* Aurora section */
+.nightsky-aurora { margin-bottom: 24px; }
+.nightsky-aurora-status { color: var(--ns-muted); font-size: 13px; }
+.nightsky-aurora-summary { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: start; margin-bottom: 20px; }
+.nightsky-aurora-kp { display: flex; flex-direction: column; align-items: center; min-width: 90px; padding: 18px 16px; border: 1px solid var(--ns-line); border-radius: 14px; background: #172332; }
+.nightsky-kp-value { font-size: 36px; font-weight: 300; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.nightsky-kp-label { font-size: 11px; color: var(--ns-muted); margin-top: 6px; }
+.nightsky-kp-level { font-size: 11px; color: #bac5d6; margin-top: 3px; }
+.nightsky-aurora-assessment { padding-top: 4px; }
+.nightsky-aurora-visibility { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 500; color: #e4e8f3; margin-bottom: 10px; }
+.nightsky-aurora-visibility .weather-icon { width: 22px; height: 22px; }
+.nightsky-aurora-visibility--none-expected .weather-icon { color: var(--ns-muted); }
+.nightsky-aurora-visibility--unlikely .weather-icon { color: #a6b2c5; }
+.nightsky-aurora-visibility--possible .weather-icon { color: #eed49d; }
+.nightsky-aurora-visibility--good-chance .weather-icon { color: #7ce8a0; }
+.nightsky-aurora-visibility--strong-display-likely .weather-icon { color: #ef6b73; }
+.nightsky-aurora-assessment p { font-size: 13px; color: #c3cadd; line-height: 1.8; }
+
+/* Kp forecast bars */
+.nightsky-kp-forecast { margin-bottom: 16px; }
+.nightsky-kp-forecast-label { font-size: 11px; color: var(--ns-muted); margin-bottom: 10px; }
+.nightsky-kp-bars { display: flex; align-items: flex-end; gap: 2px; height: 80px; padding: 0 2px; }
+.nightsky-kp-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; min-width: 0; }
+.nightsky-kp-bar { width: 100%; min-width: 3px; max-width: 18px; border-radius: 3px 3px 0 0; transition: height .3s; position: relative; }
+.nightsky-kp-bar-value { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 9px; color: #e9ecf5; font-weight: 600; }
+.nightsky-kp-bar-time { font-size: 9px; color: var(--ns-muted); margin-top: 5px; white-space: nowrap; }
+.nightsky-kp-scale { display: flex; justify-content: space-between; font-size: 10px; color: var(--ns-muted); margin-top: 6px; padding: 0 2px; }
+.nightsky-aurora-note { font-size: 11px; color: var(--ns-muted); line-height: 1.7; }
+
 .nightsky-method { margin-top: 20px; border-top: 1px solid var(--ns-line); color: var(--ns-muted); font-size: 12px; }
 .nightsky-method summary { display: flex; gap: 8px; align-items: center; min-height: 52px; padding: 10px 4px; cursor: pointer; list-style: none; }
 .nightsky-method summary::-webkit-details-marker { display: none; }
@@ -109,6 +163,11 @@
   .nightsky-constellation { opacity: .3; width: 45%; right: -50px; }
 }
 @media (max-width: 700px) {
+  .nightsky-showers { grid-template-columns: 1fr; }
+  .nightsky-sky-events { grid-template-columns: 1fr; }
+  .nightsky-aurora-summary { grid-template-columns: 1fr; }
+  .nightsky-aurora-kp { flex-direction: row; gap: 14px; min-width: 0; }
+  .nightsky-kp-bars { height: 60px; }
   .nightsky-intro { margin-bottom: 22px; }
   .nightsky-intro h1 { font-size: 29px; }
   .nightsky-intro p:last-child { font-size: 12px; }
@@ -143,4 +202,47 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .nightsky-best-link, .app--home .nightsky-night-picker { transition: none; }
+}
+
+/* Keep the longer observing guide easy to scan and navigate. */
+.nightsky-section-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: -7px 0 25px; }
+.nightsky-section-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 13px; border: 1px solid var(--ns-line); border-radius: 8px; color: #c3cadd; text-decoration: none; font-size: 12px; background: #172332; }
+.nightsky-section-nav a:hover { color: #f0eafa; border-color: #c8c2ec70; background: #222f44; }
+.view-nightsky h2[id] { scroll-margin-top: 24px; }
+.app--home .nightsky-moon-day { border: 1px solid transparent; color: inherit; font: inherit; background: none; cursor: pointer; }
+.app--home .nightsky-moon-day:hover { background: #c8c2ec0d; }
+.app--home .nightsky-moon-day.is-selected { border-color: #c8c2ec40; background: #c8c2ec0d; }
+.nightsky-detail { margin-bottom: 32px; }
+.nightsky-events { margin-bottom: 32px; }
+.nightsky-shower-parent { opacity: 1; }
+.nightsky-aurora { border: 1px solid var(--ns-line); border-radius: 18px; padding: 24px; background: radial-gradient(ellipse at 100% 0, #85c9c10a, transparent 70%), #152131; }
+.nightsky-aurora .nightsky-section-heading { align-items: center; }
+.app--home .nightsky-aurora-refresh { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--ns-line); border-radius: 9px; background: #ffffff04; color: #d1d9e6; cursor: pointer; font-size: 12px; }
+.nightsky-aurora-refresh .weather-icon { width: 15px; height: 15px; }
+.nightsky-aurora-refresh:hover:not(:disabled) { background: #ffffff0c; }
+.nightsky-aurora-refresh:disabled { opacity: .6; cursor: wait; }
+.nightsky-aurora-status { padding: 12px 0; line-height: 1.8; }
+.nightsky-aurora-kp { min-width: 120px; }
+.nightsky-kp-scroll { overflow-x: auto; padding: 8px 5px; margin: 0 -5px; scrollbar-width: thin; scrollbar-color: #4b506d transparent; }
+.nightsky-kp-bars { height: 145px; min-width: 680px; gap: 4px; align-items: stretch; padding: 0; border-bottom: 1px solid var(--ns-line); }
+.nightsky-kp-bar-col { position: relative; justify-content: flex-end; padding-bottom: 38px; border-radius: 5px; }
+.nightsky-kp-bar-col:hover, .nightsky-kp-bar-col:focus-visible { background: #ffffff08; }
+.nightsky-kp-bar { flex-shrink: 0; max-width: 18px; }
+.nightsky-kp-bar-value { top: -20px; font-size: 10px; font-weight: 500; }
+.nightsky-kp-bar-time { position: absolute; bottom: 4px; text-align: center; font-size: 9px; line-height: 1.6; }
+.nightsky-kp-bar-time small { display: block; font-size: 9px; color: #c3cadd; }
+.nightsky-kp-scale { justify-content: flex-start; flex-wrap: wrap; gap: 10px 20px; padding: 0; margin: 14px 0; font-size: 11px; }
+.nightsky-kp-scale span { display: flex; align-items: center; gap: 6px; }
+.nightsky-kp-scale i { display: block; width: 7px; height: 7px; border-radius: 50%; }
+.nightsky-aurora-note a { text-underline-offset: 3px; color: #c8c2ec; }
+@media (max-width: 700px) {
+  .nightsky-aurora { padding: 20px 18px; }
+  .nightsky-aurora-summary { gap: 16px; }
+  .nightsky-aurora-kp { justify-content: flex-start; min-width: 0; }
+  .nightsky-section-nav { gap: 7px; }
+  .nightsky-section-nav a { font-size: 11px; padding: 8px 11px; }
+  .nightsky-moon-day { min-height: 82px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nightsky-kp-bar { transition: none; }
 }

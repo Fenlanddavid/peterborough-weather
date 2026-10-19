@@ -11,8 +11,7 @@ const technicalTabs = [
   { id: 'summary', label: 'Summary' },
   { id: 'nightsky', label: 'Night Sky' },
   { id: 'trends', label: 'Trends' },
-  { id: 'models', label: 'Models' },
-  { id: 'ensembles', label: 'Ensembles' },
+  { id: 'seasonal', label: 'Seasonal' },
   { id: 'teleconnections', label: 'Drivers' },
 ];
 
@@ -51,15 +50,6 @@ export function Nav({ active, onNavigate }: NavProps) {
         </button>
       ))}
 
-      <span className="nav-separator" />
-
-      <button
-        className={`nav-tab nav-tab-secondary ${active === 'about' ? 'active' : ''}`}
-        aria-current={active === 'about' ? 'page' : undefined}
-        onClick={() => onNavigate('about')}
-      >
-        About
-      </button>
     </nav>
   );
 }

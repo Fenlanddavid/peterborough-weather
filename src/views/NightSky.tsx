@@ -1,9 +1,12 @@
-import { useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { CachedRun } from '../types';
 import { DETERMINISTIC_MODELS } from '../config/models';
 import { getModelRuns, getValueAtTime } from '../metrics/utils';
 import { getLocalDate, toLocalTime, useLocalNow } from '../hooks/useLocalTime';
 import { WeatherIcon, type IconName } from '../components/WeatherIcon';
+import { getRelevantShowers, getMonthlyEvents } from '../astro/events';
+import { useAuroraData } from '../hooks/useAuroraData';
+import { kpColour, kpLabel } from '../api/aurora';
 
 interface Props {
   runs: CachedRun[];
@@ -204,6 +207,7 @@ export function NightSky({ runs, loading, hasError }: Props) {
   const today = getLocalDate(now);
   const [selectedDate, setSelectedDate] = useState(today);
   const detail = useRef<HTMLElement>(null);
+  const nightList = useRef<HTMLDivElement>(null);
 
   const nights = useMemo(() => {
     const result: NightForecast[] = [];
@@ -316,11 +320,24 @@ export function NightSky({ runs, loading, hasError }: Props) {
     return result;
   }, [runs, today]);
 
+  const { aurora, loading: auroraLoading, error: auroraError, refresh: refreshAurora } = useAuroraData();
+  const showers = useMemo(() => getRelevantShowers(today), [today]);
+  const skyEvents = useMemo(() => getMonthlyEvents(today), [today]);
+
   const hasData = nights.some((night) => night.forecastHours > 0 || night.hourly.some((hour) => hour.temp !== null));
   // Avoid recommending a night whose missing hours could hide poor conditions.
   const candidates = nights.filter((night) => night.seeingScore !== null && night.forecastHours >= night.hourly.length * .75);
   const bestNight = candidates.reduce<NightForecast | null>((best, night) => !best || night.seeingScore! > best.seeingScore! ? night : best, null);
   const selected = nights.find((night) => night.date === selectedDate) ?? nights[0];
+  useEffect(() => {
+    const list = nightList.current;
+    const picker = list?.querySelector<HTMLElement>('[aria-pressed="true"]');
+    if (!list || !picker) return;
+    const bounds = list.getBoundingClientRect();
+    const chosen = picker.getBoundingClientRect();
+    if (chosen.left < bounds.left) list.scrollLeft += chosen.left - bounds.left - 5;
+    else if (chosen.right > bounds.right) list.scrollLeft += chosen.right - bounds.right + 5;
+  }, [selected.date]);
   const dateLabel = (date: string, month: 'short' | 'long' = 'long') => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month, timeZone: 'Europe/London' });
   const number = (value: number | null) => value === null ? '—' : Math.round(value);
   const showBestNight = () => {
@@ -346,6 +363,7 @@ export function NightSky({ runs, loading, hasError }: Props) {
     </div>}
     {hasData && hasError && <p className="nightsky-status" role="status">The latest refresh failed. Showing the forecast already saved on this device.</p>}
 
+    <nav className="nightsky-section-nav" aria-label="Night sky sections"><a href="#nightsky-nights-title">Seven-night outlook</a><a href="#nightsky-events-title">Sky events</a><a href="#nightsky-aurora-title">Aurora watch</a></nav>
     <div className="nightsky-overview">
       <section className="nightsky-best" aria-labelledby="nightsky-best-title">
         <Constellation />
@@ -377,18 +395,18 @@ export function NightSky({ runs, loading, hasError }: Props) {
         </div>
         <p className="nightsky-moon-tip">{selected.moonIllumination <= 30 ? 'Less moonlight makes fainter stars easier to spot.' : 'Moonlight can soften the view of fainter stars.'}</p>
         <div className="nightsky-moon-track" aria-label="Moon illumination over the next seven nights">
-          {nights.map((night) => <div key={night.date} className={`nightsky-moon-day ${night.date === selected.date ? 'is-selected' : ''}`}>
+          {nights.map((night) => <button type="button" key={night.date} onClick={() => setSelectedDate(night.date)} aria-pressed={night.date === selected.date} aria-controls="nightsky-detail" aria-label={`${night.label}: ${night.moonPhase}, ${night.moonIllumination}% illuminated`} className={`nightsky-moon-day ${night.date === selected.date ? 'is-selected' : ''}`}>
             <MoonDisc illumination={night.moonIllumination} phase={night.moonPhase} />
             <span className="moon-illum">{night.moonIllumination}%</span>
             <span className="moon-date">{night.shortLabel === 'Tonight' ? 'Ton.' : night.shortLabel}</span>
-          </div>)}
+          </button>)}
         </div>
       </aside>
     </div>
 
     <section className="nightsky-week" aria-labelledby="nightsky-nights-title">
       <div className="nightsky-section-heading"><div><p className="nightsky-eyebrow">Find your moment</p><h2 id="nightsky-nights-title">The next seven nights</h2></div><span>Select a night to explore <WeatherIcon name="arrow" /></span></div>
-      <div className="nightsky-night-list" role="group" aria-label="Choose a night">
+      <div className="nightsky-night-list" ref={nightList} role="group" aria-label="Choose a night">
         {nights.map((night) => <button key={night.date} type="button" className={`nightsky-night-picker ${night.date === selected.date ? 'is-selected' : ''}`} aria-pressed={night.date === selected.date} aria-controls="nightsky-detail" onClick={() => setSelectedDate(night.date)}>
           <span className="nightsky-night-name">{night.shortLabel}</span>
           <span className="nightsky-night-date">{dateLabel(night.date, 'short')}</span>
@@ -427,6 +445,74 @@ export function NightSky({ runs, loading, hasError }: Props) {
         </div>)}
       </div>
       <p className="nightsky-hourly-caption">Peterborough local time · Temperatures in °C · Rainfall per hour · Scroll for more hours</p>
+    </section>
+
+    {(showers.length > 0 || skyEvents.length > 0) && <section className="nightsky-events" aria-labelledby="nightsky-events-title">
+      <div className="nightsky-section-heading"><div><p className="nightsky-eyebrow">What's in the sky</p><h2 id="nightsky-events-title">Sky events to look for</h2></div></div>
+      {showers.length > 0 && <div className="nightsky-showers">
+        {showers.map((s) => <div key={s.name} className={`nightsky-shower ${s.isPeak ? 'is-peak' : ''}`}>
+          <div className="nightsky-shower-header">
+            <WeatherIcon name="meteor" />
+            <div>
+              <strong>{s.name}</strong>
+              <span className={`nightsky-shower-status nightsky-shower-status--${s.status.toLowerCase().replace(/\s+/g, '-')}`}>{s.status}</span>
+            </div>
+          </div>
+          <div className="nightsky-shower-meta">
+            <span>Peak: {s.peakLabel}</span>
+            <span>{typeof s.zhr === 'number' ? `Up to ~${s.zhr}/hr in ideal skies` : 'Variable rate'}</span>
+            <span><WeatherIcon name="compass" />{s.radiantDirection}</span>
+          </div>
+          <p className="nightsky-shower-tip">{s.tip}</p>
+          <p className="nightsky-shower-parent">Parent: {s.parent}</p>
+        </div>)}
+      </div>}
+      {skyEvents.length > 0 && <div className="nightsky-sky-events">
+        {skyEvents.map((e) => <div key={e.title} className="nightsky-sky-event">
+          <WeatherIcon name={e.type === 'solstice' || e.type === 'equinox' ? 'sun' : 'star'} />
+          <div><strong>{e.title}</strong><span className="nightsky-event-date">{new Date(new Date(`${today}T00:00:00`).getFullYear(), e.month - 1, e.day).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span></div>
+          <p>{e.description}</p>
+        </div>)}
+      </div>}
+    </section>}
+
+    <section className="nightsky-aurora" aria-labelledby="nightsky-aurora-title">
+      <div className="nightsky-section-heading"><div><p className="nightsky-eyebrow">Aurora watch · Next three days</p><h2 id="nightsky-aurora-title">Northern lights outlook</h2></div><button type="button" className="nightsky-aurora-refresh" onClick={refreshAurora} disabled={auroraLoading} aria-label="Refresh aurora outlook"><WeatherIcon name="refresh" />{auroraLoading ? 'Updating' : 'Refresh'}</button></div>
+      {!aurora ? <p className="nightsky-aurora-status" role="status">{auroraLoading ? 'Checking geomagnetic activity with NOAA…' : 'Aurora data is unavailable. Try refreshing the aurora outlook.'}</p> : <>
+        {auroraError && <p className="nightsky-aurora-status" role="status">The latest refresh failed. Showing the previously saved aurora outlook.</p>}
+        <div className="nightsky-aurora-summary">
+          <div className="nightsky-aurora-kp">
+            <span className="nightsky-kp-value" style={{ color: kpColour(aurora.current?.kp ?? 0) }}>{aurora.current ? aurora.current.kp.toFixed(1) : '—'}</span>
+            <span className="nightsky-kp-label">Current Kp</span>
+            <span className="nightsky-kp-level">{aurora.current ? kpLabel(aurora.current.kp) : 'No data'}</span>
+          </div>
+          <div className="nightsky-aurora-assessment">
+            <span className={`nightsky-aurora-visibility nightsky-aurora-visibility--${aurora.visibility.toLowerCase().replace(/\s+/g, '-')}`}><WeatherIcon name="aurora" />{aurora.forecast.length ? aurora.visibility : 'Forecast unavailable'}</span>
+            <p>{aurora.forecast.length ? aurora.visibilityNote : 'The current Kp reading is available, but the three-day forecast could not be loaded. Refresh to check again.'}</p>
+          </div>
+        </div>
+        {aurora.forecast.length > 0 && <div className="nightsky-kp-forecast">
+          <p className="nightsky-kp-forecast-label">Kp forecast · 0–9 scale · Peterborough local time</p>
+          <div className="nightsky-kp-scroll" tabIndex={0} role="region" aria-label="Three-day geomagnetic forecast. Scroll to see all periods."><div className="nightsky-kp-bars">
+            {aurora.forecast.slice(0, 24).map((entry) => {
+              const barHeight = Math.max(3, (entry.kp / 9) * 78);
+              const time = new Date(entry.time.endsWith('Z') ? entry.time : entry.time + 'Z');
+              const timeLabel = time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' });
+              const dayLabel = time.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Europe/London' });
+              return <div key={entry.time} className="nightsky-kp-bar-col" tabIndex={0} aria-label={`${dayLabel}, ${timeLabel}: Kp ${entry.kp}, ${kpLabel(entry.kp)}`}>
+                <div className="nightsky-kp-bar" style={{ height: `${barHeight}px`, backgroundColor: kpColour(entry.kp) }} title={`Kp ${entry.kp} — ${entry.time}`}>
+                  <span className="nightsky-kp-bar-value">{entry.kp.toFixed(1)}</span>
+                </div>
+                <span className="nightsky-kp-bar-time" aria-hidden="true">{timeLabel}<small>{time.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'Europe/London' })}</small></span>
+              </div>;
+            })}
+          </div>
+          </div><div className="nightsky-kp-scale">
+            <span><i style={{ backgroundColor: kpColour(1) }} />Quiet · Kp below 4</span><span><i style={{ backgroundColor: kpColour(4) }} />Active · Kp 4</span><span><i style={{ backgroundColor: kpColour(7) }} />Storm · Kp 5+</span>
+          </div>
+        </div>}
+        <p className="nightsky-aurora-note">Peterborough (52.6°N) typically needs Kp ≥ 7 for aurora visibility. Clear, dark skies are also needed. Data from <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener noreferrer">NOAA SWPC</a>. Updated {new Date(aurora.fetchedAt).toLocaleString('en-GB', { timeZone: 'Europe/London', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}.</p>
+      </>}
     </section>
 
     <details className="nightsky-method">
