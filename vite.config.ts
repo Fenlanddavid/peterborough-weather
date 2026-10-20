@@ -5,4 +5,5 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   base: './', // relative paths for GitHub Pages
+  build: { manifest: 'asset-manifest.json' },
 })

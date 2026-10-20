@@ -129,3 +129,22 @@ test('uses the most frequent weather category rather than averaging weather code
   ], winterNow);
   assert.equal(briefing.days[0].weatherCode, 3);
 });
+
+test('whole-today option keeps the hours already gone so day cards show the full day', () => {
+  const briefing = buildForecastBriefing([run('temperature_2m', winterDay, winterDay.map((_, i) => i))], new Date('2026-12-07T20:30:00Z'), { wholeToday: true });
+  assert.equal(briefing.days[0].low, 0);
+  assert.equal(briefing.days[0].high, 23);
+  assert.equal(briefing.days[0].remainingToday, false);
+  const remaining = buildForecastBriefing([run('temperature_2m', winterDay, winterDay.map((_, i) => i))], new Date('2026-12-07T20:30:00Z'));
+  assert.equal(remaining.days[0].low, 20);
+});
+
+test('fills hours missing from a still-publishing run from the previous run', () => {
+  const briefing = buildForecastBriefing([
+    run('temperature_2m', winterDay, winterDay.map(() => 5), 'ecmwf_ifs025', '2026-12-06T18:00'),
+    run('temperature_2m', winterDay, winterDay.map((_, i) => i < 12 ? 7 : null), 'ecmwf_ifs025', '2026-12-07T00:00'),
+  ], winterNow);
+  assert.equal(briefing.days[0].temperatureHours, 24);
+  assert.equal(briefing.days[0].high, 7);
+  assert.equal(briefing.days[0].low, 5);
+});

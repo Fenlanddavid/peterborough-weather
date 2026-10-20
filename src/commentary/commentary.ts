@@ -89,7 +89,7 @@ export function generateCommentary(
       const persist = calcPersistence(runs, validTime, 1, 8, 'gt');
       if (persist.total >= 4) {
         lines.push(
-          `${persist.count} of ${persist.total} recent ${model.label} runs show >1 mm.`
+          `${persist.count} of ${persist.total} recent ${model.label} runs show >1 mm in the 6h to this time.`
         );
       }
     }

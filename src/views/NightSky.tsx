@@ -1,7 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { CachedRun } from '../types';
 import { DETERMINISTIC_MODELS } from '../config/models';
-import { getModelRuns, getValueAtTime } from '../metrics/utils';
+import { buildLatestIndex, type LatestIndex } from '../metrics/utils';
 import { getLocalDate, toLocalTime, useLocalNow } from '../hooks/useLocalTime';
 import { WeatherIcon, type IconName } from '../components/WeatherIcon';
 import { getRelevantShowers, getMonthlyEvents } from '../astro/events';
@@ -20,7 +20,7 @@ interface NightForecast {
   shortLabel: string;    // "Tonight" or "Mon"
   sunset: string | null; // local time string
   sunrise: string | null;
-  cloudScore: number | null; // Estimate from weather codes, 0 = clear
+  cloudScore: number | null; // Mean total cloud cover %, 0 = clear (weather-code estimate if cover is missing)
   forecastHours: number;
   rainRisk: boolean;
   windMph: number | null;
@@ -42,34 +42,13 @@ interface NightHour {
   rain: number | null;
 }
 
-/** Average a value across all non-overlay models' latest runs */
-function consensus(
-  allRuns: CachedRun[],
-  variable: 'temperature_2m' | 'precipitation' | 'wind_speed_10m' | 'wind_gusts_10m',
-  validTime: string
-): number | null {
-  const models = DETERMINISTIC_MODELS.filter((m) => !m.isOverlay);
-  const values: number[] = [];
-  for (const model of models) {
-    const runs = getModelRuns(allRuns, model.id, variable);
-    if (runs.length === 0) continue;
-    const latest = runs[runs.length - 1];
-    const v = getValueAtTime(latest, validTime);
-    if (v !== null) values.push(v);
-  }
-  if (values.length === 0) return null;
-  return values.reduce((a, b) => a + b, 0) / values.length;
-}
+const SKY_MODELS = DETERMINISTIC_MODELS.filter((m) => !m.isOverlay);
 
 /** Get the dominant weather code across models for a given time */
-function consensusWeatherCode(allRuns: CachedRun[], validTime: string): number | null {
-  const models = DETERMINISTIC_MODELS.filter((m) => !m.isOverlay);
+function consensusWeatherCode(index: LatestIndex, validTime: string): number | null {
   const votes = new Map<number, number>();
-  for (const model of models) {
-    const runs = getModelRuns(allRuns, model.id, 'weather_code');
-    const latest = runs.at(-1);
-    if (!latest) continue;
-    const code = getValueAtTime(latest, validTime);
+  for (const model of SKY_MODELS) {
+    const code = index.value(model.id, 'weather_code', validTime);
     if (code !== null) votes.set(code, (votes.get(code) ?? 0) + 1);
   }
   let best: number | null = null;
@@ -81,23 +60,20 @@ function consensusWeatherCode(allRuns: CachedRun[], validTime: string): number |
 }
 
 /** Find sunset/sunrise from is_day transitions */
-function findSunTransitions(allRuns: CachedRun[], dateStr: string): { sunset: string | null; sunrise: string | null } {
-  const models = DETERMINISTIC_MODELS.filter((m) => !m.isOverlay);
+function findSunTransitions(index: LatestIndex, dateStr: string): { sunset: string | null; sunrise: string | null } {
   let sunset: string | null = null;
   let sunrise: string | null = null;
 
   // Look for the evening transition on dateStr and the morning transition on dateStr+1
-  for (const model of models) {
-    const runs = getModelRuns(allRuns, model.id, 'is_day');
-    const latest = runs.at(-1);
-    if (!latest) continue;
+  for (const model of SKY_MODELS) {
+    const isDay = (t: string) => index.value(model.id, 'is_day', t);
 
     // Find sunset: last hour of daylight on dateStr
     for (let h = 12; h < 24; h++) {
       const t = `${dateStr}T${String(h).padStart(2, '0')}:00`;
       const next = `${dateStr}T${String(h + 1).padStart(2, '0')}:00`;
-      const val = getValueAtTime(latest, t);
-      const nextVal = h < 23 ? getValueAtTime(latest, next) : null;
+      const val = isDay(t);
+      const nextVal = h < 23 ? isDay(next) : null;
       if (val === 1 && (nextVal === 0 || nextVal === null)) {
         sunset = t;
         break;
@@ -108,7 +84,7 @@ function findSunTransitions(allRuns: CachedRun[], dateStr: string): { sunset: st
     const nextDate = new Date(Date.parse(`${dateStr}T00:00:00Z`) + 86400_000).toISOString().slice(0, 10);
     for (let h = 4; h < 12; h++) {
       const t = `${nextDate}T${String(h).padStart(2, '0')}:00`;
-      const val = getValueAtTime(latest, t);
+      const val = isDay(t);
       if (val === 1) {
         sunrise = t;
         break;
@@ -163,7 +139,17 @@ function cloudFromCode(code: number | null): { label: string; icon: IconName } {
   return { label: 'Cloudy', icon: 'cloud' };
 }
 
-/** Cloud score: 0 = perfectly clear, 100 = fully overcast. Derived from weather codes. */
+/** Label from modelled total cloud cover; rain, snow, fog and storms keep their weather-code label. */
+function cloudFromCover(cover: number, code: number | null): { label: string; icon: IconName } {
+  if (code !== null && code > 3) return cloudFromCode(code);
+  if (cover < 10) return { label: 'Clear', icon: 'moon' };
+  if (cover < 35) return { label: 'Mostly clear', icon: 'cloud-moon' };
+  if (cover < 70) return { label: 'Partly cloudy', icon: 'cloud-moon' };
+  if (cover < 90) return { label: 'Mostly cloudy', icon: 'cloud' };
+  return { label: 'Overcast', icon: 'cloud' };
+}
+
+/** Fallback cloud score from weather codes, for runs saved before cloud cover was fetched. */
 function cloudScoreFromCode(code: number): number {
   if (code === 0) return 0;
   if (code === 1) return 15;
@@ -209,7 +195,9 @@ export function NightSky({ runs, loading, hasError }: Props) {
   const detail = useRef<HTMLElement>(null);
   const nightList = useRef<HTMLDivElement>(null);
 
+  const index = useMemo(() => buildLatestIndex(runs), [runs]);
   const nights = useMemo(() => {
+    const consensus = index.consensus;
     const result: NightForecast[] = [];
     const todayUTC = Date.parse(`${today}T00:00:00Z`);
 
@@ -218,7 +206,7 @@ export function NightSky({ runs, loading, hasError }: Props) {
       const dateStr = date.toISOString().slice(0, 10);
       const nextDateStr = new Date(todayUTC + (d + 1) * 86400_000).toISOString().slice(0, 10);
 
-      const { sunset, sunrise } = findSunTransitions(runs, dateStr);
+      const { sunset, sunrise } = findSunTransitions(index, dateStr);
 
       // Night hours: from sunset (or 17:00) to sunrise (or 07:00 next day)
       const nightStart = sunset ? parseInt(sunset.slice(11, 13)) + 1 : 17;
@@ -233,17 +221,19 @@ export function NightSky({ runs, loading, hasError }: Props) {
       // Evening hours (nightStart to 23)
       for (let h = nightStart; h < 24; h++) {
         const t = `${dateStr}T${String(h).padStart(2, '0')}:00`;
-        const code = consensusWeatherCode(runs, t);
-        const cloud = cloudFromCode(code);
-        if (code !== null) cloudScores.push(cloudScoreFromCode(code));
+        const code = consensusWeatherCode(index, t);
+        const cover = consensus('cloud_cover', t);
+        const cloud = cover !== null ? cloudFromCover(cover, code) : cloudFromCode(code);
+        if (cover !== null) cloudScores.push(cover);
+        else if (code !== null) cloudScores.push(cloudScoreFromCode(code));
 
-        const wind = consensus(runs, 'wind_speed_10m', t);
+        const wind = consensus('wind_speed_10m', t);
         if (wind !== null) winds.push(wind);
 
-        const gust = consensus(runs, 'wind_gusts_10m', t);
+        const gust = consensus('wind_gusts_10m', t);
         if (gust !== null) gusts.push(gust);
 
-        const rain = consensus(runs, 'precipitation', t);
+        const rain = consensus('precipitation', t);
         if (rain !== null && rain >= 0.1) hasRain = true;
 
         hourly.push({
@@ -251,7 +241,7 @@ export function NightSky({ runs, loading, hasError }: Props) {
           localTime: toLocalTime(t, 'time'),
           cloudLabel: cloud.label,
           cloudIcon: cloud.icon,
-          temp: consensus(runs, 'temperature_2m', t),
+          temp: consensus('temperature_2m', t),
           wind,
           rain,
         });
@@ -260,17 +250,19 @@ export function NightSky({ runs, loading, hasError }: Props) {
       // Early morning hours (00 to nightEnd)
       for (let h = 0; h < nightEnd; h++) {
         const t = `${nextDateStr}T${String(h).padStart(2, '0')}:00`;
-        const code = consensusWeatherCode(runs, t);
-        const cloud = cloudFromCode(code);
-        if (code !== null) cloudScores.push(cloudScoreFromCode(code));
+        const code = consensusWeatherCode(index, t);
+        const cover = consensus('cloud_cover', t);
+        const cloud = cover !== null ? cloudFromCover(cover, code) : cloudFromCode(code);
+        if (cover !== null) cloudScores.push(cover);
+        else if (code !== null) cloudScores.push(cloudScoreFromCode(code));
 
-        const wind = consensus(runs, 'wind_speed_10m', t);
+        const wind = consensus('wind_speed_10m', t);
         if (wind !== null) winds.push(wind);
 
-        const gust = consensus(runs, 'wind_gusts_10m', t);
+        const gust = consensus('wind_gusts_10m', t);
         if (gust !== null) gusts.push(gust);
 
-        const rain = consensus(runs, 'precipitation', t);
+        const rain = consensus('precipitation', t);
         if (rain !== null && rain >= 0.1) hasRain = true;
 
         hourly.push({
@@ -278,7 +270,7 @@ export function NightSky({ runs, loading, hasError }: Props) {
           localTime: toLocalTime(t, 'time'),
           cloudLabel: cloud.label,
           cloudIcon: cloud.icon,
-          temp: consensus(runs, 'temperature_2m', t),
+          temp: consensus('temperature_2m', t),
           wind,
           rain,
         });
@@ -318,7 +310,7 @@ export function NightSky({ runs, loading, hasError }: Props) {
     }
 
     return result;
-  }, [runs, today]);
+  }, [index, today]);
 
   const { aurora, loading: auroraLoading, error: auroraError, refresh: refreshAurora } = useAuroraData();
   const showers = useMemo(() => getRelevantShowers(today), [today]);
@@ -424,7 +416,7 @@ export function NightSky({ runs, loading, hasError }: Props) {
         <span className={`nightsky-seeing-badge nightsky-rating--${selected.seeingRating.toLowerCase()}`}>{selected.seeingRating === 'Unavailable' ? 'Awaiting conditions' : `${selected.seeingRating} outlook`}</span>
       </header>
       <div className="nightsky-detail-stats">
-        <div><WeatherIcon name="cloud" /><span>Cloud estimate<strong>{selected.cloudScore === null ? '—' : `~${selected.cloudScore}%`}</strong></span></div>
+        <div><WeatherIcon name="cloud" /><span>Cloud cover<strong>{selected.cloudScore === null ? '—' : `~${selected.cloudScore}%`}</strong></span></div>
         <div><WeatherIcon name="moon" /><span>Moon illumination<strong>{selected.moonIllumination}%</strong></span></div>
         <div><WeatherIcon name="wind" /><span>Average wind<strong>{number(selected.windMph)} <small>mph</small></strong></span></div>
         <div><WeatherIcon name="wind" /><span>Peak gust<strong>{number(selected.gustMph)} <small>mph</small></strong></span></div>

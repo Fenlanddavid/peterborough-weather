@@ -1,12 +1,12 @@
-import type { CachedRun, ChangeMetric, FlipFlopMetric, PersistenceMetric, FamilySpreadMetric } from '../types';
+import type { CachedRun, ChangeMetric, FlipFlopMetric, PersistenceMetric } from '../types';
 import type { VariableId } from '../config/models';
-import { DETERMINISTIC_MODELS, MS_PER_HOUR } from '../config/models';
-import { getValueAtTime, sortByRunTime } from './utils';
+import { MS_PER_HOUR } from '../config/models';
+import { getTrendValue, parseUtc, sortByRunTime } from './utils';
 
 const FLAT_THRESHOLDS: Record<string, number> = {
   temperature_2m: 0.2,
   precipitation: 0.2,   // 6h total
-  wind_gusts_10m: 0.5,  // m/s before conversion — but we compare in display units (mph)
+  wind_gusts_10m: 0.5,  // mph, 6h max
   wind_speed_10m: 0.5,
   pressure_msl: 0.3,
 };
@@ -18,7 +18,7 @@ function findRunByAge(runs: CachedRun[], newestRunTime: number, targetAgeH: numb
   let bestDiff = Infinity;
 
   for (const run of runs) {
-    const diff = Math.abs(new Date(run.runTime).getTime() - targetTime);
+    const diff = Math.abs(parseUtc(run.runTime) - targetTime);
     if (diff < bestDiff && diff <= 3 * MS_PER_HOUR) {
       bestDiff = diff;
       best = run;
@@ -36,21 +36,21 @@ export function calcChange(
   if (sorted.length < 2) return { changePrev: null, change24h: null, change48h: null };
 
   const newest = sorted[sorted.length - 1];
-  const newestVal = getValueAtTime(newest, validTime);
+  const newestVal = getTrendValue(newest, validTime);
   if (newestVal === null) return { changePrev: null, change24h: null, change48h: null };
 
-  const newestMs = new Date(newest.runTime).getTime();
+  const newestMs = parseUtc(newest.runTime);
 
   const prev = sorted[sorted.length - 2];
-  const prevVal = getValueAtTime(prev, validTime);
+  const prevVal = getTrendValue(prev, validTime);
   const changePrev = prevVal !== null ? newestVal - prevVal : null;
 
   const run24 = findRunByAge(sorted, newestMs, 24);
-  const val24 = run24 ? getValueAtTime(run24, validTime) : null;
+  const val24 = run24 ? getTrendValue(run24, validTime) : null;
   const change24h = val24 !== null ? newestVal - val24 : null;
 
   const run48 = findRunByAge(sorted, newestMs, 48);
-  const val48 = run48 ? getValueAtTime(run48, validTime) : null;
+  const val48 = run48 ? getTrendValue(run48, validTime) : null;
   const change48h = val48 !== null ? newestVal - val48 : null;
 
   return { changePrev, change24h, change48h };
@@ -66,7 +66,7 @@ export function calcFlipFlop(
   const values: number[] = [];
 
   for (const run of sorted) {
-    const v = getValueAtTime(run, validTime);
+    const v = getTrendValue(run, validTime);
     if (v !== null) values.push(v);
   }
 
@@ -106,7 +106,7 @@ export function calcPersistence(
   let total = 0;
 
   for (const run of recent) {
-    const v = getValueAtTime(run, validTime);
+    const v = getTrendValue(run, validTime);
     if (v !== null) {
       total++;
       if (comparator === 'gt' ? v > threshold : v < threshold) count++;
@@ -114,45 +114,6 @@ export function calcPersistence(
   }
 
   return { count, total };
-}
-
-/** Calculate family spread */
-export function calcFamilySpread(
-  allRuns: CachedRun[],
-  validTime: string,
-  variable: VariableId
-): FamilySpreadMetric | null {
-  const familyValues: Record<string, number[]> = {};
-
-  for (const model of DETERMINISTIC_MODELS) {
-    if (model.isOverlay) continue;
-    const modelRuns = allRuns.filter(
-      (r) => r.modelId === model.id && r.variable === variable
-    );
-    const sorted = sortByRunTime(modelRuns);
-    if (sorted.length === 0) continue;
-
-    const latest = sorted[sorted.length - 1];
-    const v = getValueAtTime(latest, validTime);
-    if (v === null) continue;
-
-    if (!familyValues[model.family]) familyValues[model.family] = [];
-    familyValues[model.family].push(v);
-  }
-
-  const families = Object.entries(familyValues)
-    .filter(([, vals]) => vals.length > 0)
-    .map(([family, vals]) => ({
-      family,
-      value: vals.reduce((a, b) => a + b, 0) / vals.length,
-    }));
-
-  if (families.length < 2) return null;
-
-  families.sort((a, b) => a.value - b.value);
-  const spread = families[families.length - 1].value - families[0].value;
-
-  return { spread, families };
 }
 
 /** Weighted linear regression (trend slope) */
@@ -164,9 +125,9 @@ export function calcTrendSlope(
   const points: { t: number; v: number }[] = [];
 
   for (const run of sorted) {
-    const v = getValueAtTime(run, validTime);
+    const v = getTrendValue(run, validTime);
     if (v !== null) {
-      points.push({ t: new Date(run.runTime).getTime(), v });
+      points.push({ t: parseUtc(run.runTime), v });
     }
   }
 

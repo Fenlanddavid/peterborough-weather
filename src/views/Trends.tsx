@@ -5,7 +5,7 @@ import {
 import type { CachedRun } from '../types';
 import type { VariableId } from '../config/models';
 import { DETERMINISTIC_MODELS, VARIABLES } from '../config/models';
-import { getModelRuns, getValueAtTime } from '../metrics/utils';
+import { getModelRuns, getTrendValue } from '../metrics/utils';
 import { calcChange, calcFlipFlop, calcPersistence, calcTrendSlope } from '../metrics/metrics';
 import { generateCommentary } from '../commentary/commentary';
 import { VariableSelector } from '../components/VariableSelector';
@@ -60,7 +60,7 @@ export function Trends({ runs }: Props) {
       for (const model of models) {
         const modelRuns = getModelRuns(runs, model.id, variable);
         const run = modelRuns.find((r) => r.runTime === rt);
-        point[model.id] = run ? getValueAtTime(run, validTime) : null;
+        point[model.id] = run ? getTrendValue(run, validTime) : null;
       }
       return point;
     });
@@ -101,7 +101,7 @@ export function Trends({ runs }: Props) {
           value={validTimeIdx}
           onChange={(e) => setValidTimeIdx(Number(e.target.value))}
         />
-        <span className="valid-time-label">{toLocalTime(validTime, 'long')}</span>
+        <span className="valid-time-label">{toLocalTime(validTime, 'long')}{variable === 'precipitation' ? ' · 6h total to this time' : variable === 'wind_gusts_10m' ? ' · 6h max to this time' : ''}</span>
       </div>
 
       <div className="cycle-filter">
@@ -187,7 +187,7 @@ export function Trends({ runs }: Props) {
             )}
             {persist && persist.total >= 4 && (
               <div className="metric-row">
-                <span>&gt;1mm precip:</span>
+                <span>&gt;1 mm in 6h:</span>
                 <span>{persist.count} of {persist.total} runs</span>
               </div>
             )}

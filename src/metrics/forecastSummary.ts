@@ -1,6 +1,7 @@
 import type { CachedRun } from '../types';
 import { DETERMINISTIC_MODELS, type VariableId } from '../config/models.ts';
 import { getLocalDate, getLocalDayHours, toLocalTime } from '../hooks/useLocalTime.ts';
+import { buildLatestIndex } from './utils.ts';
 
 export interface SummaryDay {
   date: string;
@@ -61,7 +62,7 @@ const mostFrequentCode = (values: number[]): number | null => {
   return [...counts].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 };
 const degrees = (value: number) => `${Math.round(value)}°C`;
-const periodName = (day: SummaryDay) => day.label === 'Today' ? 'the rest of today' : day.label;
+const periodName = (day: SummaryDay) => day.label !== 'Today' ? day.label : day.remainingToday ? 'the rest of today' : 'today';
 const joinDays = (days: SummaryDay[]) => new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }).format(days.map(periodName));
 const fullRain = (day: SummaryDay) => day.rainHours === day.expectedHours && day.expectedHours > 0;
 
@@ -106,8 +107,13 @@ function describeDay(day: SummaryDay): string[] {
   return lines;
 }
 
+export interface BriefingOptions {
+  /** Include today's earlier hours (the home screen's day cards) rather than only what's left. */
+  wholeToday?: boolean;
+}
+
 /** Generate a briefing from the latest non-overlay runs, using Peterborough's calendar days. */
-export function buildForecastBriefing(runs: CachedRun[], now: Date): ForecastBriefing {
+export function buildForecastBriefing(runs: CachedRun[], now: Date, options: BriefingOptions = {}): ForecastBriefing {
   const models = DETERMINISTIC_MODELS.filter((model) => !model.isOverlay);
   const modelIds = new Set(models.map((model) => model.id));
   const latest = new Map<string, CachedRun>();
@@ -116,19 +122,19 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date): ForecastBri
     const key = `${run.modelId}:${run.variable}`;
     if (!latest.has(key) || latest.get(key)!.runTime < run.runTime) latest.set(key, run);
   }
-  // Index once: the same hourly values are used for the narrative and model agreement.
-  const indexed = new Map([...latest].map(([key, run]) => [key, new Map(run.times.map((time, i) => [time, run.values[i]]))]));
+  // Shared with the home screen: newest run per model, gaps filled from the previous run, winds in mph.
+  const latestIndex = buildLatestIndex(runs);
   const valuesAt = (variable: VariableId, time: string): number[] => models.flatMap((model) => {
-    const value = indexed.get(`${model.id}:${variable}`)?.get(time);
-    if (typeof value !== 'number' || !Number.isFinite(value)) return [];
+    const value = latestIndex.value(model.id, variable, time);
+    if (value === null) return [];
     if (variable !== 'temperature_2m' && value < 0) return [];
-    return [variable === 'wind_speed_10m' || variable === 'wind_gusts_10m' ? value * 2.23694 : value];
+    return [value];
   });
   const today = getLocalDate(now);
   const currentHour = Math.floor(now.getTime() / 3600_000) * 3600_000;
   const days: SummaryDay[] = Array.from({ length: 7 }, (_, index) => {
     const date = new Date(Date.parse(`${today}T12:00:00Z`) + index * 86400_000).toISOString().slice(0, 10);
-    const times = getLocalDayHours(date).filter((time) => index > 0 || Date.parse(`${time}Z`) >= currentHour);
+    const times = getLocalDayHours(date).filter((time) => index > 0 || options.wholeToday || Date.parse(`${time}Z`) >= currentHour);
     const hours: Hour[] = times.map((time) => {
       const temperatures = valuesAt('temperature_2m', time);
       return {
@@ -144,7 +150,7 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date): ForecastBri
     const peakGustHours = hours.filter((hour) => gust !== null && hour.gust === gust);
     const day: SummaryDay = {
       date, label: index === 0 ? 'Today' : new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Europe/London' }),
-      remainingToday: index === 0, expectedHours: times.length,
+      remainingToday: index === 0 && !options.wholeToday, expectedHours: times.length,
       temperatureHours: hours.filter((hour) => hour.temperature !== null).length, rainHours: rain.length,
       weatherCode: mostFrequentCode(available(hours.map((hour) => hour.weatherCode))),
       high: max(available(hours.map((hour) => hour.temperature))), low: min(available(hours.map((hour) => hour.temperature))),

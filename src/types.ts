@@ -32,15 +32,6 @@ export interface CachedRun {
   fetchedAt: number;     // Date.now() when cached
 }
 
-/** Ensemble snapshot for one model/variable */
-export interface EnsembleData {
-  modelId: string;
-  variable: VariableId;
-  times: string[];
-  members: (number | null)[][]; // [memberIndex][timeIndex]
-  fetchedAt: number;
-}
-
 /** A six-hour window aggregate */
 export interface WindowValue {
   windowEnd: string; // ISO string, end of the 6h window
@@ -63,9 +54,4 @@ export interface FlipFlopMetric {
 export interface PersistenceMetric {
   count: number;
   total: number;
-}
-
-export interface FamilySpreadMetric {
-  spread: number;
-  families: { family: string; value: number }[];
 }

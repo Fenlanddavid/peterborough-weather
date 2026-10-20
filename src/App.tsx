@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Nav } from './components/Nav';
 import { LoadingBar } from './components/LoadingBar';
 import { InstallApp } from './components/InstallApp';
 import { Forecast } from './views/Forecast';
 import { Summary } from './views/Summary';
 import { NightSky } from './views/NightSky';
-import { Trends } from './views/Trends';
 import { Seasonal } from './views/Seasonal';
 import { Teleconnections } from './views/Teleconnections';
 import { useWeatherData } from './hooks/useWeatherData';
@@ -17,10 +16,13 @@ import './Home.css';
 import './views/NightSky.css';
 import './views/Seasonal.css';
 
+// Recharts is only used here; keep it out of the bundle every other screen waits for.
+const Trends = lazy(() => import('./views/Trends').then((module) => ({ default: module.Trends })));
+
 function App() {
   const [view, setView] = useState('forecast');
   const isOverview = ['forecast', 'summary', 'nightsky', 'seasonal'].includes(view);
-  const { runs, reference, loading, progress, lastUpdated, error, refresh } = useWeatherData();
+  const { runs, loading, progress, lastUpdated, error, refresh } = useWeatherData();
 
   return (
     <div className={`app ${isOverview ? 'app--home' : ''} ${view === 'nightsky' ? 'app--nightsky' : view === 'seasonal' ? 'app--seasonal' : ''}`}>
@@ -52,10 +54,10 @@ function App() {
       <InstallApp />
 
       <main className="app-main">
-        {view === 'forecast' && <Forecast runs={runs} reference={reference} loading={loading} hasError={!!error} lastUpdated={lastUpdated} />}
+        {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} />}
         {view === 'summary' && <Summary runs={runs} loading={loading} hasError={!!error} />}
         {view === 'nightsky' && <NightSky runs={runs} loading={loading} hasError={!!error} />}
-        {view === 'trends' && <Trends runs={runs} />}
+        {view === 'trends' && <Suspense fallback={<p className="forecast-status" role="status">Loading charts…</p>}><Trends runs={runs} /></Suspense>}
         {view === 'seasonal' && <Seasonal />}
         {view === 'teleconnections' && <Teleconnections />}
       </main>

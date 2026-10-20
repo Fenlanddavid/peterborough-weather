@@ -1,18 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CachedRun } from '../types';
 import { DETERMINISTIC_MODELS } from '../config/models';
-import { getModelRuns, getValueAtTime } from '../metrics/utils';
+import { buildLatestIndex } from '../metrics/utils';
 import { getHourlyCondition } from '../metrics/hourlyWeather';
-import { getHourlyForecastTimes, getLocalDate, toLocalTime, useLocalNow } from '../hooks/useLocalTime';
+import { getHourlyForecastTimes, getLocalDate, getLocalDayHours, toLocalTime, useLocalNow } from '../hooks/useLocalTime';
 import type { IconName } from '../components/WeatherIcon';
 import { SkyIllustration, WeatherIcon } from '../components/WeatherIcon';
 import { MonthlyOutlook } from '../components/MonthlyOutlook';
 import { RegimeBadge } from '../components/RegimeBadge';
-import { blendWithReference, type ReferenceForecast } from '../api/reference';
+import { buildForecastBriefing } from '../metrics/forecastSummary';
 
 interface Props {
   runs: CachedRun[];
-  reference?: ReferenceForecast | null;
   loading: boolean;
   hasError: boolean;
   lastUpdated?: number | null;
@@ -30,27 +29,6 @@ interface DayForecast {
   gustMph: number | null;
   condition: string;
   daytimeIcon: IconName | null;
-}
-
-/** Average a value across all non-overlay models' latest runs */
-function consensus(
-  allRuns: CachedRun[],
-  variable: 'temperature_2m' | 'precipitation' | 'snowfall' | 'wind_speed_10m' | 'wind_gusts_10m',
-  validTime: string
-): number | null {
-  const models = DETERMINISTIC_MODELS.filter((m) => !m.isOverlay);
-  const values: number[] = [];
-
-  for (const model of models) {
-    const runs = getModelRuns(allRuns, model.id, variable);
-    if (runs.length === 0) continue;
-    const latest = runs[runs.length - 1];
-    const v = getValueAtTime(latest, validTime);
-    if (v !== null) values.push(v);
-  }
-
-  if (values.length === 0) return null;
-  return values.reduce((a, b) => a + b, 0) / values.length;
 }
 
 function deriveCondition(rainMm: number, windMph: number): { condition: string } {
@@ -107,8 +85,9 @@ function buildWeekSummary(days: DayForecast[]): string {
 
   // Rain overview
   const wetDays = withData.filter((d) => d.rainMm !== null && d.rainMm >= 0.5);
+  const rainGaps = withData.some((d) => d.rainMm === null);
   if (wetDays.length === 0) {
-    lines.push('Looking dry all week.');
+    lines.push(rainGaps ? 'No rain showing on the days with full data.' : 'Looking dry all week.');
   } else if (wetDays.length <= 2) {
     const names = wetDays.map((d) => d.dayName).join(' and ');
     lines.push(`Some rain on ${names}.`);
@@ -136,154 +115,42 @@ function buildWeekSummary(days: DayForecast[]): string {
   return lines.join(' ');
 }
 
-export function Forecast({ runs, reference, loading, hasError, lastUpdated = null }: Props) {
+export function Forecast({ runs, loading, hasError, lastUpdated = null }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const now = useLocalNow();
   const today = getLocalDate(now);
   const hourlyScroll = useRef<HTMLDivElement>(null);
-  const refHours = reference?.hours;
-  const days = useMemo(() => {
-    const result: DayForecast[] = [];
-    const todayUTC = Date.parse(`${today}T00:00:00Z`);
-
-    // For today, find the nearest reference hour (wttr.in uses 3-hourly: 00,03,06,...,21)
-    const refHours = reference?.hours;
-    const nearestRef = (dateStr: string, h: number, variable: 'tempC' | 'windMph' | 'precipMm'): number | undefined => {
-      if (!refHours) return undefined;
-      // Snap to nearest 3-hour slot
-      const slot = Math.round(h / 3) * 3;
-      const clamped = Math.min(slot, 21);
-      const key = `${dateStr}T${String(clamped).padStart(2, '0')}:00`;
-      const ref = refHours.get(key);
-      return ref ? ref[variable] : undefined;
-    };
-
-    for (let d = 0; d < 7; d++) {
-      const date = new Date(todayUTC + d * 24 * 3600_000);
-      const dateStr = date.toISOString().slice(0, 10);
-      const isToday = d === 0;
-
-      // Collect hourly consensus values
-      const hourlyTemps: number[] = [];
-      const nightTemps: number[] = [];
-      let rainTotal = 0;
-      let rainHours = 0;
-      let snowTotal = 0;
-      let snowHours = 0;
-      const hourlyWind: number[] = [];
-      const hourlyGusts: number[] = [];
-      const daytimeConditions: (IconName | null)[] = [];
-
-      for (let h = 0; h < 24; h++) {
-        const validTime = `${dateStr}T${String(h).padStart(2, '0')}:00`;
-
-        let temp = consensus(runs, 'temperature_2m', validTime);
-        // Blend today's values with reference forecast (15% weight)
-        if (isToday && temp !== null) {
-          temp = blendWithReference(temp, nearestRef(dateStr, h, 'tempC'));
-        }
-        if (temp !== null) {
-          if (h >= 6 && h <= 21) {
-            hourlyTemps.push(temp);
-          } else {
-            nightTemps.push(temp);
-          }
-        }
-
-        let precip = consensus(runs, 'precipitation', validTime);
-        if (isToday && precip !== null) {
-          precip = blendWithReference(precip, nearestRef(dateStr, h, 'precipMm'));
-        }
-        if (precip !== null) {
-          rainTotal += precip;
-          rainHours++;
-        }
-
-        const snow = consensus(runs, 'snowfall', validTime);
-        if (snow !== null && Number.isFinite(snow) && snow >= 0) {
-          snowTotal += snow;
-          snowHours++;
-        }
-
-        let wind = consensus(runs, 'wind_speed_10m', validTime);
-        if (isToday && wind !== null) {
-          wind = blendWithReference(wind, nearestRef(dateStr, h, 'windMph'));
-        }
-        if (wind !== null) hourlyWind.push(wind);
-
-        const gust = consensus(runs, 'wind_gusts_10m', validTime);
-        if (gust !== null) hourlyGusts.push(gust);
-
-        // Collect daytime weather icons (8am-6pm) for representative day icon
-        if (h >= 8 && h <= 18) {
-          const cond = getHourlyCondition(runs, validTime);
-          if (cond.icon) daytimeConditions.push(cond.icon);
-        }
-      }
-
-      const high = hourlyTemps.length > 0
-        ? Math.max(...hourlyTemps)
-        : (nightTemps.length > 0 ? Math.max(...nightTemps) : null);
-      const low = nightTemps.length > 0
-        ? Math.min(...nightTemps)
-        : (hourlyTemps.length > 0 ? Math.min(...hourlyTemps) : null);
-      const rainMm = rainHours > 0 ? rainTotal : null;
-      const windMph = hourlyWind.length > 0
-        ? hourlyWind.reduce((a, b) => a + b, 0) / hourlyWind.length
-        : null;
-      const gustMph = hourlyGusts.length > 0
-        ? Math.max(...hourlyGusts)
-        : null;
-
-      const { condition } = rainMm === null
-        ? { condition: 'Limited forecast' }
-        : deriveCondition(rainMm, windMph ?? 0);
-
-      // Pick the most common daytime icon
-      let daytimeIcon: IconName | null = null;
-      if (daytimeConditions.length > 0) {
-        const counts = new Map<IconName, number>();
-        for (const icon of daytimeConditions) {
-          if (icon) counts.set(icon, (counts.get(icon) ?? 0) + 1);
-        }
-        let best: IconName | null = null;
-        let bestCount = 0;
-        for (const [icon, count] of counts) {
-          if (count > bestCount) { best = icon; bestCount = count; }
-        }
-        daytimeIcon = best;
-      }
-
-      // Day names in local time
-      const localDate = new Date(dateStr + 'T12:00:00Z');
-      const dayName = localDate.toLocaleDateString('en-GB', {
-        weekday: 'long',
-        timeZone: 'Europe/London',
-      });
-      const shortDay = localDate.toLocaleDateString('en-GB', {
-        weekday: 'short',
-        timeZone: 'Europe/London',
-      });
-
-      const dayForecast: DayForecast = {
-        date: dateStr,
-        dayName: isToday ? 'Today' : dayName,
-        shortDay: isToday ? 'Today' : shortDay,
-        high,
-        low,
-        rainMm,
-        snowCm: snowHours > 0 ? snowTotal : null,
-        windMph,
-        gustMph,
-        condition,
-        daytimeIcon,
-      };
-
-      result.push(dayForecast);
+  // One pass over the cached runs instead of filtering/sorting them for every hour of the week.
+  const index = useMemo(() => buildLatestIndex(runs), [runs]);
+  const consensus = index.consensus;
+  // Day figures come from the same briefing as the Summary tab, so the two always agree.
+  const hour = Math.floor(now.getTime() / 3600_000);
+  const briefing = useMemo(() => buildForecastBriefing(runs, new Date(hour * 3600_000), { wholeToday: true }), [runs, hour]);
+  const days = useMemo(() => briefing.days.map((day, d): DayForecast => {
+    // Representative daytime icon: most common condition 08:00–18:00 local.
+    const counts = new Map<IconName, number>();
+    for (const validTime of getLocalDayHours(day.date)) {
+      const h = Number(toLocalTime(validTime, 'time').slice(0, 2));
+      if (h < 8 || h > 18) continue;
+      const icon = getHourlyCondition(runs, validTime).icon;
+      if (icon) counts.set(icon, (counts.get(icon) ?? 0) + 1);
     }
-
-    return result;
-  }, [runs, reference, today]);
+    const daytimeIcon = [...counts].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+    const localDate = new Date(`${day.date}T12:00:00Z`);
+    return {
+      date: day.date,
+      dayName: d === 0 ? 'Today' : localDate.toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Europe/London' }),
+      shortDay: d === 0 ? 'Today' : localDate.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'Europe/London' }),
+      high: day.high,
+      low: day.low,
+      rainMm: day.rainMm,
+      snowCm: day.snowCm,
+      windMph: day.windMph,
+      gustMph: day.gustMph,
+      condition: day.rainMm === null ? 'Limited forecast' : deriveCondition(day.rainMm, day.windMph ?? 0).condition,
+      daytimeIcon,
+    };
+  }), [briefing, runs]);
 
   const weekSummary = useMemo(() => buildWeekSummary(days), [days]);
   const windyDays = days.filter((day) => day.gustMph !== null && day.gustMph >= 30);
@@ -294,25 +161,13 @@ export function Forecast({ runs, reference, loading, hasError, lastUpdated = nul
   const modelCount = DETERMINISTIC_MODELS.filter((model) =>
     !model.isOverlay && runs.some((run) => run.modelId === model.id && run.variable === 'temperature_2m')
   ).length;
-  const isSelectedToday = selectedDay.date === today;
-  const hourly = useMemo(() => getHourlyForecastTimes(selectedDay.date, now).map((time) => {
-    const h = parseInt(time.slice(11, 13));
-    const dateStr = time.slice(0, 10);
-    let temperature = consensus(runs, 'temperature_2m', time);
-    let rain = consensus(runs, 'precipitation', time);
-    let wind = consensus(runs, 'wind_speed_10m', time);
-    if (isSelectedToday && refHours) {
-      const slot = Math.min(Math.round(h / 3) * 3, 21);
-      const refKey = `${dateStr}T${String(slot).padStart(2, '0')}:00`;
-      const ref = refHours.get(refKey);
-      if (ref) {
-        temperature = blendWithReference(temperature, ref.tempC);
-        rain = blendWithReference(rain, ref.precipMm);
-        wind = blendWithReference(wind, ref.windMph);
-      }
-    }
-    return { time, temperature, rain, wind, condition: getHourlyCondition(runs, time) };
-  }), [runs, refHours, selectedDay.date, now, isSelectedToday]);
+  const hourly = useMemo(() => getHourlyForecastTimes(selectedDay.date, now).map((time) => ({
+    time,
+    temperature: consensus('temperature_2m', time),
+    rain: consensus('precipitation', time),
+    wind: consensus('wind_speed_10m', time),
+    condition: getHourlyCondition(runs, time),
+  })), [runs, consensus, selectedDay.date, now]);
   const firstHour = hourly[0]?.time;
   useEffect(() => {
     if (hourlyScroll.current) hourlyScroll.current.scrollLeft = 0;
@@ -333,7 +188,7 @@ export function Forecast({ runs, reference, loading, hasError, lastUpdated = nul
         <div>
           <p className="eyebrow">A little local perspective</p>
           <h1>Your weather, at a glance.</h1>
-          <p>A clearer outlook for the Savory's and the days ahead.</p>
+          <p>A clearer outlook for the Savorys and the days ahead.</p>
         </div>
         <span className="forecast-today"><WeatherIcon name="calendar" />{now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/London' })}</span>
       </div>
@@ -433,7 +288,7 @@ export function Forecast({ runs, reference, loading, hasError, lastUpdated = nul
         </div>
         <p className="hourly-caption">Hourly forecast · Rainfall is the forecast total for that hour.</p>
       </section>
-      <p className="forecast-note"><span className="note-mark">i</span> Based on available ECMWF, GFS and UKMO forecasts. Explore the model tabs for the full picture.</p>
+      <p className="forecast-note"><span className="note-mark">i</span> Based on available ECMWF, GFS and UKMO forecasts. See Trends for how the models have shifted run to run.</p>
     </div>
   );
 }
