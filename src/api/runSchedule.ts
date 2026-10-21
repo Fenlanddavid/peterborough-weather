@@ -31,14 +31,14 @@ function generateRunTimes(cycles: number[], now: number): string[] {
 
 /** Plan requests from the cache, retrying incomplete runs after the recheck interval. */
 export function getRunTasks(cached: CachedRun[], now = Date.now()) {
-  const fetchedAt = new Map(cached.map((run) => [run.key, run.fetchedAt]));
+  const fetchedAt = new Map(cached.filter(run => run.unitState !== 'unknown-legacy').map((run) => [run.key, run.fetchedAt]));
   const tasks: { modelId: string; runTime: string; variables: VariableId[] }[] = [];
 
   for (const model of DETERMINISTIC_MODELS) {
     const runTimes = generateRunTimes(model.runCycles, now);
     const recent = new Set(runTimes.slice(-EXTRA_RUNS));
     for (const runTime of runTimes) {
-      const wantsExtras = !model.isOverlay && recent.has(runTime);
+      const wantsExtras = recent.has(runTime);
       const variables = wantsExtras ? [...BASE_VARIABLES, ...EXTRA_VARIABLES] : BASE_VARIABLES;
       const anchor = fetchedAt.get(makeRunKey(model.id, runTime, 'temperature_2m'));
       const recentlyChecked = anchor !== undefined && now - anchor < RECHECK_MS;

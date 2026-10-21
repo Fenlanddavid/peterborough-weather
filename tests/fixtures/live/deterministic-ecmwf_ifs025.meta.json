@@ -1,0 +1,173 @@
+{
+  "id": "deterministic-ecmwf_ifs025",
+  "provider": "Open-Meteo Single Runs",
+  "model": "ecmwf_ifs025",
+  "url": "https://single-runs-api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&run=2026-10-20T00%3A00&hourly=temperature_2m%2Cprecipitation%2Cwind_speed_10m%2Cwind_gusts_10m%2Cpressure_msl%2Csnowfall%2Cweather_code%2Cis_day%2Ccloud_cover&forecast_days=7&temperature_unit=celsius&precipitation_unit=mm",
+  "parameters": {
+    "latitude": "52.5736",
+    "longitude": "-0.2400",
+    "timezone": "GMT",
+    "wind_speed_unit": "ms",
+    "models": "ecmwf_ifs025",
+    "run": "2026-10-20T00:00",
+    "hourly": "temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m,pressure_msl,snowfall,weather_code,is_day,cloud_cover",
+    "forecast_days": "7",
+    "temperature_unit": "celsius",
+    "precipitation_unit": "mm"
+  },
+  "retrievedAt": "2026-10-21T19:47:27.867Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-headers": "accept, authorization, content-type, origin, x-requested-with, user-agent, access-control-allow-origin, range, if-match, if-unmodified-since",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
+    "access-control-allow-origin": "*",
+    "access-control-max-age": "600",
+    "connection": "keep-alive",
+    "content-encoding": "deflate",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 21 Oct 2026 19:47:27 GMT",
+    "transfer-encoding": "chunked"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": [
+    "latitude",
+    "longitude",
+    "generationtime_ms",
+    "utc_offset_seconds",
+    "timezone",
+    "timezone_abbreviation",
+    "elevation",
+    "hourly_units",
+    "hourly"
+  ],
+  "sourceTimestamps": {},
+  "units": {
+    "time": "iso8601",
+    "temperature_2m": "°C",
+    "precipitation": "mm",
+    "wind_speed_10m": "m/s",
+    "wind_gusts_10m": "m/s",
+    "pressure_msl": "hPa",
+    "snowfall": "cm",
+    "weather_code": "wmo code",
+    "is_day": "",
+    "cloud_cover": "%"
+  },
+  "range": [
+    "2026-10-20T00:00",
+    "2026-10-26T23:00"
+  ],
+  "variables": [
+    {
+      "key": "temperature_2m",
+      "length": 168,
+      "nullCount": 0,
+      "representative": 12.3,
+      "finiteCount": 168,
+      "min": 6.3,
+      "max": 14.6,
+      "firstValid": "2026-10-20T00:00",
+      "lastValid": "2026-10-26T23:00"
+    },
+    {
+      "key": "precipitation",
+      "length": 168,
+      "nullCount": 1,
+      "representative": 0.1,
+      "finiteCount": 167,
+      "min": 0,
+      "max": 2,
+      "firstValid": "2026-10-20T01:00",
+      "lastValid": "2026-10-26T23:00"
+    },
+    {
+      "key": "wind_speed_10m",
+      "length": 168,
+      "nullCount": 0,
+      "representative": 3.01,
+      "finiteCount": 168,
+      "min": 1.3,
+      "max": 11.54,
+      "firstValid": "2026-10-20T00:00",
+      "lastValid": "2026-10-26T23:00"
+    },
+    {
+      "key": "wind_gusts_10m",
+      "length": 168,
+      "nullCount": 63,
+      "representative": 7.6,
+      "finiteCount": 105,
+      "min": 4,
+      "max": 18.2,
+      "firstValid": "2026-10-20T03:00",
+      "lastValid": "2026-10-26T23:00"
+    },
+    {
+      "key": "pressure_msl",
+      "length": 168,
+      "nullCount": 0,
+      "representative": 1019,
+      "finiteCount": 168,
+      "min": 984.9,
+      "max": 1019,
+      "firstValid": "2026-10-20T00:00",
+      "lastValid": "2026-10-26T23:00"
+    },
+    {
+      "key": "snowfall",
+      "length": 168,
+      "nullCount": 1,
+      "representative": 0,
+      "finiteCount": 167,
+      "min": 0,
+      "max": 0,
+      "firstValid": "2026-10-20T01:00",
+      "lastValid": "2026-10-26T23:00"
+    },
+    {
+      "key": "weather_code",
+      "length": 168,
+      "nullCount": 1,
+      "representative": 51,
+      "finiteCount": 167,
+      "min": 0,
+      "max": 61,
+      "firstValid": "2026-10-20T01:00",
+      "lastValid": "2026-10-26T23:00"
+    },
+    {
+      "key": "is_day",
+      "length": 168,
+      "nullCount": 0,
+      "representative": 0,
+      "finiteCount": 168,
+      "min": 0,
+      "max": 1,
+      "firstValid": "2026-10-20T00:00",
+      "lastValid": "2026-10-26T23:00"
+    },
+    {
+      "key": "cloud_cover",
+      "length": 168,
+      "nullCount": 0,
+      "representative": 100,
+      "finiteCount": 168,
+      "min": 2,
+      "max": 100,
+      "firstValid": "2026-10-20T00:00",
+      "lastValid": "2026-10-26T23:00"
+    }
+  ],
+  "memberIdentities": [
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed"
+  ]
+}

@@ -1,16 +1,17 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Nav } from './components/Nav';
 import { LoadingBar } from './components/LoadingBar';
 import { InstallApp } from './components/InstallApp';
 import { Forecast } from './views/Forecast';
 import { Summary } from './views/Summary';
-import { NightSky } from './views/NightSky';
 import { Seasonal } from './views/Seasonal';
 import { Teleconnections } from './views/Teleconnections';
 import { useWeatherData } from './hooks/useWeatherData';
 import { timeAgo } from './hooks/useLocalTime';
 import { LOCATION } from './config/models';
 import { WeatherIcon } from './components/WeatherIcon';
+import { useEnsembles } from './hooks/useEnsembles';
+import { EnsembleStatus } from './components/ForecastEvidence';
 import './App.css';
 import './Home.css';
 import './views/NightSky.css';
@@ -18,11 +19,21 @@ import './views/Seasonal.css';
 
 // Recharts is only used here; keep it out of the bundle every other screen waits for.
 const Trends = lazy(() => import('./views/Trends').then((module) => ({ default: module.Trends })));
+const NightSky = lazy(() => import('./views/NightSky').then((module) => ({ default: module.NightSky })));
+const SourceProbe = import.meta.env.DEV ? lazy(() => import('./views/SourceProbe').then(m => ({ default: m.SourceProbe }))) : null;
 
 function App() {
   const [view, setView] = useState('forecast');
   const isOverview = ['forecast', 'summary', 'nightsky', 'seasonal'].includes(view);
   const { runs, loading, progress, lastUpdated, error, refresh } = useWeatherData();
+  const ensembles = useEnsembles(['forecast', 'summary', 'nightsky'].includes(view));
+  const [databaseBlocked, setDatabaseBlocked] = useState(false);
+  const [cacheUnavailable, setCacheUnavailable] = useState(false);
+  useEffect(() => {
+    const listeners: [string, () => void][] = [['weather-db-blocked', () => setDatabaseBlocked(true)], ['weather-db-ready', () => setDatabaseBlocked(false)], ['weather-cache-unavailable', () => setCacheUnavailable(true)], ['weather-cache-ready', () => setCacheUnavailable(false)]];
+    listeners.forEach(([name, fn]) => window.addEventListener(name, fn));
+    return () => listeners.forEach(([name, fn]) => window.removeEventListener(name, fn));
+  }, []);
 
   return (
     <div className={`app ${isOverview ? 'app--home' : ''} ${view === 'nightsky' ? 'app--nightsky' : view === 'seasonal' ? 'app--seasonal' : ''}`}>
@@ -33,13 +44,13 @@ function App() {
         </a>
         <div className="home-header-meta">
           <span className="home-location"><WeatherIcon name="pin" />Peterborough, UK</span>
-          <span className="home-data-age">{lastUpdated ? `Updated ${timeAgo(lastUpdated)}` : loading ? 'Updating forecast' : 'Awaiting forecast'}</span>
+          <span className="home-data-age">{lastUpdated ? `Checked ${timeAgo(lastUpdated)}` : loading ? 'Updating forecast' : 'Awaiting forecast'}</span>
           <button className="home-refresh" onClick={refresh} disabled={loading} aria-label={loading ? 'Updating forecast' : 'Refresh forecast'}><WeatherIcon name="refresh" /><span>{loading ? 'Updating' : 'Refresh'}</span></button>
         </div>
       </header> : <header className="app-header">
         <h1>{LOCATION.name} Weather Trends</h1>
         <div className="header-meta">
-          {lastUpdated && <span className="data-age">Data: {timeAgo(lastUpdated)}</span>}
+          {lastUpdated && <span className="data-age">Checked: {timeAgo(lastUpdated)}</span>}
           <button className="refresh-btn" onClick={refresh} disabled={loading}>
             {loading ? 'Loading...' : 'Refresh'}
           </button>
@@ -49,17 +60,21 @@ function App() {
       <LoadingBar progress={progress} />
 
       {error && <div className="error-banner">{error}</div>}
+      {databaseBlocked && <div className="error-banner" role="status">Saving forecasts is blocked by another weather tab. Close older tabs to finish the database update. Available forecasts can still be displayed.</div>}
+      {cacheUnavailable && <div className="error-banner" role="status">The forecast could not be saved on this device. Available data is still displayed, but new values may be unavailable offline.</div>}
 
       <Nav active={view} onNavigate={setView} />
       <InstallApp />
 
       <main className="app-main">
-        {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} />}
-        {view === 'summary' && <Summary runs={runs} loading={loading} hasError={!!error} />}
-        {view === 'nightsky' && <NightSky runs={runs} loading={loading} hasError={!!error} />}
+        {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} ensembles={ensembles.index} />}
+        {view === 'summary' && <Summary runs={runs} loading={loading} hasError={!!error} ensembles={ensembles.index} />}
+        {['forecast', 'summary', 'nightsky'].includes(view) && <EnsembleStatus sources={ensembles.sources} />}
+        {view === 'nightsky' && <Suspense fallback={<p role="status">Loading Night Sky…</p>}><NightSky runs={runs} loading={loading} hasError={!!error} ensembles={ensembles.index} /></Suspense>}
         {view === 'trends' && <Suspense fallback={<p className="forecast-status" role="status">Loading charts…</p>}><Trends runs={runs} /></Suspense>}
         {view === 'seasonal' && <Seasonal />}
         {view === 'teleconnections' && <Teleconnections />}
+        {SourceProbe && <details><summary>Development source probe</summary><Suspense fallback={<p>Loading probes…</p>}><SourceProbe /></Suspense></details>}
       </main>
 
       <footer className="app-footer">
@@ -69,6 +84,7 @@ function App() {
           <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">
             Open-Meteo
           </a>
+          {' · '}<a href={`${import.meta.env.BASE_URL}THIRD_PARTY_NOTICES.txt`}>Library notices</a>
         </span>
       </footer>
     </div>

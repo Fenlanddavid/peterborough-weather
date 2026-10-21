@@ -43,3 +43,25 @@ The Drivers tab shows the latest reported teleconnection indices and MJO observa
 The Summary tab gives a detailed briefing on temperatures, rainfall timing, wind, cold and snowfall signals, model agreement, and each of the next seven days. Today covers the current hour onwards; subsequent days use full Peterborough calendar days, including clock changes. Missing data and incomplete rainfall totals are identified explicitly.
 
 Run the forecast summary and teleconnection regression checks with `npm test`.
+
+## Forecasting and Night Sky upgrade (21 October 2026)
+
+See [the phase-by-phase implementation report](docs/implementation-report.md) for changed files, source capabilities, validation, units/provenance, optional collectors, limitations and attribution. The original description above predates this upgrade.
+
+Forecast and Summary now use complete-window family-weighted deterministic signals and separately cached IFS/GEFS/MOGREPS-G ensemble estimates. UKV contributes within its actual forecast range while remaining an overlay in Trends. Percentages explicitly distinguish ensemble estimates, deterministic agreement and recent-run support; none is calibrated.
+
+Night Sky loads Astronomy Engine and satellite.js only when opened. It calculates local darkness, Moon events, planet visibility, local eclipse portions and ISS visible segments, with weather-based observing windows and separate aurora products. Scores and geographic aurora tiers are configurable planning heuristics, not measured seeing or verified visibility probabilities. Optional observation verification appears in Trends; corrections and reweighting stay disabled.
+
+```sh
+npm test
+npm run test:timezones
+npm run lint
+npm run check:scripts
+npm run build -- --base /peterborough-weather/
+npm run report:bundle
+npm run report:budget
+```
+
+Live probes are **separate** from unit tests: `npm run probe:sources` and `npm run probe:browser`. The browser probe defaults to the real published Pages origin. Set `CHROMIUM_PATH` to an installed Chromium executable when needed. Run production browser checks against `npm run preview -- --host 127.0.0.1 --port 5187 --base /peterborough-weather/` with `npm run smoke:browser`.
+
+Optional collectors are disabled unless the public repository variables `COLLECT_METAR`, `COLLECT_VERIFICATION`, `COLLECT_AURORAWATCH` or `COLLECT_ISS` are `true`. Deploy the application once first to create the reusable `site-shell` artifact. The hourly collector publishes data by overlaying it on that built shell, avoiding hourly full application rebuilds. See the report for source timestamps, retention, recovery and deployment checks; a collector commit alone does not establish that Pages is current.

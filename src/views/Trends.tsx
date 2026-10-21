@@ -10,6 +10,7 @@ import { calcChange, calcFlipFlop, calcPersistence, calcTrendSlope } from '../me
 import { generateCommentary } from '../commentary/commentary';
 import { VariableSelector } from '../components/VariableSelector';
 import { toLocalTime } from '../hooks/useLocalTime';
+import { VerificationPanel } from '../components/VerificationPanel';
 
 interface Props {
   runs: CachedRun[];
@@ -90,6 +91,7 @@ export function Trends({ runs }: Props) {
 
   return (
     <div className="view-trends">
+      <VerificationPanel />
       <VariableSelector selected={variable} onChange={setVariable} />
 
       <div className="valid-time-picker">

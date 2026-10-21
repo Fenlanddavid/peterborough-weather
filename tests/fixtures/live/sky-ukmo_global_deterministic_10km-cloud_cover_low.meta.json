@@ -1,0 +1,66 @@
+{
+  "id": "sky-ukmo_global_deterministic_10km-cloud_cover_low",
+  "provider": "Open-Meteo Forecast",
+  "model": "ukmo_global_deterministic_10km",
+  "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=cloud_cover_low&forecast_days=8",
+  "parameters": {
+    "latitude": "52.5736",
+    "longitude": "-0.2400",
+    "timezone": "GMT",
+    "wind_speed_unit": "ms",
+    "models": "ukmo_global_deterministic_10km",
+    "hourly": "cloud_cover_low",
+    "forecast_days": "8"
+  },
+  "retrievedAt": "2026-10-21T19:47:27.510Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-headers": "accept, authorization, content-type, origin, x-requested-with, user-agent, access-control-allow-origin, range, if-match, if-unmodified-since",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
+    "access-control-allow-origin": "*",
+    "access-control-max-age": "600",
+    "connection": "keep-alive",
+    "content-encoding": "deflate",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 21 Oct 2026 19:47:27 GMT",
+    "transfer-encoding": "chunked"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": [
+    "latitude",
+    "longitude",
+    "generationtime_ms",
+    "utc_offset_seconds",
+    "timezone",
+    "timezone_abbreviation",
+    "elevation",
+    "hourly_units",
+    "hourly"
+  ],
+  "sourceTimestamps": {},
+  "units": {
+    "time": "iso8601",
+    "cloud_cover_low": "%"
+  },
+  "range": [
+    "2026-10-21T00:00",
+    "2026-10-28T23:00"
+  ],
+  "variables": [
+    {
+      "key": "cloud_cover_low",
+      "length": 192,
+      "nullCount": 11,
+      "representative": 84,
+      "finiteCount": 181,
+      "min": 0,
+      "max": 100,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    }
+  ],
+  "memberIdentities": [
+    "control/unsuffixed"
+  ]
+}

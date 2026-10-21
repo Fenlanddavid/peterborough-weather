@@ -1,0 +1,23 @@
+{
+  "provider": "NASA JPL Horizons",
+  "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27599%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27coord%40399%27&COORD_TYPE=%27GEODETIC%27&SITE_COORD=%27-0.2400%2C52.5736%2C0.010%27&START_TIME=%272026-10-22%2000%3A00%27&STOP_TIME=%272026-10-22%2000%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%274%2C9%27&CSV_FORMAT=%27YES%27",
+  "recordedAt": "2026-10-21T19:03:33.348Z",
+  "body": "Jupiter (599)",
+  "observer": {
+    "latitude": 52.5736,
+    "longitude": -0.24,
+    "elevationKm": 0.01
+  },
+  "time": "2026-10-22T00:00:00Z",
+  "quantities": "Apparent azimuth/elevation with no refraction; apparent V magnitude",
+  "units": {
+    "azimuth": "degrees clockwise from north",
+    "elevation": "degrees above horizon",
+    "magnitude": "apparent V magnitude"
+  },
+  "tolerance": {
+    "anglesDegrees": 0.02,
+    "magnitude": 0.05
+  },
+  "independentReference": true
+}

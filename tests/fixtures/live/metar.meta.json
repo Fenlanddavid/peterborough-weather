@@ -1,0 +1,125 @@
+{
+  "id": "metar",
+  "provider": "AviationWeather",
+  "model": "EGXT",
+  "url": "https://aviationweather.gov/api/data/metar?ids=EGXT&format=json&hours=72",
+  "nodeOnly": true,
+  "parameters": {
+    "ids": "EGXT",
+    "format": "json",
+    "hours": "72"
+  },
+  "retrievedAt": "2026-10-21T18:32:10.981Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "cache-control": "max-age=60",
+    "connection": "keep-alive",
+    "content-encoding": "br",
+    "content-security-policy": "frame-ancestors 'self' *.weather.gov",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 21 Oct 2026 18:32:11 GMT",
+    "etag": "W/\"ff8d-MMyqwSO9LuMBkVXYckBA+OjMDKs\"",
+    "strict-transport-security": "max-age=63072000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "vary": "Accept-Encoding",
+    "x-azure-ref": "20261021T183211Z-15b5f5db6cfgt5kmhC1LONdvyw00000022c000000000453t",
+    "x-cache": "TCP_MISS",
+    "x-fd-int-roxy-purgeid": "66959009",
+    "x-frame-options": "SAMEORIGIN"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": "array",
+  "sourceTimestamps": {
+    "convention": "Per-record time_tag (UTC) or METAR obsTime (Unix seconds)",
+    "range": [
+      "2026-10-18T18:50:00.000Z",
+      "2026-10-21T17:50:00.000Z"
+    ]
+  },
+  "representative": [
+    {
+      "icaoId": "EGXT",
+      "receiptTime": "2026-10-18T19:33:32.950Z",
+      "obsTime": 1792351200,
+      "reportTime": "2026-10-18T19:20:00.000Z",
+      "temp": 10,
+      "dewp": 7,
+      "wdir": 10,
+      "wspd": 10,
+      "visib": "6+",
+      "altim": 1029,
+      "qcField": 2,
+      "metarType": "METAR",
+      "rawOb": "METAR EGXT 181920Z AUTO 01010KT 9999 OVC042/// 10/07 Q1029",
+      "lat": 52.611,
+      "lon": -0.461,
+      "elev": 74,
+      "name": "Wittering Arpt, EN, GB",
+      "cover": "OVC",
+      "clouds": [
+        {
+          "cover": "OVC",
+          "base": 4200
+        }
+      ],
+      "fltCat": "VFR"
+    },
+    {
+      "icaoId": "EGXT",
+      "receiptTime": "2026-10-18T19:03:24.154Z",
+      "obsTime": 1792349400,
+      "reportTime": "2026-10-18T19:00:00.000Z",
+      "temp": 10,
+      "dewp": 6,
+      "wdir": 350,
+      "wspd": 10,
+      "visib": "6+",
+      "altim": 1029,
+      "qcField": 2,
+      "metarType": "METAR",
+      "rawOb": "METAR EGXT 181850Z AUTO 35010KT 9999 OVC049/// 10/06 Q1029",
+      "lat": 52.611,
+      "lon": -0.461,
+      "elev": 74,
+      "name": "Wittering Arpt, EN, GB",
+      "cover": "OVC",
+      "clouds": [
+        {
+          "cover": "OVC",
+          "base": 4900
+        }
+      ],
+      "fltCat": "VFR"
+    }
+  ],
+  "recordKeys": [
+    "icaoId",
+    "receiptTime",
+    "obsTime",
+    "reportTime",
+    "temp",
+    "dewp",
+    "wdir",
+    "wspd",
+    "visib",
+    "altim",
+    "qcField",
+    "metarType",
+    "rawOb",
+    "lat",
+    "lon",
+    "elev",
+    "name",
+    "cover",
+    "clouds",
+    "fltCat"
+  ],
+  "range": [
+    "2026-10-18T18:50:00.000Z",
+    "2026-10-21T17:50:00.000Z"
+  ],
+  "units": null,
+  "unitNote": "No response unit metadata; consult the documented product units (METAR raw wind is knots; normalisation is separate).",
+  "nullFields": {}
+}

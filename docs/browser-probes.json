@@ -1,0 +1,946 @@
+{
+  "retrievedAt": "2026-10-21T19:15:28.452Z",
+  "page": "https://fenlanddavid.github.io/peterborough-weather/",
+  "origin": "https://fenlanddavid.github.io",
+  "navigationStatus": 200,
+  "results": [
+    {
+      "id": "ensemble-ecmwf_ifs025-temperature_2m",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=temperature_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 51025,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ecmwf_ifs025-precipitation",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=precipitation&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 55723,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ecmwf_ifs025-wind_gusts_10m",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=wind_gusts_10m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 62163,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ecmwf_ifs025-snowfall",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=snowfall&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 55201,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ecmwf_ifs025-cloud_cover",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=cloud_cover&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 37223,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-gfs025-temperature_2m",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs025&hourly=temperature_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 32868,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-gfs025-precipitation",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs025&hourly=precipitation&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 35371,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-gfs025-wind_gusts_10m",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs025&hourly=wind_gusts_10m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 40003,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-gfs025-snowfall",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs025&hourly=snowfall&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 35062,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-gfs025-cloud_cover",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs025&hourly=cloud_cover&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 24405,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ukmo_global_ensemble_20km-temperature_2m",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_ensemble_20km&hourly=temperature_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 20464,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ukmo_global_ensemble_20km-precipitation",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_ensemble_20km&hourly=precipitation&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 22153,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ukmo_global_ensemble_20km-wind_gusts_10m",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_ensemble_20km&hourly=wind_gusts_10m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 24080,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ukmo_global_ensemble_20km-snowfall",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_ensemble_20km&hourly=snowfall&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 21974,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "ensemble-ukmo_global_ensemble_20km-cloud_cover",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_ensemble_20km&hourly=cloud_cover&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 15816,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-cloud_cover",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=cloud_cover&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4517,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-cloud_cover_low",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=cloud_cover_low&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4436,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-cloud_cover_mid",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=cloud_cover_mid&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4408,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-cloud_cover_high",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=cloud_cover_high&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4437,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-temperature_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=temperature_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4782,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-dew_point_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=dew_point_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4711,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-relative_humidity_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=relative_humidity_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4490,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-visibility",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=visibility&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4863,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ecmwf_ifs025-wind_speed_250hPa",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=wind_speed_250hPa&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 5051,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-cloud_cover",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=cloud_cover&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4555,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-cloud_cover_low",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=cloud_cover_low&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4499,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-cloud_cover_mid",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=cloud_cover_mid&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4445,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-cloud_cover_high",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=cloud_cover_high&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4477,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-temperature_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=temperature_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4786,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-dew_point_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=dew_point_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4724,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-relative_humidity_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=relative_humidity_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4500,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-visibility",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=visibility&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 5618,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-gfs_global-wind_speed_250hPa",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=wind_speed_250hPa&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 5058,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-cloud_cover",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=cloud_cover&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4575,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-cloud_cover_low",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=cloud_cover_low&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4504,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-cloud_cover_mid",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=cloud_cover_mid&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4498,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-cloud_cover_high",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=cloud_cover_high&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4502,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-temperature_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=temperature_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4786,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-dew_point_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=dew_point_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4742,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-relative_humidity_2m",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=relative_humidity_2m&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 4545,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-visibility",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=visibility&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 5499,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "sky-ukmo_global_deterministic_10km-wind_speed_250hPa",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=wind_speed_250hPa&forecast_days=8",
+      "readable": true,
+      "status": 200,
+      "bytes": 5037,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "single-runs",
+      "url": "https://single-runs-api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_ifs025&hourly=temperature_2m%2Cprecipitation%2Cwind_speed_10m%2Cwind_gusts_10m%2Cpressure_msl%2Csnowfall%2Cweather_code%2Cis_day%2Ccloud_cover&run=2026-10-20T00%3A00&forecast_days=7",
+      "readable": true,
+      "status": 200,
+      "bytes": 10320,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "previous-runs",
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=gfs_global&hourly=temperature_2m_previous_day1%2Cwind_speed_10m_previous_day1&past_days=2&forecast_days=1",
+      "readable": true,
+      "status": 200,
+      "bytes": 2433,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "air-quality",
+      "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&hourly=aerosol_optical_depth%2Cdust&domains=cams_global&forecast_days=7",
+      "readable": true,
+      "status": 200,
+      "bytes": 5054,
+      "schema": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ]
+    },
+    {
+      "id": "kp-current",
+      "url": "https://services.swpc.noaa.gov/json/planetary_k_index_1m.json",
+      "readable": true,
+      "status": 200,
+      "bytes": 27925,
+      "schema": "array"
+    },
+    {
+      "id": "kp-forecast",
+      "url": "https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json",
+      "readable": true,
+      "status": 200,
+      "bytes": 6905,
+      "schema": "array"
+    },
+    {
+      "id": "ovation",
+      "url": "https://services.swpc.noaa.gov/json/ovation_aurora_latest.json",
+      "readable": true,
+      "status": 200,
+      "bytes": 928093,
+      "schema": [
+        "Observation Time",
+        "Forecast Time",
+        "Data Format",
+        "coordinates",
+        "type"
+      ]
+    },
+    {
+      "id": "solar-mag",
+      "url": "https://services.swpc.noaa.gov/products/solar-wind/mag-2-hour.json",
+      "readable": false,
+      "status": null,
+      "error": "TypeError: Failed to fetch"
+    },
+    {
+      "id": "solar-plasma",
+      "url": "https://services.swpc.noaa.gov/products/solar-wind/plasma-2-hour.json",
+      "readable": false,
+      "status": null,
+      "error": "TypeError: Failed to fetch"
+    },
+    {
+      "id": "solar-mag-replacement",
+      "url": "https://services.swpc.noaa.gov/json/rtsw/rtsw_mag_1m.json",
+      "readable": true,
+      "status": 200,
+      "bytes": 1494703,
+      "schema": "array"
+    },
+    {
+      "id": "solar-plasma-replacement",
+      "url": "https://services.swpc.noaa.gov/json/rtsw/rtsw_wind_1m.json",
+      "readable": true,
+      "status": 200,
+      "bytes": 2491633,
+      "schema": "array"
+    },
+    {
+      "id": "aurorawatch",
+      "url": "https://aurorawatch-api.lancs.ac.uk/0.2/status/current-status.xml",
+      "readable": true,
+      "status": 200,
+      "bytes": 463,
+      "schema": "text/XML/TLE"
+    },
+    {
+      "id": "iss",
+      "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE",
+      "readable": true,
+      "status": 200,
+      "bytes": 168,
+      "schema": "text/XML/TLE"
+    },
+    {
+      "id": "metadata-ecmwf_ifs025_ensemble",
+      "url": "https://api.open-meteo.com/data/ecmwf_ifs025_ensemble/static/meta.json",
+      "readable": true,
+      "status": 200,
+      "bytes": 596,
+      "schema": [
+        "chunk_time_length",
+        "crs_wkt",
+        "data_end_time",
+        "last_run_availability_time",
+        "last_run_initialisation_time",
+        "last_run_modification_time",
+        "temporal_resolution_seconds",
+        "update_interval_seconds"
+      ]
+    },
+    {
+      "id": "metadata-ncep_gefs025",
+      "url": "https://api.open-meteo.com/data/ncep_gefs025/static/meta.json",
+      "readable": true,
+      "status": 200,
+      "bytes": 596,
+      "schema": [
+        "chunk_time_length",
+        "crs_wkt",
+        "data_end_time",
+        "last_run_availability_time",
+        "last_run_initialisation_time",
+        "last_run_modification_time",
+        "temporal_resolution_seconds",
+        "update_interval_seconds"
+      ]
+    },
+    {
+      "id": "metadata-ukmo_global_ensemble_20km",
+      "url": "https://api.open-meteo.com/data/ukmo_global_ensemble_20km/static/meta.json",
+      "readable": true,
+      "status": 200,
+      "bytes": 601,
+      "schema": [
+        "chunk_time_length",
+        "crs_wkt",
+        "data_end_time",
+        "last_run_availability_time",
+        "last_run_initialisation_time",
+        "last_run_modification_time",
+        "temporal_resolution_seconds",
+        "update_interval_seconds"
+      ]
+    }
+  ],
+  "note": "Readability tested by JavaScript at the actual deployed origin; Access-Control-Allow-Origin inspection is not required."
+}

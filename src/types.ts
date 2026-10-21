@@ -1,4 +1,4 @@
-import type { VariableId } from './config/models';
+import type { VariableId } from './config/models.ts';
 
 export interface OutlookWeek {
   date: string;
@@ -30,6 +30,7 @@ export interface CachedRun {
   times: string[];
   values: (number | null)[];
   fetchedAt: number;     // Date.now() when cached
+  unitState?: 'unknown-legacy'; // v1 wind units were not trustworthy; keep records, exclude calculations.
 }
 
 /** A six-hour window aggregate */

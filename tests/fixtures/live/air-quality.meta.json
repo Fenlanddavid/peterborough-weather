@@ -1,0 +1,79 @@
+{
+  "id": "air-quality",
+  "provider": "Open-Meteo / CAMS",
+  "model": "cams_global",
+  "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&hourly=aerosol_optical_depth%2Cdust&domains=cams_global&forecast_days=7",
+  "parameters": {
+    "latitude": "52.5736",
+    "longitude": "-0.2400",
+    "timezone": "GMT",
+    "wind_speed_unit": "ms",
+    "hourly": "aerosol_optical_depth,dust",
+    "domains": "cams_global",
+    "forecast_days": "7"
+  },
+  "retrievedAt": "2026-10-21T18:32:09.806Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-headers": "accept, authorization, content-type, origin, x-requested-with, user-agent, access-control-allow-origin, range, if-match, if-unmodified-since",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
+    "access-control-allow-origin": "*",
+    "access-control-max-age": "600",
+    "connection": "keep-alive",
+    "content-encoding": "deflate",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 21 Oct 2026 18:32:09 GMT",
+    "transfer-encoding": "chunked"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": [
+    "latitude",
+    "longitude",
+    "generationtime_ms",
+    "utc_offset_seconds",
+    "timezone",
+    "timezone_abbreviation",
+    "elevation",
+    "hourly_units",
+    "hourly"
+  ],
+  "sourceTimestamps": {},
+  "units": {
+    "time": "iso8601",
+    "aerosol_optical_depth": "",
+    "dust": "μg/m³"
+  },
+  "range": [
+    "2026-10-21T00:00",
+    "2026-10-27T23:00"
+  ],
+  "variables": [
+    {
+      "key": "aerosol_optical_depth",
+      "length": 168,
+      "nullCount": 47,
+      "representative": 0.12,
+      "finiteCount": 121,
+      "min": 0.03,
+      "max": 0.13,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-26T00:00"
+    },
+    {
+      "key": "dust",
+      "length": 168,
+      "nullCount": 47,
+      "representative": 0,
+      "finiteCount": 121,
+      "min": 0,
+      "max": 0,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-26T00:00"
+    }
+  ],
+  "memberIdentities": [
+    "control/unsuffixed",
+    "control/unsuffixed"
+  ]
+}

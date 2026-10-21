@@ -1,5 +1,6 @@
 import { LOCATION } from '../config/models';
 import type { MonthlyOutlookData } from '../types';
+import { scheduledFetch } from '../data/scheduler.ts';
 
 const CACHE_KEY = 'pb-weather:monthly-outlook:v1';
 const CACHE_AGE = 6 * 3600_000;
@@ -40,7 +41,7 @@ export function fetchMonthlyOutlook(today: string, force = false): Promise<Month
     const params = new URLSearchParams({ latitude: String(LOCATION.latitude), longitude: String(LOCATION.longitude),
       models: 'ecmwf_ec46', weekly: 'temperature_2m_anomaly,precipitation_mean,precipitation_anomaly',
       forecast_days: '35', timezone: 'Europe/London' });
-    const response = await fetch(`https://seasonal-api.open-meteo.com/v1/seasonal?${params}`, { signal: AbortSignal.timeout(15_000) });
+    const response = await scheduledFetch(`https://seasonal-api.open-meteo.com/v1/seasonal?${params}`, { optional: true, timeout: 15_000 });
     if (!response.ok) throw new Error('Long-range data unavailable');
     const data: unknown = await response.json();
     const outlook = parseMonthlyOutlook(data);

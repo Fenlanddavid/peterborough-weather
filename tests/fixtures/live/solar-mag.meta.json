@@ -1,0 +1,28 @@
+{
+  "id": "solar-mag",
+  "provider": "NOAA SWPC",
+  "model": "DSCOVR GSM",
+  "url": "https://services.swpc.noaa.gov/products/solar-wind/mag-2-hour.json",
+  "parameters": {},
+  "retrievedAt": "2026-10-21T18:32:10.039Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 404,
+  "headers": {
+    "age": "9",
+    "connection": "keep-alive",
+    "content-length": "196",
+    "content-type": "text/html; charset=iso-8859-1",
+    "date": "Wed, 21 Oct 2026 18:32:01 GMT",
+    "server": "Apache",
+    "strict-transport-security": "max-age=31536000",
+    "via": "1.1 1ec305eeeaeff6401cde8893e63dc674.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "uvOtSldJ_317g7tCWg387wpkvmNkjVCC-4JKXafS_aPWu256b5GbZg==",
+    "x-amz-cf-pop": "LHR86-P1",
+    "x-cache": "Error from cloudfront"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": "text/XML/TLE",
+  "sourceTimestamps": null,
+  "representative": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n",
+  "error": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n"
+}

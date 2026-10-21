@@ -1,7 +1,14 @@
 import type { CachedRun } from '../types';
-import { DETERMINISTIC_MODELS, type VariableId } from '../config/models.ts';
+import type { VariableId } from '../config/models.ts';
 import { getLocalDate, getLocalDayHours, toLocalTime } from '../hooks/useLocalTime.ts';
-import { buildLatestIndex } from './utils.ts';
+import { buildForecastSignals, familyMean } from '../forecast/signals.ts';
+import type { ModelValue } from '../forecast/signals.ts';
+import { eventTimes, PRECIP_DAY, SNOW } from '../forecast/events.ts';
+import type { EnsembleIndex } from '../forecast/events.ts';
+import type { EventEstimate, Provenance } from '../data/contracts.ts';
+import { eventPercent, HOUR, msToMph, utc } from '../data/contracts.ts';
+import { getHourlyCondition } from './hourlyWeather.ts';
+import type { IconName } from '../components/WeatherIcon';
 
 export interface SummaryDay {
   date: string;
@@ -22,6 +29,11 @@ export interface SummaryDay {
   modelCount: number;
   temperatureSpread: number | null;
   paragraphs: string[];
+  precipitation: EventEstimate;
+  completeModels: number;
+  condition: { label: string; icon: IconName | null };
+  provenance: Provenance[];
+  stale: boolean;
 }
 
 interface Hour {
@@ -51,8 +63,8 @@ export interface ForecastBriefing {
 
 const mean = (values: number[]): number | null => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
 const max = (values: number[]): number | null => values.length ? Math.max(...values) : null;
-const min = (values: number[]): number | null => values.length ? Math.min(...values) : null;
 const available = (values: (number | null)[]): number[] => values.filter((value): value is number => value !== null);
+const preferFresh = (values: ModelValue[]) => values.some(v => !v.stale) ? values.filter(v => !v.stale) : values;
 // Weather codes are categories; their numeric mean would describe a different condition.
 const mostFrequentCode = (values: number[]): number | null => {
   const counts = new Map<number, number>();
@@ -64,7 +76,7 @@ const mostFrequentCode = (values: number[]): number | null => {
 const degrees = (value: number) => `${Math.round(value)}°C`;
 const periodName = (day: SummaryDay) => day.label !== 'Today' ? day.label : day.remainingToday ? 'the rest of today' : 'today';
 const joinDays = (days: SummaryDay[]) => new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }).format(days.map(periodName));
-const fullRain = (day: SummaryDay) => day.rainHours === day.expectedHours && day.expectedHours > 0;
+const fullRain = (day: SummaryDay) => day.rainMm !== null && day.expectedHours > 0 && (day.completeModels > 0 || day.precipitation.basis === 'ensemble-probability' && day.precipitation.value !== null);
 
 function rainTiming(hours: Hour[]): string | null {
   const wet = hours.filter((hour) => hour.rain !== null && hour.rain >= 0.1);
@@ -78,22 +90,23 @@ function rainTiming(hours: Hour[]): string | null {
     const localHour = Number(toLocalTime(hour.time, 'time').slice(0, 2));
     return sum + (localHour >= period.start && localHour < period.end ? hour.rain! : 0);
   }, 0) })).filter((period) => period.total > 0).sort((a, b) => b.total - a.total);
-  if (periods.length >= 3) return 'Rain is spread across several parts of the day.';
-  return `Rain is mainly indicated ${periods[0].label}${periods.length === 2 ? ` and ${periods[1].label}` : ''}.`;
+  if (periods.length >= 3) return 'Precipitation is spread across several parts of the day.';
+  return `Precipitation is mainly indicated ${periods[0].label}${periods.length === 2 ? ` and ${periods[1].label}` : ''}.`;
 }
 
 function describeDay(day: SummaryDay): string[] {
   const lines: string[] = [];
+  if (day.stale) lines.push('Some displayed values use cached model output over 36 hours old; this is not a current consensus. Stale output is excluded from new event recommendations.');
   if (day.high !== null && day.low !== null) {
     lines.push(`Temperatures range from ${degrees(day.low)} to ${degrees(day.high)}${day.temperatureHours < day.expectedHours ? ' across the available hours' : ''}.`);
-  } else lines.push('Temperature data is unavailable.');
+  } else lines.push(`A complete temperature window is unavailable (${day.temperatureHours} of ${day.expectedHours} hours have some data).`);
 
-  if (day.rainMm === null) lines.push('Rainfall data is unavailable; this is not a dry-weather signal.');
+  if (day.rainMm === null) lines.push(`Precipitation data is unavailable for a compatible complete model window; coverage is incomplete (${day.rainHours} of ${day.expectedHours} hours have some data). This is not a dry-weather signal.`);
   else {
     const amount = day.rainMm.toFixed(1);
     lines.push(fullRain(day)
-      ? day.rainMm < 0.1 ? 'Little or no rain is indicated.' : `Around ${amount} mm of rain is indicated. ${day.rainTiming ?? 'Only small amounts are indicated in individual hours.'}`
-      : `The available hours show ${amount} mm of rain, but coverage is incomplete (${day.rainHours} of ${day.expectedHours} hours).${day.rainTiming ? ` ${day.rainTiming}` : ''}`);
+      ? day.rainMm < 0.1 ? 'Little or no precipitation is indicated.' : `Around ${amount} mm of precipitation is indicated. ${day.rainTiming ?? 'Only small amounts are indicated in individual hours.'}`
+      : `The available hours show ${amount} mm of precipitation, but coverage is incomplete (${day.rainHours} of ${day.expectedHours} hours).${day.rainTiming ? ` ${day.rainTiming}` : ''}`);
   }
 
   if (day.windMph !== null) lines.push(`Winds average around ${Math.round(day.windMph)} mph across the available hours${day.gustMph !== null ? `, with peak gusts near ${Math.round(day.gustMph)} mph${day.gustTime ? ` around ${day.gustTime}` : ''}` : '; gust data is unavailable'}.`);
@@ -110,58 +123,67 @@ function describeDay(day: SummaryDay): string[] {
 export interface BriefingOptions {
   /** Include today's earlier hours (the home screen's day cards) rather than only what's left. */
   wholeToday?: boolean;
+  ensembles?: EnsembleIndex;
 }
 
-/** Generate a briefing from the latest non-overlay runs, using Peterborough's calendar days. */
+/** Generate a complete-window family-weighted briefing, including eligible UKV data. */
 export function buildForecastBriefing(runs: CachedRun[], now: Date, options: BriefingOptions = {}): ForecastBriefing {
-  const models = DETERMINISTIC_MODELS.filter((model) => !model.isOverlay);
-  const modelIds = new Set(models.map((model) => model.id));
-  const latest = new Map<string, CachedRun>();
-  for (const run of runs) {
-    if (!modelIds.has(run.modelId)) continue;
-    const key = `${run.modelId}:${run.variable}`;
-    if (!latest.has(key) || latest.get(key)!.runTime < run.runTime) latest.set(key, run);
-  }
-  // Shared with the home screen: newest run per model, gaps filled from the previous run, winds in mph.
-  const latestIndex = buildLatestIndex(runs);
-  const valuesAt = (variable: VariableId, time: string): number[] => models.flatMap((model) => {
-    const value = latestIndex.value(model.id, variable, time);
-    if (value === null) return [];
-    if (variable !== 'temperature_2m' && value < 0) return [];
-    return [value];
-  });
+  const signals = buildForecastSignals(runs, now.getTime());
+  const latest = new Map([...signals.groups].flatMap(([key, runs]) => runs[0] ? [[key, runs[0]] as const] : []));
+  const valuesAt = (variable: VariableId, time: string): number[] => signals.samples(variable, utc(time)).map(v => v.value);
   const today = getLocalDate(now);
   const currentHour = Math.floor(now.getTime() / 3600_000) * 3600_000;
+  const weightedAt = (variable: VariableId, time: string) => {
+    const value = signals.mean(variable, utc(time));
+    return value !== null && /^wind_/.test(variable) ? msToMph(value) : value;
+  };
   const days: SummaryDay[] = Array.from({ length: 7 }, (_, index) => {
     const date = new Date(Date.parse(`${today}T12:00:00Z`) + index * 86400_000).toISOString().slice(0, 10);
     const times = getLocalDayHours(date).filter((time) => index > 0 || options.wholeToday || Date.parse(`${time}Z`) >= currentHour);
     const hours: Hour[] = times.map((time) => {
       const temperatures = valuesAt('temperature_2m', time);
       return {
-        time, weatherCode: mostFrequentCode(valuesAt('weather_code', time)), temperature: mean(temperatures), rain: mean(valuesAt('precipitation', time)),
-        snow: mean(valuesAt('snowfall', time)), wind: mean(valuesAt('wind_speed_10m', time)),
-        gust: mean(valuesAt('wind_gusts_10m', time)), temperatureModels: temperatures.length,
+        time, weatherCode: mostFrequentCode(valuesAt('weather_code', time)), temperature: weightedAt('temperature_2m', time), rain: weightedAt('precipitation', new Date(utc(time) + HOUR).toISOString()),
+        snow: weightedAt('snowfall', new Date(utc(time) + HOUR).toISOString()), wind: weightedAt('wind_speed_10m', time),
+        gust: weightedAt('wind_gusts_10m', time), temperatureModels: temperatures.length,
         temperatureSpread: temperatures.length > 1 ? Math.max(...temperatures) - Math.min(...temperatures) : null,
       };
     });
     const rain = available(hours.map((hour) => hour.rain));
-    const snow = available(hours.map((hour) => hour.snow));
     const gust = max(available(hours.map((hour) => hour.gust)));
     const peakGustHours = hours.filter((hour) => gust !== null && hour.gust === gust);
+    const start = times.length ? utc(times[0]) : currentHour;
+    const end = times.length ? utc(times.at(-1)!) + HOUR : start;
+    const sampleTimes = times.map(utc);
+    const highs = preferFresh(signals.aggregate('temperature_2m', sampleTimes, 'max'));
+    const lows = preferFresh(signals.aggregate('temperature_2m', sampleTimes, 'min'));
+    const precipitation = signals.event(PRECIP_DAY, start, end, options.ensembles);
+    const rainCohort = preferFresh(signals.aggregate('precipitation', eventTimes(PRECIP_DAY, start, end), 'sum'));
+    const snowCohort = preferFresh(signals.aggregate('snowfall', eventTimes(SNOW, start, end), 'sum'));
+    const winds = preferFresh(signals.aggregate('wind_speed_10m', sampleTimes, 'sum')).map(v => ({ ...v, value: v.value / sampleTimes.length }));
+    const gusts = preferFresh(signals.aggregate('wind_gusts_10m', eventTimes({ ...SNOW, variable: 'wind_gusts_10m', operation: 'max' }, start, end), 'max'));
+    const contributors = [...highs, ...lows, ...rainCohort, ...snowCohort, ...winds, ...gusts];
+    const conditions = times.map(t => getHourlyCondition(signals, t));
+    const condition = conditions.find(c => ['storm', 'fog', 'snow'].includes(c.icon ?? '') || /freezing/i.test(c.label))
+      ?? getHourlyCondition(signals, new Date(start + Math.min(12, times.length - 1) * HOUR).toISOString(), precipitation);
     const day: SummaryDay = {
       date, label: index === 0 ? 'Today' : new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Europe/London' }),
       remainingToday: index === 0 && !options.wholeToday, expectedHours: times.length,
       temperatureHours: hours.filter((hour) => hour.temperature !== null).length, rainHours: rain.length,
       weatherCode: mostFrequentCode(available(hours.map((hour) => hour.weatherCode))),
-      high: max(available(hours.map((hour) => hour.temperature))), low: min(available(hours.map((hour) => hour.temperature))),
-      rainMm: rain.length ? rain.reduce((sum, value) => sum + value, 0) : null,
-      snowCm: snow.length ? snow.reduce((sum, value) => sum + value, 0) : null,
-      windMph: mean(available(hours.map((hour) => hour.wind))), gustMph: gust,
+      high: familyMean(highs), low: familyMean(lows),
+      rainMm: precipitation.basis === 'ensemble-probability' ? precipitation.expectedAmount : familyMean(rainCohort),
+      snowCm: familyMean(snowCohort),
+      windMph: familyMean(winds) === null ? null : msToMph(familyMean(winds)!), gustMph: familyMean(gusts) === null ? null : msToMph(familyMean(gusts)!),
       gustTime: peakGustHours.length === 1 ? toLocalTime(peakGustHours[0].time, 'time') : null,
       rainTiming: rainTiming(hours), modelCount: Math.max(0, ...hours.map((hour) => hour.temperatureModels)),
-      temperatureSpread: max(available(hours.map((hour) => hour.temperatureSpread))), paragraphs: [],
+      temperatureSpread: max(available(hours.map((hour) => hour.temperatureSpread))), paragraphs: [], precipitation, completeModels: rainCohort.length, condition,
+      provenance: [...precipitation.provenance, ...contributors.flatMap(v => v.contributions ?? [v])], stale: contributors.some(v => v.stale),
     };
     day.paragraphs = describeDay(day);
+    if (day.precipitation.value !== null) day.paragraphs.push(`${day.precipitation.basis === 'ensemble-probability' ? 'Uncalibrated ensemble probability estimate' : 'Deterministic model agreement'}: ${eventPercent(day.precipitation.value)} for at least 1 mm of precipitation over ${day.remainingToday ? 'the remainder of today' : 'this local calendar day'}. ${day.precipitation.usable}/${day.precipitation.expected} eligible ${day.precipitation.basis === 'ensemble-probability' ? 'members' : 'models'}.`);
+    if (day.precipitation.conditionalAmount !== null) day.paragraphs.push(`If wet (at least 1 mm), typically around ${day.precipitation.conditionalAmount.toFixed(1)} mm. Expected precipitation includes dry outcomes.`);
+    day.paragraphs.push(`Precipitation sources: ${day.precipitation.systems.join(', ') || 'none eligible'}; ${new Set(day.precipitation.provenance.map(p => p.family).filter(Boolean)).size} of 3 families represented. Coverage can differ by variable.`);
     return day;
   });
   const withTemp = days.filter((day) => day.high !== null);
@@ -188,11 +210,11 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date, options: Bri
     : early - late >= 2 ? ' The later days look cooler than the next couple of days.' : ' Daytime highs look broadly similar between the next couple of days and later in the week.';
 
   let rainfall = completeRain.length === 7
-    ? `${wet.length} of the next seven forecast periods ${wet.length === 1 ? 'has' : 'have'} at least 0.5 mm of rain indicated, totalling around ${days.reduce((sum, day) => sum + day.rainMm!, 0).toFixed(1)} mm.`
-    : `Rainfall coverage is complete for ${completeRain.length} of the seven forecast periods. Missing hours cannot be treated as dry, so a full-week total is not available.`;
+    ? `${wet.length} of the next seven forecast periods ${wet.length === 1 ? 'has' : 'have'} at least 0.5 mm of precipitation indicated, totalling around ${days.reduce((sum, day) => sum + day.rainMm!, 0).toFixed(1)} mm.`
+    : `Precipitation coverage is complete for ${completeRain.length} of the seven forecast periods. Missing hours cannot be treated as dry, so a full-week total is not available.`;
   if (wettest && wettest.rainMm! >= 0.5) rainfall += ` The wettest fully covered period is ${periodName(wettest)}, at around ${wettest.rainMm!.toFixed(1)} mm. ${wettest.rainTiming ?? ''}`;
   const dry = completeRain.filter((day) => day.rainMm! < 0.1);
-  if (dry.length) rainfall += ` Little or no rain is indicated for ${joinDays(dry)}.`;
+  if (dry.length) rainfall += ` Little or no precipitation is indicated for ${joinDays(dry)}.`;
 
   const winds = available(days.map((day) => day.windMph));
   let wind = winds.length ? `Average winds range from around ${Math.round(Math.min(...winds))} to ${Math.round(Math.max(...winds))} mph across the available periods.` : 'Average wind data is unavailable.';
@@ -214,8 +236,8 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date, options: Bri
   const usedRuns = [...latest.values()].filter((run) => ['temperature_2m', 'precipitation', 'snowfall', 'wind_speed_10m', 'wind_gusts_10m'].includes(run.variable)
     && run.times.some((time, index) => Date.parse(`${time}Z`) >= currentHour && typeof run.values[index] === 'number' && Number.isFinite(run.values[index])));
   const latestRun = usedRuns.map((run) => run.runTime).sort().at(-1) ?? null;
-  const stale = latestRun !== null && now.getTime() - Date.parse(`${latestRun}Z`) > 24 * 3600_000;
+  const stale = days.some(day => day.stale) || latestRun !== null && now.getTime() - Date.parse(`${latestRun}Z`) > 36 * 3600_000;
   const overview = !hasData ? 'A detailed briefing will appear once forecast data is available.'
-    : `${temperature.split('. ')[0].replace(/\.$/, '')}. ${completeRain.length === 7 ? wet.length ? `Rain is indicated in ${wet.length} of the seven forecast periods.` : 'Very little rain is indicated across the seven forecast periods.' : 'Rainfall coverage is incomplete, so check the daily detail before planning.'}${windiest ? ` Peak gusts are around ${Math.round(windiest.gustMph!)} mph for ${periodName(windiest)}.` : ''}`;
+    : `${temperature.split('. ')[0].replace(/\.$/, '')}. ${completeRain.length === 7 ? wet.length ? `Precipitation is indicated in ${wet.length} of the seven forecast periods.` : 'Very little precipitation is indicated across the seven forecast periods.' : 'Precipitation coverage is incomplete, so check the daily detail before planning.'}${windiest ? ` Peak gusts are around ${Math.round(windiest.gustMph!)} mph for ${periodName(windiest)}.` : ''}`;
   return { days, hasData, overview, temperature, rainfall, wind, cold, agreement, latestRun, stale };
 }

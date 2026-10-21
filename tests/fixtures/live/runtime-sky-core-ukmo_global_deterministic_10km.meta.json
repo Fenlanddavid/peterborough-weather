@@ -1,0 +1,185 @@
+{
+  "id": "runtime-sky-core-ukmo_global_deterministic_10km",
+  "provider": "Open-Meteo Forecast",
+  "model": "ukmo_global_deterministic_10km",
+  "url": "https://api.open-meteo.com/v1/forecast?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ukmo_global_deterministic_10km&hourly=cloud_cover%2Ccloud_cover_low%2Ccloud_cover_mid%2Ccloud_cover_high%2Ctemperature_2m%2Cdew_point_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_gusts_10m%2Cprecipitation&forecast_days=9&temperature_unit=celsius&precipitation_unit=mm",
+  "parameters": {
+    "latitude": "52.5736",
+    "longitude": "-0.2400",
+    "timezone": "GMT",
+    "wind_speed_unit": "ms",
+    "models": "ukmo_global_deterministic_10km",
+    "hourly": "cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,temperature_2m,dew_point_2m,relative_humidity_2m,wind_speed_10m,wind_gusts_10m,precipitation",
+    "forecast_days": "9",
+    "temperature_unit": "celsius",
+    "precipitation_unit": "mm"
+  },
+  "retrievedAt": "2026-10-21T19:47:27.799Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-headers": "accept, authorization, content-type, origin, x-requested-with, user-agent, access-control-allow-origin, range, if-match, if-unmodified-since",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
+    "access-control-allow-origin": "*",
+    "access-control-max-age": "600",
+    "connection": "keep-alive",
+    "content-encoding": "deflate",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 21 Oct 2026 19:47:27 GMT",
+    "transfer-encoding": "chunked"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": [
+    "latitude",
+    "longitude",
+    "generationtime_ms",
+    "utc_offset_seconds",
+    "timezone",
+    "timezone_abbreviation",
+    "elevation",
+    "hourly_units",
+    "hourly"
+  ],
+  "sourceTimestamps": {},
+  "units": {
+    "time": "iso8601",
+    "cloud_cover": "%",
+    "cloud_cover_low": "%",
+    "cloud_cover_mid": "%",
+    "cloud_cover_high": "%",
+    "temperature_2m": "°C",
+    "dew_point_2m": "°C",
+    "relative_humidity_2m": "%",
+    "wind_speed_10m": "m/s",
+    "wind_gusts_10m": "m/s",
+    "precipitation": "mm"
+  },
+  "range": [
+    "2026-10-21T00:00",
+    "2026-10-29T23:00"
+  ],
+  "variables": [
+    {
+      "key": "cloud_cover",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 100,
+      "finiteCount": 181,
+      "min": 0,
+      "max": 100,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "cloud_cover_low",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 84,
+      "finiteCount": 181,
+      "min": 0,
+      "max": 100,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "cloud_cover_mid",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 44,
+      "finiteCount": 181,
+      "min": 0,
+      "max": 100,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "cloud_cover_high",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 100,
+      "finiteCount": 181,
+      "min": 0,
+      "max": 100,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "temperature_2m",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 11.3,
+      "finiteCount": 181,
+      "min": 6.5,
+      "max": 17.5,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "dew_point_2m",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 10.4,
+      "finiteCount": 181,
+      "min": 0.7,
+      "max": 15.1,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "relative_humidity_2m",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 94,
+      "finiteCount": 181,
+      "min": 47,
+      "max": 98,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "wind_speed_10m",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 4.3,
+      "finiteCount": 181,
+      "min": 0.6,
+      "max": 12.3,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "wind_gusts_10m",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 7.8,
+      "finiteCount": 181,
+      "min": 1.1,
+      "max": 22.1,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    },
+    {
+      "key": "precipitation",
+      "length": 216,
+      "nullCount": 35,
+      "representative": 0,
+      "finiteCount": 181,
+      "min": 0,
+      "max": 5,
+      "firstValid": "2026-10-21T00:00",
+      "lastValid": "2026-10-28T12:00"
+    }
+  ],
+  "memberIdentities": [
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed",
+    "control/unsuffixed"
+  ]
+}

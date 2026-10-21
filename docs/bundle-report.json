@@ -1,0 +1,65 @@
+{
+  "totals": {
+    "initialStaticJsBytes": 329356,
+    "offlinePrecachedJsBytes": 858094,
+    "nodeGzipJsBytes": 269640
+  },
+  "gzipMethod": "Node zlib gzipSync default level 6; baseline gzip was the Vite CLI report and may use a different compression setting.",
+  "recordedAt": "2026-10-21T20:19:03.160Z",
+  "baseline": {
+    "initialJsBytes": 338790,
+    "initialJsGzipBytes": 103350,
+    "trendsJsBytes": 392040,
+    "note": "Before edits: npm run build output (rounded to nearest 10 bytes)."
+  },
+  "chunks": [
+    {
+      "key": "_useVisibleResource-DfewyXty.js",
+      "file": "assets/useVisibleResource-DfewyXty.js",
+      "bytes": 703,
+      "gzipBytes": 440,
+      "initialStaticGraph": false,
+      "astronomyMarkers": false,
+      "satelliteMarkers": false
+    },
+    {
+      "key": "index.html",
+      "file": "assets/index-NyEKmUj6.js",
+      "bytes": 329356,
+      "gzipBytes": 101856,
+      "initialStaticGraph": true,
+      "astronomyMarkers": false,
+      "satelliteMarkers": false
+    },
+    {
+      "key": "src/views/NightSky.tsx",
+      "file": "assets/NightSky-BhpheyPo.js",
+      "bytes": 129703,
+      "gzipBytes": 53327,
+      "initialStaticGraph": false,
+      "astronomyMarkers": true,
+      "satelliteMarkers": true
+    },
+    {
+      "key": "src/views/Trends.tsx",
+      "file": "assets/Trends-B-GuuDio.js",
+      "bytes": 398332,
+      "gzipBytes": 114017,
+      "initialStaticGraph": false,
+      "astronomyMarkers": false,
+      "satelliteMarkers": false
+    }
+  ],
+  "libraries": {
+    "astronomy-engine": {
+      "version": "2.1.19",
+      "licence": "MIT"
+    },
+    "satellite.js": {
+      "version": "7.1.0",
+      "licence": "MIT",
+      "note": "Vite transform removes unused WASM barrel export; JS propagation remains in lazy NightSky chunk."
+    }
+  },
+  "note": "Measured production output bytes and gzip; package unpacked size is not a browser transfer size. The full NightSky chunk includes UI, calculations and both libraries. Marker check supplements the lazy import boundary; it is not a per-library byte attribution."
+}

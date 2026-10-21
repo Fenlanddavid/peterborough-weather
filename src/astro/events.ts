@@ -68,7 +68,7 @@ export interface ActiveShower extends MeteorShower {
   /** Human-readable peak date label */
   peakLabel: string;
   /** Status label */
-  status: 'Peak tonight' | 'Peak approaching' | 'Active now' | 'Coming soon';
+  status: 'Approximate peak period' | 'Peak approaching' | 'Active now' | 'Coming soon';
 }
 
 /**
@@ -105,7 +105,7 @@ export function getRelevantShowers(dateStr: string): ActiveShower[] {
     }`;
 
     let status: ActiveShower['status'];
-    if (isPeak) status = 'Peak tonight';
+    if (isPeak) status = 'Approximate peak period';
     else if (isActive && daysToPeakStart > 0 && daysToPeakStart <= 3) status = 'Peak approaching';
     else if (isActive) status = 'Active now';
     else status = 'Coming soon';

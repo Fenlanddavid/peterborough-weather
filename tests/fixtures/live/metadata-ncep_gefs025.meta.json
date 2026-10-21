@@ -1,0 +1,50 @@
+{
+  "id": "metadata-ncep_gefs025",
+  "provider": "Open-Meteo model updates",
+  "model": "ncep_gefs025",
+  "url": "https://api.open-meteo.com/data/ncep_gefs025/static/meta.json",
+  "parameters": {},
+  "retrievedAt": "2026-10-21T19:12:21.261Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-headers": "accept, authorization, content-type, origin, x-requested-with, user-agent, access-control-allow-origin, range, if-match, if-unmodified-since",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
+    "access-control-allow-origin": "*",
+    "access-control-max-age": "600",
+    "connection": "keep-alive",
+    "content-encoding": "deflate",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 21 Oct 2026 19:12:21 GMT",
+    "etag": "\"1792604634-596\"",
+    "last-modified": "Wed, 21 Oct 2026 17:43:54 GMT",
+    "server": "nginx",
+    "transfer-encoding": "chunked"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": [
+    "chunk_time_length",
+    "crs_wkt",
+    "data_end_time",
+    "last_run_availability_time",
+    "last_run_initialisation_time",
+    "last_run_modification_time",
+    "temporal_resolution_seconds",
+    "update_interval_seconds"
+  ],
+  "sourceTimestamps": {
+    "last_run_availability_time": 1792604634,
+    "last_run_initialisation_time": 1792584000,
+    "last_run_modification_time": 1792604584
+  },
+  "representative": {
+    "chunk_time_length": 481,
+    "crs_wkt": "GEOGCRS[\"WGS 84\",\n    DATUM[\"World Geodetic System 1984\",\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north],\n        AXIS[\"longitude\",east],\n        ANGLEUNIT[\"degree\",0.0174532925199433]\n    USAGE[\n        SCOPE[\"grid\"],\n        BBOX[-90.0,-180.0,90.0,179.75]]]",
+    "data_end_time": 1793458800,
+    "last_run_availability_time": 1792604634,
+    "last_run_initialisation_time": 1792584000,
+    "last_run_modification_time": 1792604584,
+    "temporal_resolution_seconds": 10800,
+    "update_interval_seconds": 21600
+  }
+}

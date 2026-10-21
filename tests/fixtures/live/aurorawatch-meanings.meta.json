@@ -1,0 +1,17 @@
+{
+  "id": "aurorawatch-meanings",
+  "provider": "Lancaster University / AuroraWatch UK",
+  "model": "upstream alert definitions",
+  "url": "https://aurorawatch-api.lancs.ac.uk/0.2/status-descriptions.xml",
+  "parameters": {},
+  "retrievedAt": "2026-10-21T19:31:37.994292+00:00",
+  "status": null,
+  "schema": "status_list XML with status IDs, description and meaning",
+  "units": {
+    "status": "upstream alert category"
+  },
+  "sourceTime": null,
+  "coverage": "green/yellow/amber/red definitions",
+  "browserReadable": "not needed by runtime: meanings are maintained constants linked to the upstream definitions",
+  "httpStatusNote": "Response body was captured with curl; HTTP headers were not retained for this supplementary static reference."
+}

@@ -40,14 +40,15 @@ test('missing variables respect the retry interval, then become eligible', () =>
   assert.ok(getRunTasks(cache, now + 30 * 60_000).some((task) => task.modelId === modelId && task.runTime === runTime));
 });
 
-test('backfills cloud cover for recent runs without fetching extras for older runs or UKV', () => {
+test('backfills cloud cover for four recent runs per model including UKV, without older-run extras', () => {
   const cache = fullCache().filter((run) => run.variable !== 'cloud_cover').map((run) => ({
     ...run, fetchedAt: now - 3600_000,
   }));
   const tasks = getRunTasks(cache, now);
   const extraTasks = tasks.filter((task) => task.variables.includes('cloud_cover'));
-  assert.equal(extraTasks.length, 5 * 4);
-  assert.ok(extraTasks.every((task) => task.modelId !== 'ukmo_uk_deterministic_2km' && task.runTime >= '2026-10-19T18:00'));
+  assert.equal(extraTasks.length, 6 * 4);
+  assert.ok(extraTasks.every((task) => task.runTime >= '2026-10-19T18:00'));
+  assert.equal(extraTasks.filter(task => task.modelId === 'ukmo_uk_deterministic_2km').length, 4);
 });
 
 test('still-publishing runs are checked again even when every variable is cached', () => {

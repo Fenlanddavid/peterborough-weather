@@ -1,0 +1,176 @@
+{
+  "recordedAt": "2026-10-21T19:15:14.374Z",
+  "ensembleCosts": [
+    {
+      "model": "ecmwf_ifs025",
+      "cost": 26
+    },
+    {
+      "model": "gfs025",
+      "cost": 16
+    },
+    {
+      "model": "ukmo_global_ensemble_20km",
+      "cost": 9
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "24-hour cold start; deterministic publication lag 0h",
+      "assumptions": "One visible browser installation, hourly core check for 24h, Night Sky visible for 12h, all supported variables, 4 distinct ensemble cycles; no transient retries. Plans are simulated with the real getRunTasks and endpoint cost function, not provider traffic measurements.",
+      "core": {
+        "http": 354,
+        "weightedReserved": 354,
+        "optionalVariableFallbacks": 0,
+        "byHour": [
+          126,
+          12,
+          12,
+          12,
+          6,
+          6,
+          12,
+          12,
+          12,
+          12,
+          6,
+          6,
+          12,
+          12,
+          12,
+          12,
+          6,
+          6,
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ]
+      },
+      "ensemble": {
+        "checksHttp": 24,
+        "forecastHttp": 12,
+        "weightedReserved": 204
+      },
+      "optional": {
+        "skyHttp": 72,
+        "skyWeighted": 72,
+        "airHttp": 2,
+        "airWeighted": 2,
+        "outlookHttp": 12,
+        "outlookWeighted": 12
+      },
+      "plannedHttp": 476,
+      "plannedWeighted": 644
+    },
+    {
+      "name": "24-hour cold start; deterministic publication lag 6h",
+      "assumptions": "One visible browser installation, hourly core check for 24h, Night Sky visible for 12h, all supported variables, 4 distinct ensemble cycles; no transient retries. Plans are simulated with the real getRunTasks and endpoint cost function, not provider traffic measurements.",
+      "core": {
+        "http": 498,
+        "weightedReserved": 498,
+        "optionalVariableFallbacks": 144,
+        "byHour": [
+          132,
+          18,
+          18,
+          18,
+          12,
+          12,
+          18,
+          18,
+          18,
+          18,
+          12,
+          12,
+          18,
+          18,
+          18,
+          18,
+          12,
+          12,
+          18,
+          18,
+          18,
+          18,
+          12,
+          12
+        ]
+      },
+      "ensemble": {
+        "checksHttp": 24,
+        "forecastHttp": 12,
+        "weightedReserved": 204
+      },
+      "optional": {
+        "skyHttp": 72,
+        "skyWeighted": 72,
+        "airHttp": 2,
+        "airWeighted": 2,
+        "outlookHttp": 12,
+        "outlookWeighted": 12
+      },
+      "plannedHttp": 620,
+      "plannedWeighted": 788
+    },
+    {
+      "name": "24-hour cold start; deterministic publication lag 9h",
+      "assumptions": "One visible browser installation, hourly core check for 24h, Night Sky visible for 12h, all supported variables, 4 distinct ensemble cycles; no transient retries. Plans are simulated with the real getRunTasks and endpoint cost function, not provider traffic measurements.",
+      "core": {
+        "http": 570,
+        "weightedReserved": 570,
+        "optionalVariableFallbacks": 216,
+        "byHour": [
+          138,
+          24,
+          24,
+          18,
+          12,
+          12,
+          24,
+          24,
+          24,
+          18,
+          12,
+          12,
+          24,
+          24,
+          24,
+          18,
+          12,
+          12,
+          24,
+          24,
+          24,
+          18,
+          12,
+          12
+        ]
+      },
+      "ensemble": {
+        "checksHttp": 24,
+        "forecastHttp": 12,
+        "weightedReserved": 204
+      },
+      "optional": {
+        "skyHttp": 72,
+        "skyWeighted": 72,
+        "airHttp": 2,
+        "airWeighted": 2,
+        "outlookHttp": 12,
+        "outlookWeighted": 12
+      },
+      "plannedHttp": 692,
+      "plannedWeighted": 860
+    }
+  ],
+  "retryCost": "Every retry/fallback is separately metered. A 429 can pause all requests; no retry bypasses the daily/minute guard.",
+  "limits": {
+    "optionalDefer": 1500,
+    "hardDaily": 2000,
+    "rollingMinute": 300
+  },
+  "caveat": "A request plan is not a claim about worst-case publication failures or shared-IP traffic. Repeated optional-variable rejection, extra refreshes and other devices can increase provider usage. Hard local limits stop the plan from running indefinitely."
+}

@@ -1,7 +1,9 @@
 import type { CachedRun } from '../types';
 import type { IconName } from '../components/WeatherIcon';
-import { DETERMINISTIC_MODELS } from '../config/models';
-import { getModelRuns, getValueAtTime } from './utils';
+import { buildForecastSignals, familyWeights } from '../forecast/signals.ts';
+import type { ForecastSignals } from '../forecast/signals.ts';
+import { utc } from '../data/contracts.ts';
+import type { EventEstimate } from '../data/contracts.ts';
 
 interface HourlyCondition {
   label: string;
@@ -54,21 +56,19 @@ export function conditionForCode(code: number | null, isDay: number | null): Hou
 }
 
 /** Weather codes are categories: use the most common code, never their numeric average. */
-export function getHourlyCondition(allRuns: CachedRun[], validTime: string): HourlyCondition {
-  const votes = new Map<number, { count: number; condition: HourlyCondition }>();
-  for (const model of DETERMINISTIC_MODELS) {
-    if (model.isOverlay) continue;
-    const modelRuns = getModelRuns(allRuns, model.id, 'weather_code');
-    const latest = modelRuns.at(-1);
-    if (!latest) continue;
-    const code = getValueAtTime(latest, validTime);
-    const daylight = allRuns.find((run) => run.modelId === model.id && run.variable === 'is_day' && run.runTime === latest.runTime);
-    const condition = conditionForCode(code, daylight ? getValueAtTime(daylight, validTime) : null);
-    if (condition === UNAVAILABLE || code === null) continue;
-    const existing = votes.get(code);
-    if (existing) existing.count++;
-    else votes.set(code, { count: 1, condition });
-  }
-  // Stable ordering gives tied codes the configured model order as a consistent fallback.
-  return [...votes.values()].sort((a, b) => b.count - a.count)[0]?.condition ?? UNAVAILABLE;
+export function getHourlyCondition(input: CachedRun[] | ForecastSignals, validTime: string, precipitation?: EventEstimate): HourlyCondition {
+  const index = Array.isArray(input) ? buildForecastSignals(input) : input;
+  const time = utc(validTime);
+  const votes = new Map<number, number>();
+  for (const { source, weight } of familyWeights(index.samples('weather_code', time, true))) votes.set(source.value, (votes.get(source.value) ?? 0) + weight);
+  const ranked = [...votes].sort((a, b) => b[1] - a[1]);
+  // Retain supported fog, freezing precipitation and thunder signals before cloud appearance.
+  const hazard = ranked.find(([c]) => [45, 48, 56, 57, 66, 67, 95, 96, 97, 99].includes(c));
+  const code = hazard?.[0] ?? ranked[0]?.[0] ?? null;
+  const daylight = index.mean('is_day', time, true);
+  if (code !== null && code >= 45) return conditionForCode(code, daylight === null ? null : Math.round(daylight));
+  if (precipitation?.value !== null && precipitation?.value !== undefined && precipitation.value > 0) return { label: 'Precipitation signal in the stated period', icon: 'showers' };
+  const cloud = index.mean('cloud_cover', time, true);
+  if (cloud === null) return { label: 'Cloud conditions unknown', icon: null };
+  return conditionForCode(cloud < 0.15 ? 0 : cloud < 0.65 ? 2 : 3, daylight === null ? null : Math.round(daylight));
 }

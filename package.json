@@ -8,21 +8,32 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:timezones": "node --experimental-strip-types scripts/test-timezones.ts",
+    "check:scripts": "tsc -p tsconfig.scripts.json",
+    "probe:sources": "node --experimental-strip-types scripts/probe-sources.ts",
+    "probe:browser": "node --experimental-strip-types scripts/probe-browser.ts",
+    "smoke:browser": "node --experimental-strip-types scripts/smoke-browser.ts",
+    "report:budget": "node --experimental-strip-types scripts/request-budget.ts",
+    "report:bundle": "node --experimental-strip-types scripts/bundle-report.ts"
   },
   "dependencies": {
+    "astronomy-engine": "2.1.19",
     "date-fns": "^4.4.0",
     "idb": "^8.0.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "recharts": "^3.10.1"
+    "recharts": "^3.10.1",
+    "satellite.js": "7.1.0"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
+    "fake-indexeddb": "6.2.4",
     "oxlint": "^1.81.0",
+    "playwright": "1.60.0",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
   }

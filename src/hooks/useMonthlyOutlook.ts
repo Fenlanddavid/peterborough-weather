@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { fetchMonthlyOutlook, readMonthlyOutlook } from '../api/monthly';
 
 export function useMonthlyOutlook(today: string, refreshKey: number | null = null) {
   const [reload, setReload] = useState(0);
-  const [state, setState] = useState(() => ({ data: readMonthlyOutlook(), loading: true, failed: false }));
+  const lastReload = useRef(0);
+  const key = `${today}:${refreshKey}:${reload}`;
+  const [state, setState] = useState(() => ({ data: readMonthlyOutlook(), completedKey: null as string | null, failed: false }));
   useEffect(() => {
     let active = true;
-    setState((previous) => ({ ...previous, loading: true, failed: false }));
-    fetchMonthlyOutlook(today, reload > 0).then((data) => {
-      if (active) setState({ data, loading: false, failed: false });
+    const force = reload !== lastReload.current;
+    lastReload.current = reload;
+    fetchMonthlyOutlook(today, force).then((data) => {
+      if (active) setState({ data, completedKey: key, failed: false });
     }).catch(() => {
-      if (active) setState((previous) => ({ ...previous, loading: false, failed: true }));
+      if (active) setState((previous) => ({ ...previous, completedKey: key, failed: true }));
     });
     return () => { active = false; };
-  }, [today, refreshKey, reload]);
-  return { ...state, refresh: () => setReload((value) => value + 1) };
+  }, [today, key, reload]);
+  return { data: state.data, loading: state.completedKey !== key, failed: state.completedKey === key && state.failed, refresh: () => setReload((value) => value + 1) };
 }

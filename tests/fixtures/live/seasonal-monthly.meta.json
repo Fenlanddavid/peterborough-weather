@@ -1,0 +1,95 @@
+{
+  "id": "seasonal-monthly",
+  "provider": "Open-Meteo Seasonal",
+  "model": "ecmwf_seas5",
+  "url": "https://seasonal-api.open-meteo.com/v1/seasonal?latitude=52.5736&longitude=-0.2400&timezone=GMT&wind_speed_unit=ms&models=ecmwf_seas5&monthly=temperature_2m_anomaly%2Cprecipitation_mean%2Cprecipitation_anomaly&forecast_days=210",
+  "parameters": {
+    "latitude": "52.5736",
+    "longitude": "-0.2400",
+    "timezone": "GMT",
+    "wind_speed_unit": "ms",
+    "models": "ecmwf_seas5",
+    "monthly": "temperature_2m_anomaly,precipitation_mean,precipitation_anomaly",
+    "forecast_days": "210"
+  },
+  "retrievedAt": "2026-10-21T19:12:21.398Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-headers": "accept, authorization, content-type, origin, x-requested-with, user-agent, access-control-allow-origin, range, if-match, if-unmodified-since",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
+    "access-control-allow-origin": "*",
+    "access-control-max-age": "600",
+    "connection": "keep-alive",
+    "content-encoding": "deflate",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 21 Oct 2026 19:12:21 GMT",
+    "transfer-encoding": "chunked"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": [
+    "latitude",
+    "longitude",
+    "generationtime_ms",
+    "utc_offset_seconds",
+    "timezone",
+    "timezone_abbreviation",
+    "elevation",
+    "monthly_units",
+    "monthly"
+  ],
+  "sourceTimestamps": {},
+  "representative": {
+    "latitude": 52.693207,
+    "longitude": 0,
+    "generationtime_ms": 0.06830692291259766,
+    "utc_offset_seconds": 0,
+    "timezone": "GMT",
+    "timezone_abbreviation": "GMT",
+    "elevation": 9,
+    "monthly_units": {
+      "time": "iso8601",
+      "temperature_2m_anomaly": "K",
+      "precipitation_mean": "mm",
+      "precipitation_anomaly": "mm"
+    },
+    "monthly": {
+      "time": [
+        "2026-10-01",
+        "2026-11-01",
+        "2026-12-01",
+        "2027-01-01",
+        "2027-02-01",
+        "2027-03-01",
+        "2027-04-01"
+      ],
+      "temperature_2m_anomaly": [
+        1.3,
+        0.6,
+        1.1,
+        0.8,
+        0.6,
+        0.7,
+        1
+      ],
+      "precipitation_mean": [
+        49.1,
+        64.2,
+        64.4,
+        59.4,
+        51,
+        55.6,
+        55.7
+      ],
+      "precipitation_anomaly": [
+        -7.9,
+        9,
+        7.5,
+        5.7,
+        4.9,
+        3.8,
+        0.4
+      ]
+    }
+  }
+}

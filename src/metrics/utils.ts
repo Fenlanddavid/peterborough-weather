@@ -17,7 +17,7 @@ const toIso = (ms: number) => new Date(ms).toISOString().slice(0, 16);
 
 /** Convert m/s to mph if needed */
 export function convertUnit(value: number | null, variable: VariableId): number | null {
-  if (value === null) return null;
+  if (value === null || !Number.isFinite(value)) return null;
   const cfg = VARIABLES.find((v) => v.id === variable);
   if (cfg && 'convertFromMs' in cfg && cfg.convertFromMs) {
     return value * MS_TO_MPH;
@@ -30,6 +30,7 @@ export function getValueAtTime(
   run: CachedRun,
   validTime: string
 ): number | null {
+  if (run.unitState === 'unknown-legacy') return null;
   const idx = run.times.indexOf(validTime);
   if (idx === -1) return null;
   return convertUnit(run.values[idx], run.variable);
@@ -47,7 +48,7 @@ export function sixHourPrecipTotal(
 
   for (let h = 5; h >= 0; h--) {
     const idx = run.times.indexOf(toIso(endTime - h * HOUR));
-    if (idx === -1 || run.values[idx] === null) {
+    if (idx === -1 || !Number.isFinite(run.values[idx]) || run.values[idx] === null) {
       complete = false;
     } else {
       sum += convertUnit(run.values[idx]!, run.variable) ?? 0;
@@ -67,13 +68,14 @@ export function sixHourMaxGust(
   run: CachedRun,
   windowEndISO: string
 ): WindowValue {
+  if (run.unitState === 'unknown-legacy') return { windowEnd: windowEndISO, value: null, complete: false };
   const endTime = parseUtc(windowEndISO);
   let max: number | null = null;
   let complete = true;
 
   for (let h = 5; h >= 0; h--) {
     const idx = run.times.indexOf(toIso(endTime - h * HOUR));
-    if (idx === -1 || run.values[idx] === null) {
+    if (idx === -1 || !Number.isFinite(run.values[idx]) || run.values[idx] === null) {
       complete = false;
     } else {
       const v = convertUnit(run.values[idx]!, run.variable)!;
@@ -147,6 +149,7 @@ export interface LatestIndex {
 export function buildLatestIndex(runs: CachedRun[]): LatestIndex {
   const grouped = new Map<string, CachedRun[]>();
   for (const run of runs) {
+    if (run.unitState === 'unknown-legacy') continue;
     const key = `${run.modelId}:${run.variable}`;
     const list = grouped.get(key);
     if (list) list.push(run); else grouped.set(key, [run]);

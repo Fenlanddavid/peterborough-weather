@@ -1,0 +1,67 @@
+{
+  "id": "ovation",
+  "provider": "NOAA SWPC",
+  "model": "OVATION",
+  "url": "https://services.swpc.noaa.gov/json/ovation_aurora_latest.json",
+  "parameters": {},
+  "retrievedAt": "2026-10-21T18:32:09.978Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-headers": "origin, x-requested-with, content-type",
+    "access-control-allow-methods": "PUT, GET, POST, DELETE, OPTIONS",
+    "access-control-allow-origin": "*",
+    "age": "40",
+    "cache-control": "max-age=60",
+    "connection": "keep-alive",
+    "content-encoding": "gzip",
+    "content-type": "application/json",
+    "date": "Wed, 21 Oct 2026 18:31:29 GMT",
+    "etag": "W/\"e28b0-65e5def46e7c5\"",
+    "expires": "Wed, 21 Oct 2026 18:32:29 GMT",
+    "last-modified": "Wed, 21 Oct 2026 18:29:59 GMT",
+    "server": "Apache",
+    "strict-transport-security": "max-age=31536000",
+    "transfer-encoding": "chunked",
+    "vary": "Accept-Encoding",
+    "via": "1.1 1ec305eeeaeff6401cde8893e63dc674.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "Athi4jEV4SXEvDBPLn8kdmBOOpbwmRRJcIuCnyCDacXu6qAM1K1HrQ==",
+    "x-amz-cf-pop": "LHR86-P1",
+    "x-cache": "Hit from cloudfront"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": [
+    "Observation Time",
+    "Forecast Time",
+    "Data Format",
+    "coordinates",
+    "type"
+  ],
+  "sourceTimestamps": {
+    "Observation Time": "2026-10-21T18:20:00Z",
+    "Forecast Time": "2026-10-21T19:18:00Z"
+  },
+  "representative": {
+    "Observation Time": "2026-10-21T18:20:00Z",
+    "Forecast Time": "2026-10-21T19:18:00Z",
+    "Data Format": "[Longitude, Latitude, Aurora]",
+    "coordinates": [
+      [
+        0,
+        -90,
+        11
+      ],
+      [
+        0,
+        -89,
+        0
+      ],
+      [
+        0,
+        -88,
+        15
+      ]
+    ],
+    "type": "MultiPoint"
+  }
+}

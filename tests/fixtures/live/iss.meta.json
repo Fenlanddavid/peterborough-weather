@@ -1,0 +1,39 @@
+{
+  "id": "iss",
+  "provider": "CelesTrak",
+  "model": "25544",
+  "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE",
+  "parameters": {
+    "CATNR": "25544",
+    "FORMAT": "TLE"
+  },
+  "retrievedAt": "2026-10-21T18:32:10.273Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-origin": "*",
+    "content-disposition": "filename=\"25544.txt\"",
+    "content-encoding": "br",
+    "content-length": "109",
+    "content-type": "text/plain; charset=UTF-8",
+    "date": "Wed, 21 Oct 2026 18:32:10 GMT",
+    "server": "Microsoft-IIS/10.0",
+    "vary": "Accept-Encoding",
+    "x-powered-by": "PHP/8.2.20"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": "text/XML/TLE",
+  "sourceTimestamps": {
+    "orbitalElementEpoch": "2026-10-21T01:08:59.469Z",
+    "rawEpoch": "26294.04791053"
+  },
+  "representative": "ISS (ZARYA)             \r\n1 25544U 98067A   26294.04791053  .00009575  00000+0  18188-3 0  9996\r\n2 25544  51.6327  37.2623 0006759 289.5321  70.4938 15.48967427591263\r\n",
+  "range": [
+    "2026-10-21T01:08:59.469Z",
+    "2026-10-21T01:08:59.469Z"
+  ],
+  "rangeNote": "One element epoch; this product does not provide an hourly forecast.",
+  "units": {
+    "tle": "NORAD two-line orbital element format"
+  }
+}

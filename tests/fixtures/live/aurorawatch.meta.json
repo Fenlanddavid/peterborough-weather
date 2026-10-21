@@ -1,0 +1,36 @@
+{
+  "id": "aurorawatch",
+  "provider": "Lancaster University",
+  "model": "AuroraWatch UK",
+  "url": "https://aurorawatch-api.lancs.ac.uk/0.2/status/current-status.xml",
+  "parameters": {},
+  "retrievedAt": "2026-10-21T18:32:10.166Z",
+  "intendedOrigin": "https://fenlanddavid.github.io",
+  "status": 200,
+  "headers": {
+    "access-control-allow-headers": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
+    "access-control-allow-origin": "*",
+    "cache-control": "max-age=180",
+    "connection": "close",
+    "content-encoding": "gzip",
+    "content-type": "text/xml",
+    "date": "Wed, 21 Oct 2026 18:32:10 GMT",
+    "etag": "W/\"6ad904cc-1cf\"",
+    "expires": "Wed, 21 Oct 2026 18:35:10 GMT",
+    "last-modified": "Wed, 21 Oct 2026 18:30:36 GMT",
+    "server": "nginx",
+    "transfer-encoding": "chunked",
+    "vary": "Accept-Encoding"
+  },
+  "browserReadable": "unverified: run browser probe at deployed origin",
+  "schema": "text/XML/TLE",
+  "sourceTimestamps": {
+    "datetime": "2026-10-21T18:30:32+0000"
+  },
+  "representative": "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\n<!DOCTYPE current_status PUBLIC \"-//AuroraWatch-API//DTD REST 0.2.5//EN\" \"http://aurorawatch-api.lancs.ac.uk/0.2.5/aurorawatch-api.dtd\">\n<current_status api_version=\"0.2.5\"><updated><datetime>2026-10-21T18:30:32+0000</datetime></updated><site_status project_id=\"project:AWN\" site_id=\"site:AWN:SUM\" site_url=\"http://aurorawatch-api.lancs.ac.uk/0.2.5/project/awn/sum.xml\" status_id=\"yellow\"/></current_status>",
+  "range": [
+    "2026-10-21T18:30:32+0000",
+    "2026-10-21T18:30:32+0000"
+  ]
+}

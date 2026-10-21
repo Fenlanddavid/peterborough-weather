@@ -1,0 +1,18 @@
+{
+  "provider": "US Naval Observatory",
+  "url": "https://aa.usno.navy.mil/api/rstt/oneday?date=2026-10-22&coords=52.5736,-0.2400&tz=1&dst=false",
+  "recordedAt": "2026-10-21T19:03:33.251Z",
+  "coordinates": {
+    "latitude": 52.5736,
+    "longitude": -0.24
+  },
+  "timezone": "Europe/London",
+  "explicitResponseUtcOffsetHours": 1,
+  "units": {
+    "events": "HH:mm in explicit fixed UTC offset",
+    "illumination": "percent at local noon, not 22:00"
+  },
+  "eventDefinitions": "USNO standard upper-limb Sun/Moon rise/set with atmospheric refraction; geometric centre Sun -6° for civil twilight.",
+  "comparisonToleranceSeconds": 90,
+  "independentReference": true
+}

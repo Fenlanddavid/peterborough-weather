@@ -3,6 +3,7 @@ import type { VariableId } from '../config/models';
 import type { CachedRun } from '../types';
 import { putCachedRuns, pruneOldRuns } from './db';
 import { BASE_VARIABLES, getRunTasks, makeRunKey } from './runSchedule';
+import { scheduledFetch } from '../data/scheduler';
 
 const SINGLE_RUNS_BASE = 'https://single-runs-api.open-meteo.com/v1/forecast';
 
@@ -22,11 +23,13 @@ async function fetchModelRun(modelId: string, runTime: string, variables: Variab
     forecast_days: '7',
     timezone: 'UTC',
     wind_speed_unit: 'ms',
+    temperature_unit: 'celsius',
+    precipitation_unit: 'mm',
   });
 
   let res: Response;
   try {
-    res = await fetch(`${SINGLE_RUNS_BASE}?${params}`, { signal: AbortSignal.timeout(20_000) });
+    res = await scheduledFetch(`${SINGLE_RUNS_BASE}?${params}`);
   } catch {
     return 'network';
   }
@@ -34,11 +37,14 @@ async function fetchModelRun(modelId: string, runTime: string, variables: Variab
   if (!res.ok) return 'unavailable'; // run not published yet, or not offered for this model
 
   try {
-    const hourly = (await res.json())?.hourly;
-    if (!hourly || !Array.isArray(hourly.time)) return 'unavailable';
+    const data = await res.json();
+    const hourly = data?.hourly;
+    if (!hourly || !Array.isArray(hourly.time) || data.utc_offset_seconds !== 0) return 'unavailable';
+    const units: Record<string, string> = { temperature_2m: '°C', precipitation: 'mm', snowfall: 'cm', wind_speed_10m: 'm/s', wind_gusts_10m: 'm/s', pressure_msl: 'hPa', cloud_cover: '%', is_day: '', weather_code: 'wmo code' };
+    if (hourly.time.some((t: unknown, i: number) => typeof t !== 'string' || !Number.isFinite(Date.parse(`${t}Z`)) || (i > 0 && t <= hourly.time[i - 1]))) return 'unavailable';
     const fetchedAt = Date.now();
     const records: CachedRun[] = variables
-      .filter((variable) => Array.isArray(hourly[variable]) && hourly[variable].some((v: unknown) => typeof v === 'number'))
+      .filter((variable) => data.hourly_units?.[variable] === units[variable] && Array.isArray(hourly[variable]) && hourly[variable].length === hourly.time.length && hourly[variable].every((v: unknown) => v === null || typeof v === 'number' && Number.isFinite(v)) && hourly[variable].some((v: unknown) => typeof v === 'number'))
       .map((variable) => ({
         key: makeRunKey(modelId, runTime, variable),
         modelId, runTime, variable,
@@ -68,7 +74,7 @@ export async function fetchAllDeterministicRuns(
 ): Promise<FetchSummary> {
   await pruneOldRuns();
 
-  const tasks = getRunTasks(cached);
+  const tasks = getRunTasks(cached).sort((a, b) => b.runTime.localeCompare(a.runTime));
 
   const summary: FetchSummary = { requested: tasks.length, ok: 0, unavailable: 0, failed: 0 };
   let done = 0;
@@ -77,6 +83,7 @@ export async function fetchAllDeterministicRuns(
   // ~120 requests on a cold start, a handful afterwards; stay well under 600/min.
   const BATCH_SIZE = 6;
   for (let i = 0; i < tasks.length; i += BATCH_SIZE) {
+    if (typeof document !== 'undefined' && document.hidden) break;
     const batch = tasks.slice(i, i + BATCH_SIZE);
     await Promise.all(batch.map(async (t) => {
       let result = await fetchModelRun(t.modelId, t.runTime, t.variables);

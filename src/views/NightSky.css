@@ -246,3 +246,29 @@
 @media (prefers-reduced-motion: reduce) {
   .nightsky-kp-bar { transition: none; }
 }
+
+.sky-mode { display: flex; gap: .65rem; margin-bottom: 1.5rem; }
+.sky-mode button { border: 1px solid #62718a; border-radius: 2rem; padding: .65rem 1rem; background: #1b2940; color: #ecf1fb; cursor: pointer; }
+.sky-mode button[aria-pressed=true] { background: #b8d7c4; color: #122b25; }
+.sky-window { padding: 1rem; background: #203b3e; border-radius: .7rem; }
+.sky-timeline { display: flex; overflow-x: auto; align-items: stretch; gap: .35rem; padding: 1rem 0; }
+.sky-period { flex: 0 0 156px; display: flex; flex-direction: column; gap: .6rem; padding: .85rem; border-radius: .6rem; border-top: 4px solid #62718a; background: #19283c; font-size: .8rem; }
+.sky-period strong { font-size: 1.6rem; }
+.sky-green { border-top-color: #91d4ac; }
+.sky-amber { border-top-color: #e9c77d; }
+.sky-red { border-top-color: #e59d9f; }
+.sky-unknown { color: #a7b3c8; border-top-style: dashed; }
+.sky-period details p { margin: .5rem 0; }
+.sky-source { overflow-wrap: anywhere; font-size: .85rem; }
+.view-nightsky section { margin-bottom: 1.5rem; }
+.view-nightsky section > h2, .view-nightsky section > h3 { margin: 1rem 0; }
+.view-nightsky section > p, .view-nightsky li { line-height: 1.7; margin-bottom: .6rem; }
+.view-nightsky ul { padding-left: 1.4rem; }
+.verification-panel { padding: 1rem; border: 1px solid #52627d; border-radius: .8rem; margin-bottom: 1rem; }
+.verification-panel p { margin: .8rem 0; line-height: 1.6; }
+.verification-panel label { display: inline-block; margin-right: 1rem; }
+.verification-scroll { overflow-x: auto; }
+.verification-panel table { min-width: 900px; border-collapse: collapse; }
+.verification-panel th, .verification-panel td { padding: .75rem; text-align: left; vertical-align: top; border-bottom: 1px solid #52627d; }
+.event-evidence { display: block; line-height: 1.7; }
+.forecast-note p { margin: .7rem 0; }

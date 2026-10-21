@@ -1,6 +1,7 @@
 /** Seasonal SEAS5 monthly outlook and EC46 weekly comparison from Open-Meteo. */
 
 import { LOCATION } from '../config/models.ts';
+import { scheduledFetch } from '../data/scheduler.ts';
 
 const CACHE_KEY = 'pb-weather:seasonal:v2';
 const CACHE_TTL = 6 * 3600_000; // 6 hours
@@ -69,9 +70,7 @@ async function fetchModel(modelId: string): Promise<SeasonalModelData | null> {
     timezone: 'Europe/London',
   });
   try {
-    const res = await fetch(`https://seasonal-api.open-meteo.com/v1/seasonal?${params}`, {
-      signal: AbortSignal.timeout(15_000),
-    });
+    const res = await scheduledFetch(`https://seasonal-api.open-meteo.com/v1/seasonal?${params}`, { optional: true, timeout: 15_000 });
     if (!res.ok) return null;
     const data = await res.json();
     const weekly = data?.[monthly ? 'monthly' : 'weekly'];

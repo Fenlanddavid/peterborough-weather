@@ -54,3 +54,26 @@ test('does not activate an incomplete offline cache when the manifest cannot be 
   await assert.rejects(installation!, /offline asset manifest/);
   assert.equal(activated, false);
 });
+
+test('changing data is network-first under a Pages base, preserves upstream age, and falls back on HTTP/HTML/network failures', async () => {
+  const scope = 'https://example.com/peterborough-weather/';
+  const saved = new Map<string, Response>();
+  let handler: any;
+  let response: Response | Error = Response.json({ sourceTime: 123, value: 'first' });
+  let calls = 0;
+  runInNewContext(source, {
+    URL, Response, AbortSignal, console,
+    self: { registration: { scope }, addEventListener: (name: string, fn: unknown) => { if (name === 'fetch') handler = fn; } },
+    caches: { open: async () => ({ match: async (request: Request) => saved.get(request.url)?.clone(), put: async (request: Request, r: Response) => { saved.set(request.url, r.clone()); } }) },
+    fetch: async () => { calls++; if (response instanceof Error) throw response; return response.clone(); },
+  });
+  const request = new Request(`${scope}data/aurorawatch.json`);
+  const read = async () => { let result!: Promise<Response>; handler({ request, respondWith: (value: Promise<Response>) => { result = value; } }); return (await result).json(); };
+  assert.equal((await read()).value, 'first');
+  response = Response.json({ sourceTime: 123, value: 'updated collector, same stale upstream' });
+  assert.equal((await read()).sourceTime, 123); assert.equal(calls, 2);
+  response = new Response('<html>SPA fallback</html>', { headers: { 'content-type': 'text/html' } });
+  assert.equal((await read()).value, 'updated collector, same stale upstream');
+  response = new Response('missing', { status: 404 }); assert.equal((await read()).sourceTime, 123);
+  response = new Error('offline'); assert.equal((await read()).sourceTime, 123);
+});

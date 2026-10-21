@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-21T20:19:20.029Z",
+  "base": "http://127.0.0.1:5187/peterborough-weather/",
+  "viewport": "390×844",
+  "pageErrors": [],
+  "distinctExternalRequests": 143,
+  "duplicateCoreRequests": [],
+  "offlineForecastNightSkyAndTrends": true,
+  "summaryUsesEnsembles": true,
+  "screenshot": "/tmp/peterborough-weather-nightsky.png",
+  "notes": "Deterministic browser integration using assembled fixtures; no live source traffic. Synthetic reuse of Single Runs values tests wiring only, not model skill."
+}

@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-21T20:18:51.380Z",
+  "results": [
+    {
+      "timezone": "UTC",
+      "files": 15,
+      "exitCode": 0,
+      "milliseconds": 1440,
+      "passedFiles": 15,
+      "failedFiles": 0
+    },
+    {
+      "timezone": "Europe/London",
+      "files": 15,
+      "exitCode": 0,
+      "milliseconds": 1413,
+      "passedFiles": 15,
+      "failedFiles": 0
+    }
+  ]
+}
