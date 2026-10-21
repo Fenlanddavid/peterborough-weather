@@ -24,7 +24,7 @@ const loadUkmo = (signal: AbortSignal) => fetchSkyModel('ukmo_global_determinist
 const cloudLabel = (fraction: number | null) => fraction === null ? 'unknown' : `${Math.round(fraction * 100)}%`;
 const duration = (ms: number) => `${Math.floor(ms / HOUR)} h ${Math.round(ms % HOUR / 60_000)} min`;
 function savedMode(): ObservingMode { try { return localStorage.getItem('pb-weather:observing-mode') === 'moon-planets' ? 'moon-planets' : 'deep-sky'; } catch { return 'deep-sky'; } }
-export function NightSky({ runs, loading, hasError, ensembles }: { runs: CachedRun[]; loading: boolean; hasError: boolean; ensembles: EnsembleIndex }) {
+export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: boolean; hasError: boolean; ensembles: EnsembleIndex }) {
   const now = useLocalNow(); const time = now.getTime();
   const [mode, setMode] = useState<ObservingMode>(savedMode);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -92,14 +92,13 @@ export function NightSky({ runs, loading, hasError, ensembles }: { runs: CachedR
     return { ...night, hourly, darkInterval: darkness, twilightOnly, periods, windows, rating: windows ? rateNight(windows, twilightOnly) : 'Limited data' };
   }), [ephemerides, mode, weather, aerosol, signals, ensembles, time, evening]);
   const selected = nights.find(n => n.date === selectedDate) ?? nights[0];
-  const best = [...nights].filter(n => n.windows && n.windows.coverage >= 0.75 && n.windows.familyCoverage >= 0.75 && n.windows.best).sort((a, b) => b.windows!.best!.duration * b.windows!.best!.mean - a.windows!.best!.duration * a.windows!.best!.mean)[0];
+  const best = [...nights].filter(n => n.windows?.best).sort((a, b) => b.windows!.best!.duration * b.windows!.best!.mean - a.windows!.best!.duration * a.windows!.best!.mean)[0];
   const changeMode = (value: ObservingMode) => { setMode(value); try { localStorage.setItem('pb-weather:observing-mode', value); } catch (error) { console.warn('Observing preference storage:', error); } };
   const window = selected.windows?.best;
   return <div className="view-nightsky">
     <header className="nightsky-intro"><div><p className="nightsky-eyebrow">Peterborough · After hours</p><h1>The night sky ahead.</h1><p>Your stargazing outlook, from sunset to sunrise.</p></div></header>
     <div className="sky-mode" role="group" aria-label="Observing mode"><button aria-pressed={mode === 'deep-sky'} onClick={() => changeMode('deep-sky')}>Deep sky</button><button aria-pressed={mode === 'moon-planets'} onClick={() => changeMode('moon-planets')}>Moon and planets</button></div>
-    {hasError && <p role="status">Core forecast refresh failed; saved data remains available. Each sky source has a separate status.</p>}{loading && <p role="status">Updating weather model runs…</p>}
-    <section className="nightsky-best"><div className="nightsky-best-content"><p className="nightsky-eyebrow">Stargazing outlook · {mode === 'deep-sky' ? 'Deep sky' : 'Moon and planets'}</p><h2>{best ? `Best covered night: ${best.date}` : 'No defensible best-night recommendation yet'}</h2><p>{best?.windows?.best ? `${duration(best.windows.best.duration)} usable window · ${best.rating}` : 'Comparisons require 75% core-data coverage from at least two model families. Missing hours are not assumed clear.'}</p></div></section>
+    <section className="nightsky-best"><div className="nightsky-best-content"><p className="nightsky-eyebrow">Stargazing outlook · {mode === 'deep-sky' ? 'Deep sky' : 'Moon and planets'}</p><h2>{best ? `Best night: ${best.date}` : 'Best night not yet determined'}</h2><p>{best?.windows?.best ? `${duration(best.windows.best.duration)} usable window · ${best.rating}` : 'Waiting for sky weather data.'}</p></div></section>
     <nav className="nightsky-night-list" aria-label="Choose observing night">{nights.map(n => <button className={`nightsky-night-picker ${selected.date === n.date ? 'is-selected' : ''}`} aria-pressed={selected.date === n.date} key={n.date} onClick={() => setSelectedDate(n.date)}><span className="nightsky-night-name">{n.date === evening ? 'Tonight' : new Date(`${n.date}T12:00Z`).toLocaleDateString('en-GB', { timeZone: 'Europe/London', weekday: 'short' })}</span><span>{n.date}</span><WeatherIcon name="moon" /><strong>{n.rating}</strong><small>{Math.round((n.windows?.coverage ?? 0) * 100)}% core coverage</small></button>)}</nav>
     <section className="nightsky-detail"><h2>{selected.date} · {selected.rating}</h2>
       {!selected.darkness.astronomical && <p>No true darkness tonight. The sky stays in twilight.{selected.darkness.nautical ? ' Deep-sky planning uses nautical darkness; Excellent is disabled.' : ' Nautical darkness is also absent, so a dark-sky window cannot be rated.'}</p>}

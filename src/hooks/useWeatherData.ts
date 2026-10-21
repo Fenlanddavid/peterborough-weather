@@ -61,10 +61,7 @@ export function useWeatherData() {
       }
 
       const allRuns = summary.ok > 0 ? await getAllCachedRuns() : cachedRuns;
-      const error = summary.failed > 0 && reachedServer ? `${summary.failed} model-run requests failed or were deferred by the API budget. Available forecasts and cached runs are retained.`
-        : summary.requested === 0 || reachedServer ? null
-        : allRuns.length ? "Couldn't reach the forecast service. Showing the forecast saved on this device."
-        : "Couldn't reach the forecast service. Check your connection and try Refresh.";
+      const error = null;
 
       setState((s) => ({
         runs: allRuns,

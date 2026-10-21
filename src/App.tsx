@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Nav } from './components/Nav';
 import { LoadingBar } from './components/LoadingBar';
 import { InstallApp } from './components/InstallApp';
@@ -27,13 +27,6 @@ function App() {
   const isOverview = ['forecast', 'summary', 'nightsky', 'seasonal'].includes(view);
   const { runs, loading, progress, lastUpdated, error, refresh } = useWeatherData();
   const ensembles = useEnsembles(['forecast', 'summary', 'nightsky'].includes(view));
-  const [databaseBlocked, setDatabaseBlocked] = useState(false);
-  const [cacheUnavailable, setCacheUnavailable] = useState(false);
-  useEffect(() => {
-    const listeners: [string, () => void][] = [['weather-db-blocked', () => setDatabaseBlocked(true)], ['weather-db-ready', () => setDatabaseBlocked(false)], ['weather-cache-unavailable', () => setCacheUnavailable(true)], ['weather-cache-ready', () => setCacheUnavailable(false)]];
-    listeners.forEach(([name, fn]) => window.addEventListener(name, fn));
-    return () => listeners.forEach(([name, fn]) => window.removeEventListener(name, fn));
-  }, []);
 
   return (
     <div className={`app ${isOverview ? 'app--home' : ''} ${view === 'nightsky' ? 'app--nightsky' : view === 'seasonal' ? 'app--seasonal' : ''}`}>
@@ -59,9 +52,6 @@ function App() {
 
       <LoadingBar progress={progress} />
 
-      {error && <div className="error-banner">{error}</div>}
-      {databaseBlocked && <div className="error-banner" role="status">Saving forecasts is blocked by another weather tab. Close older tabs to finish the database update. Available forecasts can still be displayed.</div>}
-      {cacheUnavailable && <div className="error-banner" role="status">The forecast could not be saved on this device. Available data is still displayed, but new values may be unavailable offline.</div>}
 
       <Nav active={view} onNavigate={setView} />
       <InstallApp />

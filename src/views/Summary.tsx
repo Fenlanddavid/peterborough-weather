@@ -15,7 +15,7 @@ interface Props {
 
 const dateLabel = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'Europe/London' });
 
-export function Summary({ runs, loading, hasError, ensembles }: Props) {
+export function Summary({ runs, loading, ensembles }: Props) {
   const now = useLocalNow();
   const hour = Math.floor(now.getTime() / 3600_000);
   const briefing = useMemo(() => buildForecastBriefing(runs, new Date(hour * 3600_000), { ensembles }), [runs, hour, ensembles]);
@@ -34,9 +34,8 @@ export function Summary({ runs, loading, hasError, ensembles }: Props) {
     </header>
 
     {!briefing.hasData ? <div className="summary-status" role="status">
-      {loading ? 'Gathering the forecast for your detailed summary…' : hasError ? 'The forecast could not be loaded. Use Refresh above to try again.' : 'No forecast data is available for the coming seven days. Use Refresh above to check again.'}
+      {loading ? 'Gathering the forecast…' : 'Waiting for forecast data.'}
     </div> : <>
-      {(hasError || briefing.stale) && <p className="summary-status" role="status">{hasError ? 'The latest refresh failed. This briefing uses the forecast data already saved on this device.' : 'Some contributing model output is more than 36 hours old. Refresh for newer forecasts.'}</p>}
       <section className="summary-lead" aria-labelledby="summary-overview-title">
         <p className="summary-eyebrow">The bigger picture</p>
         <h2 id="summary-overview-title">The week ahead</h2>
