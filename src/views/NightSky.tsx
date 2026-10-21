@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Body } from 'astronomy-engine';
 import type { CachedRun } from '../types';
 import { useLocalNow } from '../hooks/useLocalTime';
-import { addDays, eventPercent, HOUR, localTime } from '../data/contracts';
+import { addDays, HOUR, localTime } from '../data/contracts';
 import type { EventEstimate } from '../data/contracts';
 import { buildForecastSignals, familyMean, familyWeights } from '../forecast/signals';
 import type { EnsembleIndex } from '../forecast/events';
@@ -22,8 +22,12 @@ import './NightSky.css';
 const loadIfs = (signal: AbortSignal) => fetchSkyModel('ecmwf_ifs025', signal);
 const loadGfs = (signal: AbortSignal) => fetchSkyModel('gfs_global', signal);
 const loadUkmo = (signal: AbortSignal) => fetchSkyModel('ukmo_global_deterministic_10km', signal);
-const cloudLabel = (fraction: number | null) => fraction === null ? 'unknown' : `${Math.round(fraction * 100)}%`;
 const duration = (ms: number) => `${Math.floor(ms / HOUR)} h ${Math.round(ms % HOUR / 60_000)} min`;
+const nightLabel = (date: string, evening: string) => {
+  if (date === evening) return 'Tonight';
+  return new Date(`${date}T12:00Z`).toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Europe/London' });
+};
+const ukDate = (date: string) => new Date(`${date}T12:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'Europe/London' });
 function savedMode(): ObservingMode { try { return localStorage.getItem('pb-weather:observing-mode') === 'moon-planets' ? 'moon-planets' : 'deep-sky'; } catch { return 'deep-sky'; } }
 export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: boolean; hasError: boolean; ensembles: EnsembleIndex }) {
   const now = useLocalNow(); const time = now.getTime();
@@ -102,18 +106,25 @@ export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: bool
   return <div className="view-nightsky">
     <header className="nightsky-intro"><div><p className="nightsky-eyebrow">Peterborough · After hours</p><h1>The night sky ahead.</h1><p>Your stargazing outlook, from sunset to sunrise.</p></div></header>
     <div className="sky-mode" role="group" aria-label="Observing mode"><button aria-pressed={mode === 'deep-sky'} onClick={() => changeMode('deep-sky')}>Deep sky</button><button aria-pressed={mode === 'moon-planets'} onClick={() => changeMode('moon-planets')}>Moon and planets</button></div>
-    <section className="nightsky-best"><div className="nightsky-best-content"><p className="nightsky-eyebrow">Stargazing outlook · {mode === 'deep-sky' ? 'Deep sky' : 'Moon and planets'}</p><h2>{best ? `Best night: ${best.date}` : 'Loading sky outlook…'}</h2><p>{best?.windows?.best ? `${duration(best.windows.best.duration)} usable window · ${best.rating}` : best ? best.rating : ''}</p></div></section>
-    <nav className="nightsky-night-list" aria-label="Choose observing night">{nights.map(n => <button className={`nightsky-night-picker ${selected.date === n.date ? 'is-selected' : ''}`} aria-pressed={selected.date === n.date} key={n.date} onClick={() => setSelectedDate(n.date)}><span className="nightsky-night-name">{n.date === evening ? 'Tonight' : new Date(`${n.date}T12:00Z`).toLocaleDateString('en-GB', { timeZone: 'Europe/London', weekday: 'short' })}</span><span>{n.date}</span><WeatherIcon name="moon" /><strong>{n.rating}</strong><small>{Math.round((n.windows?.coverage ?? 0) * 100)}% core coverage</small></button>)}</nav>
-    <section className="nightsky-detail"><h2>{selected.date} · {selected.rating}</h2>
+    <section className="nightsky-best"><div className="nightsky-best-content"><p className="nightsky-eyebrow">Stargazing outlook · {mode === 'deep-sky' ? 'Deep sky' : 'Moon and planets'}</p><h2>{best ? `Best night: ${nightLabel(best.date, evening)}` : 'Loading sky outlook…'}</h2><p>{best?.windows?.best ? `${duration(best.windows.best.duration)} usable window · ${best.rating}` : best ? best.rating : ''}</p></div></section>
+    <nav className="nightsky-night-list" aria-label="Choose observing night">{nights.map(n => <button className={`nightsky-night-picker ${selected.date === n.date ? 'is-selected' : ''}`} aria-pressed={selected.date === n.date} key={n.date} onClick={() => setSelectedDate(n.date)}><span className="nightsky-night-name">{n.date === evening ? 'Tonight' : new Date(`${n.date}T12:00Z`).toLocaleDateString('en-GB', { timeZone: 'Europe/London', weekday: 'short' })}</span><span>{ukDate(n.date)}</span><WeatherIcon name="moon" /><strong>{n.rating}</strong></button>)}</nav>
+    <section className="nightsky-detail"><h2>{nightLabel(selected.date, evening)} · {ukDate(selected.date)} · {selected.rating}</h2>
       {!selected.darkness.astronomical && <p>No true darkness tonight. The sky stays in twilight.{selected.darkness.nautical ? ' Deep-sky planning uses nautical darkness; Excellent is disabled.' : ' Nautical darkness is also absent, so a dark-sky window cannot be rated.'}</p>}
       <p>Sunset {selected.darkness.sunset ? localTime(selected.darkness.sunset) : 'none'} · sunrise {selected.darkness.sunrise ? localTime(selected.darkness.sunrise) : 'none'}</p>
       <p>Civil darkness {selected.darkness.civil ? `${localTime(selected.darkness.civil.start)}–${localTime(selected.darkness.civil.end)}` : 'not reached'} · nautical {selected.darkness.nautical ? `${localTime(selected.darkness.nautical.start)}–${localTime(selected.darkness.nautical.end)}` : 'not reached'} · astronomical {selected.darkness.astronomical ? `${localTime(selected.darkness.astronomical.start)}–${localTime(selected.darkness.astronomical.end)}` : 'not reached'}</p>
       <div className="nightsky-moon-main"><MoonDisc illumination={selected.moon.illumination} waxing={selected.moon.waxing} /><p>{selected.moon.label} · {Math.round(selected.moon.illumination * 100)}% illuminated at 22:00 Europe/London.<br />Moonrise {selected.moon.rise === null ? 'none in this observing night' : localTime(selected.moon.rise)} · moonset {selected.moon.set === null ? 'none in this observing night' : localTime(selected.moon.set)}</p></div>
       <p className="sky-window">{window ? `Best window ${localTime(window.start)}–${localTime(window.end)} · ${duration(window.duration)} · mean score ${Math.round(window.mean)} · ${moonBelowThroughout(window) ? 'Moon down throughout' : 'Moon above horizon for part or all of window'}` : 'No consecutive eligible green window. Valid individual hours still appear below.'}</p>
-      <div className="sky-timeline" tabIndex={0} role="region" aria-label="Hourly observing conditions, scroll horizontally">{selected.hourly.map(p => <div key={p.start} className={`sky-period ${p.score === null ? 'sky-unknown' : p.score >= 55 ? 'sky-green' : p.score >= 35 ? 'sky-amber' : 'sky-red'}`}>
-        <time>{localTime(p.start)}</time><small>{p.sky.sunAltitude < -18 ? 'Astronomical' : p.sky.sunAltitude < -12 ? 'Nautical' : p.sky.sunAltitude < -6 ? 'Civil' : 'Twilight'}</small><strong>{p.score === null ? 'Unknown' : Math.round(p.score)}</strong><small>{p.eligibleMinutes} min in darkness</small><span>Cloud {p.cloud === null ? '?' : `${Math.round(p.cloud * 100)}%`}</span><small>Clear-cloud ensemble estimate {p.clearCloud.value === null ? 'unknown' : `${eventPercent(p.clearCloud.value)}`} · {p.clearCloud.usable}/{p.clearCloud.expected} members · {p.clearCloud.systems.length} systems · &lt;30% total cloud</small><span>Clear {p.models.filter(m => m.cloud !== null && m.cloud < 0.3).length}/{p.models.filter(m => m.cloud !== null).length} models</span><small>{p.precipitation.value === null ? 'Wet risk unknown' : `${eventPercent(p.precipitation.value)} ${p.precipitation.basis === 'ensemble-probability' ? 'ensemble estimate' : 'wet agreement'}`}<br />{p.precipitation.systems.length} sources · {p.precipitation.usable}/{p.precipitation.expected} eligible<br />≥0.2 mm · {localTime(p.precipitation.start)}–{localTime(p.precipitation.end)}</small><span>{moonAboveHorizon(p.sky.time) ? 'Moon up' : 'Moon down'} · {Math.round(p.sky.illumination * 100)}%</span>
-        <details><summary>Atmosphere and models</summary><p>CAMS dust context: {p.dust === null ? 'unknown' : `${p.dust} μg/m³`} (not scored).</p>{p.models.map(m => <p key={m.modelId}>{m.modelId}: {m.value === null ? 'score unknown/stale' : `score ${Math.round(m.value)}`} · total cloud {cloudLabel(m.inputs.cloud)}; low/mid/high {cloudLabel(m.inputs.low)} / {cloudLabel(m.inputs.mid)} / {cloudLabel(m.inputs.high)} · RH {cloudLabel(m.inputs.humidity)} · visibility {m.inputs.visibility === null ? 'unknown' : `${(m.inputs.visibility / 1000).toFixed(1)} km`} · AOD {m.inputs.aerosol ?? 'unknown'} · temperature/dew-point spread {m.inputs.temperature === null || m.inputs.dewPoint === null ? 'unknown' : `${(m.inputs.temperature - m.inputs.dewPoint).toFixed(1)}°C`} · transparency inputs: {m.transparencyInputs.join(', ') || 'none (unknown)'}{m.transparencyInputs.length < 3 && ' · incomplete'}{m.dew === null && ' · Dew/frost assessment unknown'}{m.dew && ' · Dew risk: a heater or shield may help.'}{m.frost && ' · Equipment frost risk; deposition not guaranteed.'}{m.radiationFog && ' · Radiation-fog risk; visibility forecasts may disagree.'}{m.fog && ' · forecast visibility below 1 km'}{mode === 'moon-planets' && ` · 250 hPa jet: ${m.jet ?? 'unknown'} (one indicator, not a complete seeing forecast)`}</p>)}</details>
-      </div>)}</div><p className="nightsky-hourly-caption">Hourly scores average ten-minute planning samples during darkness. Weather inputs are hourly and may be resampled from coarser model output. Repeated local hours retain distinct UTC instants. Green ≥55 · amber 35–54 · red &lt;35 · neutral unknown/twilight.</p>
+      <div className="sky-timeline" tabIndex={0} role="region" aria-label="Hourly observing conditions, scroll horizontally">{selected.hourly.map(p => {
+        const clearCount = p.models.filter(m => m.cloud !== null && m.cloud < 0.3).length;
+        const totalCount = p.models.filter(m => m.cloud !== null).length;
+        return <div key={p.start} className={`sky-period ${p.score === null ? 'sky-unknown' : p.score >= 55 ? 'sky-green' : p.score >= 35 ? 'sky-amber' : 'sky-red'}`}>
+          <time>{localTime(p.start)}</time>
+          <strong>{p.score === null ? '—' : Math.round(p.score)}</strong>
+          <span>Cloud {p.cloud === null ? '?' : `${Math.round(p.cloud * 100)}%`}</span>
+          <span>Clear {clearCount}/{totalCount} models</span>
+          <span>{moonAboveHorizon(p.sky.time) ? 'Moon up' : 'Moon down'} · {Math.round(p.sky.illumination * 100)}%</span>
+        </div>;
+      })}</div><p className="nightsky-hourly-caption">Green ≥55 · amber 35–54 · red &lt;35 · grey unknown/twilight.</p>
     </section>
     <SkyEventsPanel date={selected.date} darkness={selected.darkness} best={window ?? null} moonIllumination={selected.moon.illumination} now={time} />
     <section className="nightsky-aurora" aria-labelledby="nightsky-aurora-title">

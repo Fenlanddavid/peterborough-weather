@@ -258,8 +258,40 @@
 .sky-amber { border-top-color: #e9c77d; }
 .sky-red { border-top-color: #e59d9f; }
 .sky-unknown { color: #a7b3c8; border-top-style: dashed; }
-.sky-period details p { margin: .5rem 0; }
-.sky-source { overflow-wrap: anywhere; font-size: .85rem; }
+.sky-period time { font-size: 12px; color: #bac5d6; font-variant-numeric: tabular-nums; }
+.sky-period span { font-size: 12px; color: #a6b2c5; }
+
+/* Expandable event sections */
+.sky-events-expandable { border: 1px solid var(--ns-line); border-radius: 14px; background: #172332; margin-bottom: 12px; }
+.sky-events-summary { display: flex; align-items: center; padding: 16px 20px; cursor: pointer; font-size: 14px; font-weight: 500; color: #e4e8f3; list-style: none; }
+.sky-events-summary::-webkit-details-marker { display: none; }
+.sky-events-summary::after { content: '+'; margin-left: auto; font-size: 18px; font-weight: 300; color: var(--ns-muted); }
+.sky-events-expandable[open] .sky-events-summary::after { content: '−'; }
+.sky-events-expandable > :not(summary) { padding: 0 20px 16px; }
+
+/* Planet cards */
+.sky-planets { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.sky-planet-card { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--ns-line); border-radius: 10px; background: #1b2840; }
+.sky-planet-card strong { color: #e9ecf5; font-size: 15px; margin-bottom: 2px; }
+.sky-planet-card span { font-size: 12px; color: var(--ns-muted); }
+
+/* Season cards */
+.sky-seasons { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.sky-season-card { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--ns-line); border-radius: 10px; background: #1b2840; }
+.sky-season-card strong { color: #e9ecf5; font-size: 14px; }
+.sky-season-card span { font-size: 12px; color: var(--ns-muted); }
+
+/* ISS section */
+.sky-iss-section { margin-top: 16px; }
+.sky-iss-section h3 { font-size: 16px; font-weight: 500; color: #e4e8f3; margin-bottom: 12px; }
+.sky-iss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.sky-iss-card { padding: 16px 18px; border: 1px solid var(--ns-line); border-radius: 12px; background: #172332; }
+.sky-iss-date { font-size: 13px; font-weight: 500; color: #e4e8f3; margin-bottom: 8px; }
+.sky-iss-details { display: flex; gap: 12px; margin-bottom: 6px; }
+.sky-iss-peak { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 6px; background: #2a3a52; color: #c8c2ec; font-size: 13px; font-weight: 600; }
+.sky-iss-dir { font-size: 13px; color: var(--ns-muted); display: flex; align-items: center; }
+.sky-iss-times { font-size: 12px; color: var(--ns-muted); }
+.sky-iss-stale { color: var(--ns-muted); font-size: 13px; }
 .view-nightsky section { margin-bottom: 1.5rem; }
 .view-nightsky section > h2, .view-nightsky section > h3 { margin: 1rem 0; }
 .view-nightsky section > p, .view-nightsky li { line-height: 1.7; margin-bottom: .6rem; }
