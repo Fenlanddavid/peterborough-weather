@@ -11,7 +11,6 @@ import { timeAgo } from './hooks/useLocalTime';
 import { LOCATION } from './config/models';
 import { WeatherIcon } from './components/WeatherIcon';
 import { useEnsembles } from './hooks/useEnsembles';
-import { EnsembleStatus } from './components/ForecastEvidence';
 import './App.css';
 import './Home.css';
 import './views/NightSky.css';
@@ -59,7 +58,6 @@ function App() {
       <main className="app-main">
         {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} ensembles={ensembles.index} />}
         {view === 'summary' && <Summary runs={runs} loading={loading} hasError={!!error} ensembles={ensembles.index} />}
-        {['forecast', 'summary', 'nightsky'].includes(view) && <EnsembleStatus sources={ensembles.sources} />}
         {view === 'nightsky' && <Suspense fallback={<p role="status">Loading Night Sky…</p>}><NightSky runs={runs} loading={loading} hasError={!!error} ensembles={ensembles.index} /></Suspense>}
         {view === 'trends' && <Suspense fallback={<p className="forecast-status" role="status">Loading charts…</p>}><Trends runs={runs} /></Suspense>}
         {view === 'seasonal' && <Seasonal />}

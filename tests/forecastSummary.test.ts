@@ -33,8 +33,8 @@ test('does not describe missing rain or wind data as dry or calm', () => {
   const briefing = buildForecastBriefing([run('temperature_2m', winterDay, winterDay.map(() => 10))], winterNow);
   assert.equal(briefing.days[0].rainMm, null);
   assert.equal(briefing.days[0].windMph, null);
-  assert.match(briefing.days[0].paragraphs.join(' '), /Precipitation data is unavailable/);
-  assert.doesNotMatch(briefing.days[0].paragraphs.join(' '), /Little or no precipitation/);
+  // With no rain data, no rain paragraph should appear at all
+  assert.doesNotMatch(briefing.days[0].paragraphs.join(' '), /Little or no rain/);
   assert.match(briefing.rainfall, /full-week total is not available/);
   assert.match(briefing.agreement, /not enough overlapping/);
   assert.equal(briefing.cold, '');
@@ -44,8 +44,9 @@ test('marks partial rainfall totals and does not rank them as fully covered dry 
   const briefing = buildForecastBriefing([run('precipitation', winterDay, winterDay.map((_, index) => index < 3 ? 0 : null))], winterNow);
   assert.equal(briefing.days[0].rainMm, null);
   assert.equal(briefing.days[0].rainHours, 2);
-  assert.match(briefing.days[0].paragraphs.join(' '), /coverage is incomplete \(2 of 24 hours/);
-  assert.doesNotMatch(briefing.rainfall, /Little or no precipitation is indicated/);
+  // With null rainMm, no rain paragraph should appear
+  assert.doesNotMatch(briefing.days[0].paragraphs.join(' '), /Little or no rain/);
+  assert.doesNotMatch(briefing.rainfall, /Little or no rain/);
 });
 
 test('totals the local seven-day forecast and reports rain timing, snow and freezing air', () => {

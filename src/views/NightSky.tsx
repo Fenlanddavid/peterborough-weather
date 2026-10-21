@@ -15,7 +15,8 @@ import { Illumination } from 'astronomy-engine';
 import { useVisibleResource } from '../hooks/useVisibleResource';
 import { WeatherIcon } from '../components/WeatherIcon';
 import { DETERMINISTIC_MODELS } from '../config/models';
-import { AuroraPanel, SourceDetail } from '../components/AuroraPanel';
+import { useAuroraData } from '../hooks/useAuroraData';
+import { kpColour, kpLabel } from '../api/aurora';
 import { SkyEventsPanel } from '../components/SkyEventsPanel';
 import './NightSky.css';
 const loadIfs = (signal: AbortSignal) => fetchSkyModel('ecmwf_ifs025', signal);
@@ -28,6 +29,7 @@ export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: bool
   const now = useLocalNow(); const time = now.getTime();
   const [mode, setMode] = useState<ObservingMode>(savedMode);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const { aurora, loading: auroraLoading, refresh: refreshAurora } = useAuroraData();
   const ifs = useVisibleResource('sky:ecmwf_ifs025', HOUR, loadIfs);
   const gfs = useVisibleResource('sky:gfs_global', HOUR, loadGfs);
   const ukmo = useVisibleResource('sky:ukmo_global_deterministic_10km', HOUR, loadUkmo);
@@ -92,13 +94,15 @@ export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: bool
     return { ...night, hourly, darkInterval: darkness, twilightOnly, periods, windows, rating: windows ? rateNight(windows, twilightOnly) : 'Limited data' };
   }), [ephemerides, mode, weather, aerosol, signals, ensembles, time, evening]);
   const selected = nights.find(n => n.date === selectedDate) ?? nights[0];
-  const best = [...nights].filter(n => n.windows?.best).sort((a, b) => b.windows!.best!.duration * b.windows!.best!.mean - a.windows!.best!.duration * a.windows!.best!.mean)[0];
+  const bestByWindow = [...nights].filter(n => n.windows?.best).sort((a, b) => b.windows!.best!.duration * b.windows!.best!.mean - a.windows!.best!.duration * a.windows!.best!.mean)[0];
+  const bestByRating = [...nights].filter(n => n.rating && n.rating !== 'Limited data').sort((a, b) => { const order = ['Excellent', 'Good', 'Fair', 'Poor', 'Unsuitable']; return order.indexOf(a.rating) - order.indexOf(b.rating); })[0];
+  const best = bestByWindow ?? bestByRating;
   const changeMode = (value: ObservingMode) => { setMode(value); try { localStorage.setItem('pb-weather:observing-mode', value); } catch (error) { console.warn('Observing preference storage:', error); } };
   const window = selected.windows?.best;
   return <div className="view-nightsky">
     <header className="nightsky-intro"><div><p className="nightsky-eyebrow">Peterborough · After hours</p><h1>The night sky ahead.</h1><p>Your stargazing outlook, from sunset to sunrise.</p></div></header>
     <div className="sky-mode" role="group" aria-label="Observing mode"><button aria-pressed={mode === 'deep-sky'} onClick={() => changeMode('deep-sky')}>Deep sky</button><button aria-pressed={mode === 'moon-planets'} onClick={() => changeMode('moon-planets')}>Moon and planets</button></div>
-    <section className="nightsky-best"><div className="nightsky-best-content"><p className="nightsky-eyebrow">Stargazing outlook · {mode === 'deep-sky' ? 'Deep sky' : 'Moon and planets'}</p><h2>{best ? `Best night: ${best.date}` : 'Best night not yet determined'}</h2><p>{best?.windows?.best ? `${duration(best.windows.best.duration)} usable window · ${best.rating}` : 'Waiting for sky weather data.'}</p></div></section>
+    <section className="nightsky-best"><div className="nightsky-best-content"><p className="nightsky-eyebrow">Stargazing outlook · {mode === 'deep-sky' ? 'Deep sky' : 'Moon and planets'}</p><h2>{best ? `Best night: ${best.date}` : 'Loading sky outlook…'}</h2><p>{best?.windows?.best ? `${duration(best.windows.best.duration)} usable window · ${best.rating}` : best ? best.rating : ''}</p></div></section>
     <nav className="nightsky-night-list" aria-label="Choose observing night">{nights.map(n => <button className={`nightsky-night-picker ${selected.date === n.date ? 'is-selected' : ''}`} aria-pressed={selected.date === n.date} key={n.date} onClick={() => setSelectedDate(n.date)}><span className="nightsky-night-name">{n.date === evening ? 'Tonight' : new Date(`${n.date}T12:00Z`).toLocaleDateString('en-GB', { timeZone: 'Europe/London', weekday: 'short' })}</span><span>{n.date}</span><WeatherIcon name="moon" /><strong>{n.rating}</strong><small>{Math.round((n.windows?.coverage ?? 0) * 100)}% core coverage</small></button>)}</nav>
     <section className="nightsky-detail"><h2>{selected.date} · {selected.rating}</h2>
       {!selected.darkness.astronomical && <p>No true darkness tonight. The sky stays in twilight.{selected.darkness.nautical ? ' Deep-sky planning uses nautical darkness; Excellent is disabled.' : ' Nautical darkness is also absent, so a dark-sky window cannot be rated.'}</p>}
@@ -112,10 +116,49 @@ export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: bool
       </div>)}</div><p className="nightsky-hourly-caption">Hourly scores average ten-minute planning samples during darkness. Weather inputs are hourly and may be resampled from coarser model output. Repeated local hours retain distinct UTC instants. Green ≥55 · amber 35–54 · red &lt;35 · neutral unknown/twilight.</p>
     </section>
     <SkyEventsPanel date={selected.date} darkness={selected.darkness} best={window ?? null} moonIllumination={selected.moon.illumination} now={time} />
-    <AuroraPanel darkness={selected.darkness} weather={weather} now={time} />
-    <details className="nightsky-method"><summary>Sources, freshness and how the outlook works</summary><SourceDetail label="IFS sky weather" result={ifs} /><SourceDetail label="GFS sky weather" result={gfs} /><SourceDetail label="UKMO sky weather" result={ukmo} /><SourceDetail label="CAMS aerosol/dust" result={air} />{[ifs, gfs, ukmo, air].map((s, i) => s?.data && <p key={i}>{s.data.modelId}: {s.data.warnings.join(' · ') || 'no parser warnings'} · issue time not supplied. Coverage {new Date(s.data.validFrom).toISOString()}–{new Date(s.data.validTo).toISOString()}; nulls remain unknown.</p>)}
-      <p>Scores are configurable observing-planning heuristics, not measured transparency or astronomical seeing. Per model: random-overlap effective cloud = 1−(1−low)(1−mid)(1−k×high), k 0.7 deep sky / 0.4 Moon and planets; total cloud is the fallback. Deep sky applies Moon illumination × sin(positive altitude), with a 0.6 brightness penalty. Available humidity, visibility and aerosol factors multiply, with a floor of 0.6; missing optional inputs are listed as unknown. Dust is context only.</p><p>Gusts below 25 mph have no penalty; 25–35 mph multiply by 0.8; above 35 mph score zero. Visibility below 1 km scores zero within that model. Scores combine equally by family after these nonlinear calculations. A ≥40% ensemble estimate for at least 0.2 mm over the shown three-hour period scores zero; deterministic wet agreement is the labelled fallback. Unknown cloud, gusts or precipitation make the score unknown. Source failures retain cached values; sky responses last successfully fetched more than three hours ago are excluded from recommendations. Unknown issue times remain unknown.</p><p>Windows need consecutive eligible scores ≥55, clipped to darkness and remaining observing time. Full-night ratings need 75% coverage. Excellent: ≥4h and mean ≥75 with known transparency and true darkness in deep-sky mode; Good: ≥2h and mean ≥60; Fair: ≥1h; Poor: some eligible score ≥35; otherwise Unsuitable. An incomplete final night cannot win the weekly comparison.</p><p>Observer: 52.5736°N, −0.2400°E, 10 m above sea level, zero height above ground; unobstructed horizon. Sun/Moon rise/set uses upper limbs and standard atmospheric refraction; twilight uses geometric Sun centre at −6/−12/−18°. Planet maxima are refined to sub-minute precision. Library uncertainty and the real horizon limit practical accuracy. Weather: <a href="https://open-meteo.com/">Open-Meteo</a>; aerosols: <a href="https://atmosphere.copernicus.eu/">Copernicus CAMS</a>.</p>
-    </details>
+    <section className="nightsky-aurora" aria-labelledby="nightsky-aurora-title">
+      <div className="nightsky-section-heading"><div><p className="nightsky-eyebrow">Aurora watch · Next three days</p><h2 id="nightsky-aurora-title">Northern lights outlook</h2></div><button type="button" className="nightsky-aurora-refresh" onClick={refreshAurora} disabled={auroraLoading} aria-label="Refresh aurora outlook"><WeatherIcon name="refresh" />{auroraLoading ? 'Updating' : 'Refresh'}</button></div>
+      {!aurora ? <p className="nightsky-aurora-status" role="status">{auroraLoading ? 'Checking geomagnetic activity…' : 'Aurora data is unavailable.'}</p> : (() => {
+        const latestKp = aurora.current?.entries.at(-1);
+        const forecastEntries = aurora.forecast?.entries ?? [];
+        const peakKp = forecastEntries.length ? Math.max(...forecastEntries.map(e => e.kp)) : null;
+        const visibility = peakKp === null ? 'Forecast unavailable' : peakKp >= 7 ? 'Possible' : peakKp >= 5 ? 'Unlikely' : 'Very unlikely';
+        const visibilityNote = peakKp === null ? 'The three-day forecast could not be loaded.' : peakKp >= 7 ? 'Geomagnetic activity may reach levels visible from Peterborough. Clear, dark skies needed.' : peakKp >= 5 ? 'Minor storm activity forecast, but likely below Peterborough\'s threshold.' : 'Geomagnetic activity is expected to stay well below aurora-visible levels.';
+        return <>
+          <div className="nightsky-aurora-summary">
+            <div className="nightsky-aurora-kp">
+              <span className="nightsky-kp-value" style={{ color: kpColour(latestKp?.kp ?? 0) }}>{latestKp ? latestKp.kp.toFixed(1) : '—'}</span>
+              <span className="nightsky-kp-label">Current Kp</span>
+              <span className="nightsky-kp-level">{latestKp ? kpLabel(latestKp.kp) : 'No data'}</span>
+            </div>
+            <div className="nightsky-aurora-assessment">
+              <span className={`nightsky-aurora-visibility nightsky-aurora-visibility--${visibility.toLowerCase().replace(/\s+/g, '-')}`}><WeatherIcon name="aurora" />{visibility}</span>
+              <p>{visibilityNote}</p>
+            </div>
+          </div>
+          {forecastEntries.length > 0 && <div className="nightsky-kp-forecast">
+            <p className="nightsky-kp-forecast-label">Kp forecast · 0–9 scale · Peterborough local time</p>
+            <div className="nightsky-kp-scroll" tabIndex={0} role="region" aria-label="Three-day geomagnetic forecast"><div className="nightsky-kp-bars">
+              {forecastEntries.slice(0, 24).map((entry) => {
+                const barHeight = Math.max(3, (entry.kp / 9) * 78);
+                const entryTime = new Date(entry.time);
+                const timeLabel = entryTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' });
+                return <div key={entry.time} className="nightsky-kp-bar-col" tabIndex={0} aria-label={`${entryTime.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Europe/London' })}, ${timeLabel}: Kp ${entry.kp}, ${kpLabel(entry.kp)}`}>
+                  <div className="nightsky-kp-bar" style={{ height: `${barHeight}px`, backgroundColor: kpColour(entry.kp) }} title={`Kp ${entry.kp}`}>
+                    <span className="nightsky-kp-bar-value">{entry.kp.toFixed(1)}</span>
+                  </div>
+                  <span className="nightsky-kp-bar-time" aria-hidden="true">{timeLabel}<small>{entryTime.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'Europe/London' })}</small></span>
+                </div>;
+              })}
+            </div></div>
+            <div className="nightsky-kp-scale">
+              <span><i style={{ backgroundColor: kpColour(1) }} />Quiet · Kp below 4</span><span><i style={{ backgroundColor: kpColour(4) }} />Active · Kp 4</span><span><i style={{ backgroundColor: kpColour(7) }} />Storm · Kp 5+</span>
+            </div>
+          </div>}
+          <p className="nightsky-aurora-note">Peterborough (52.6°N) typically needs Kp ≥ 7 for aurora visibility. Clear, dark skies are also needed. Data from <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener noreferrer">NOAA SWPC</a>. Updated {new Date(aurora.fetchedAt).toLocaleString('en-GB', { timeZone: 'Europe/London', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}.</p>
+        </>;
+      })()}
+    </section>
   </div>;
 }
 function MoonDisc({ illumination, waxing }: { illumination: number; waxing: boolean }) {

@@ -6,7 +6,7 @@ import type { ModelValue } from '../forecast/signals.ts';
 import { eventTimes, PRECIP_DAY, SNOW } from '../forecast/events.ts';
 import type { EnsembleIndex } from '../forecast/events.ts';
 import type { EventEstimate, Provenance } from '../data/contracts.ts';
-import { eventPercent, HOUR, msToMph, utc } from '../data/contracts.ts';
+import { HOUR, msToMph, utc } from '../data/contracts.ts';
 import { getHourlyCondition } from './hourlyWeather.ts';
 import type { IconName } from '../components/WeatherIcon';
 
@@ -90,8 +90,8 @@ function rainTiming(hours: Hour[]): string | null {
     const localHour = Number(toLocalTime(hour.time, 'time').slice(0, 2));
     return sum + (localHour >= period.start && localHour < period.end ? hour.rain! : 0);
   }, 0) })).filter((period) => period.total > 0).sort((a, b) => b.total - a.total);
-  if (periods.length >= 3) return 'Precipitation is spread across several parts of the day.';
-  return `Precipitation is mainly indicated ${periods[0].label}${periods.length === 2 ? ` and ${periods[1].label}` : ''}.`;
+  if (periods.length >= 3) return 'Rain is spread across several parts of the day.';
+  return `Rain is mainly expected ${periods[0].label}${periods.length === 2 ? ` and ${periods[1].label}` : ''}.`;
 }
 
 function describeDay(day: SummaryDay): string[] {
@@ -101,12 +101,12 @@ function describeDay(day: SummaryDay): string[] {
     lines.push(`Temperatures range from ${degrees(day.low)} to ${degrees(day.high)}${day.temperatureHours < day.expectedHours ? ' across the available hours' : ''}.`);
   } else lines.push(`A complete temperature window is unavailable (${day.temperatureHours} of ${day.expectedHours} hours have some data).`);
 
-  if (day.rainMm === null) lines.push(`Precipitation data is unavailable for a compatible complete model window; coverage is incomplete (${day.rainHours} of ${day.expectedHours} hours have some data). This is not a dry-weather signal.`);
-  else {
+  if (day.rainMm !== null) {
     const amount = day.rainMm.toFixed(1);
-    lines.push(fullRain(day)
-      ? day.rainMm < 0.1 ? 'Little or no precipitation is indicated.' : `Around ${amount} mm of precipitation is indicated. ${day.rainTiming ?? 'Only small amounts are indicated in individual hours.'}`
-      : `The available hours show ${amount} mm of precipitation, but coverage is incomplete (${day.rainHours} of ${day.expectedHours} hours).${day.rainTiming ? ` ${day.rainTiming}` : ''}`);
+    if (day.rainMm < 0.1) lines.push('Little or no rain expected.');
+    else if (day.rainMm < 1) lines.push(`Light showers likely, around ${amount} mm.${day.rainTiming ? ` ${day.rainTiming}` : ''}`);
+    else if (day.rainMm < 5) lines.push(`Showers expected, around ${amount} mm.${day.rainTiming ? ` ${day.rainTiming}` : ''}`);
+    else lines.push(`Rain expected, around ${amount} mm.${day.rainTiming ? ` ${day.rainTiming}` : ''}`);
   }
 
   if (day.windMph !== null) lines.push(`Winds average around ${Math.round(day.windMph)} mph across the available hours${day.gustMph !== null ? `, with peak gusts near ${Math.round(day.gustMph)} mph${day.gustTime ? ` around ${day.gustTime}` : ''}` : '; gust data is unavailable'}.`);
@@ -181,9 +181,6 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date, options: Bri
       provenance: [...precipitation.provenance, ...contributors.flatMap(v => v.contributions ?? [v])], stale: contributors.some(v => v.stale),
     };
     day.paragraphs = describeDay(day);
-    if (day.precipitation.value !== null) day.paragraphs.push(`${day.precipitation.basis === 'ensemble-probability' ? 'Uncalibrated ensemble probability estimate' : 'Deterministic model agreement'}: ${eventPercent(day.precipitation.value)} for at least 1 mm of precipitation over ${day.remainingToday ? 'the remainder of today' : 'this local calendar day'}. ${day.precipitation.usable}/${day.precipitation.expected} eligible ${day.precipitation.basis === 'ensemble-probability' ? 'members' : 'models'}.`);
-    if (day.precipitation.conditionalAmount !== null) day.paragraphs.push(`If wet (at least 1 mm), typically around ${day.precipitation.conditionalAmount.toFixed(1)} mm. Expected precipitation includes dry outcomes.`);
-    day.paragraphs.push(`Precipitation sources: ${day.precipitation.systems.join(', ') || 'none eligible'}; ${new Set(day.precipitation.provenance.map(p => p.family).filter(Boolean)).size} of 3 families represented. Coverage can differ by variable.`);
     return day;
   });
   const withTemp = days.filter((day) => day.high !== null);

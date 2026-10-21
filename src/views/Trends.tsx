@@ -91,7 +91,6 @@ export function Trends({ runs }: Props) {
 
   return (
     <div className="view-trends">
-      <VerificationPanel />
       <VariableSelector selected={variable} onChange={setVariable} />
 
       <div className="valid-time-picker">
@@ -196,6 +195,7 @@ export function Trends({ runs }: Props) {
           </div>
         ))}
       </div>
+      <VerificationPanel />
     </div>
   );
 }
