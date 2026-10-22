@@ -28,7 +28,7 @@ npm run build
 
 ## GitHub Pages
 
-The workflow in `.github/workflows/deploy.yml` builds and publishes changes pushed to `main`. Enable **Settings → Pages → Source → GitHub Actions** in the GitHub repository.
+The workflow in `.github/workflows/site.yml` builds and publishes changes pushed to `main`. Enable **Settings → Pages → Source → GitHub Actions** in the GitHub repository.
 
 The deployment sets Vite's base path to the repository name. The manifest, icons and service worker work beneath that path.
 
@@ -64,4 +64,8 @@ npm run report:budget
 
 Live probes are **separate** from unit tests: `npm run probe:sources` and `npm run probe:browser`. The browser probe defaults to the real published Pages origin. Set `CHROMIUM_PATH` to an installed Chromium executable when needed. Run production browser checks against `npm run preview -- --host 127.0.0.1 --port 5187 --base /peterborough-weather/` with `npm run smoke:browser`.
 
-Optional collectors are disabled unless the public repository variables `COLLECT_METAR`, `COLLECT_VERIFICATION`, `COLLECT_AURORAWATCH` or `COLLECT_ISS` are `true`. Deploy the application once first to create the reusable `site-shell` artifact. The hourly collector publishes data by overlaying it on that built shell, avoiding hourly full application rebuilds. See the report for source timestamps, retention, recovery and deployment checks; a collector commit alone does not establish that Pages is current.
+Optional collectors are disabled unless repository variables `COLLECT_METAR`, `COLLECT_VERIFICATION`, `COLLECT_AURORAWATCH` or `COLLECT_ISS` are `true`. One workflow collects hourly when enabled and publishes a fresh build when data changes. Code pushes always build and publish. The `data` branch stores only the current generated snapshot in one root commit; it is replaced on each change. There is no retained application-shell artifact to expire. Only the Pages deployment artifact is uploaded.
+
+Verification collects temperature once per 20 hours, retaining 100 days of compact model/time/lead/value rows. The same station-matched scoring function produces the client results. Daily history keeps the last score set for each UTC collection date, rather than an hourly copy of the full evaluation. Failed source requests retain the previous usable data; a failed data-branch lookup stops the job.
+
+For the initial migration, keep `public/data` tracked until a manual run of `site.yml` has created and published the compact `data` branch. Only then remove `public/data` from the main index and ignore it. See [the archive migration notes](docs/data-archive-migration.md) for validation and local development.

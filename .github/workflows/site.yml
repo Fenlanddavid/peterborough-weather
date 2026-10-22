@@ -1,0 +1,90 @@
+name: Build and publish weather site
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    if: github.event_name != 'push' && (vars.COLLECT_METAR == 'true' || vars.COLLECT_AURORAWATCH == 'true' || vars.COLLECT_ISS == 'true' || vars.COLLECT_VERIFICATION == 'true')
+    runs-on: ubuntu-latest
+    concurrency:
+      group: weather-data-archive
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    outputs:
+      changed: ${{ steps.snapshot.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Restore complete data snapshot
+        run: bash scripts/data-branch.sh public/data
+      - name: Collect METAR independently
+        if: vars.COLLECT_METAR == 'true' || vars.COLLECT_VERIFICATION == 'true'
+        continue-on-error: true
+        run: node --experimental-strip-types scripts/collect.ts metar
+      - name: Collect AuroraWatch independently
+        if: vars.COLLECT_AURORAWATCH == 'true'
+        continue-on-error: true
+        run: node --experimental-strip-types scripts/collect.ts aurorawatch
+      - name: Collect ISS elements independently
+        if: vars.COLLECT_ISS == 'true'
+        continue-on-error: true
+        run: node --experimental-strip-types scripts/collect.ts iss
+      - name: Collect station forecasts and held-out verification
+        if: vars.COLLECT_VERIFICATION == 'true'
+        continue-on-error: true
+        run: node --experimental-strip-types scripts/collect.ts verification
+      - name: Replace changed data snapshot
+        id: snapshot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/publish-data-snapshot.sh
+
+  publish:
+    needs: collect
+    if: ${{ !cancelled() && (github.event_name != 'schedule' || needs.collect.outputs.changed == 'true') }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Build site
+        run: npm run build -- --base "/${GITHUB_REPOSITORY#*/}/"
+      - name: Restore complete data snapshot into the build
+        run: bash scripts/data-branch.sh dist/data
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+      - name: Publish site and data
+        id: deployment
+        uses: actions/deploy-pages@v4

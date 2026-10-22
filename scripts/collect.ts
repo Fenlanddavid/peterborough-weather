@@ -7,6 +7,8 @@ import { parseAuroraWatch } from '../src/sky/aurora.ts';
 import { parseIssTle } from '../src/astro/iss.ts';
 import { DETERMINISTIC_MODELS } from '../src/config/models.ts';
 import { HOUR, finite, utc } from '../src/data/contracts.ts';
+import { compactForecasts, expandForecasts, compactResults, verificationIsRecent, VERIFICATION_RETENTION_MS } from './lib/verificationArchive.ts';
+import type { ForecastArchiveV2, LegacyForecastArchive, VerificationProduct } from './lib/verificationArchive.ts';
 const root = new URL('../public/data/', import.meta.url);
 await mkdir(new URL('obs/', root), { recursive: true });
 await mkdir(new URL('verification/', root), { recursive: true });
@@ -64,43 +66,60 @@ async function collectIss() {
 }
 async function collectVerification() {
   const now = Date.now();
-  const archive = await read<Archive | null>('obs/egxt.json', null);
+  // Missing files can bootstrap; malformed existing archives must never silently
+  // become empty archives on a partially successful provider response.
+  const strictRead = async <T>(path: string, fallback: T): Promise<T> => {
+    try { return JSON.parse(await readFile(new URL(path, root), 'utf8')); }
+    catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return fallback; throw error; }
+  };
+  const archive = await strictRead<Archive | null>('obs/egxt.json', null);
   if (!archive?.station) throw new Error('Collect EGXT observations before station-matched forecasts');
   const station = archive.station;
-  const previous = await read<{ forecasts: VerificationForecast[] }>('verification/forecasts.json', { forecasts: [] });
+  const previous = await strictRead<ForecastArchiveV2 | LegacyForecastArchive>('verification/forecasts.json', { station, forecasts: [] });
+  const history = await strictRead<VerificationProduct | null>('verification/results.json', null);
+  const existing = expandForecasts(previous);
+  // Migrate before the daily gate, preserving the exact existing scores and
+  // collectedAt. A recent hourly v1 run must not postpone the initial migration.
+  if (previous.version === undefined && existing.length) await save('verification/forecasts.json', JSON.stringify(compactForecasts(existing, previous.station, now)));
+  if (history) await save('verification/results.json', JSON.stringify(compactResults(history, now)));
+  if (verificationIsRecent(history, now)) {
+    console.log('Verification collected less than 20 hours ago; retaining scores without provider requests');
+    return;
+  }
   const key = (f: VerificationForecast) => `${f.modelId}:${f.validTime}:${f.leadHours}:${f.variable}`;
-  const forecasts = new Map(previous.forecasts.map(f => [key(f), f]));
+  const forecasts = new Map(existing.map(f => [key(f), f]));
   const offsets = [1, 2, 3, 5, 7];
-  const variables = offsets.flatMap(day => [`temperature_2m_previous_day${day}`, `wind_speed_10m_previous_day${day}`]);
+  const variables = offsets.map(day => `temperature_2m_previous_day${day}`);
   const failures: string[] = [];
+  let successfulModels = 0;
   for (const model of DETERMINISTIC_MODELS) {
-    const params = new URLSearchParams({ latitude: String(station.latitude), longitude: String(station.longitude), elevation: String(station.elevation), models: model.id, hourly: variables.join(','), past_days: '7', forecast_days: '1', timezone: 'GMT', wind_speed_unit: 'ms', temperature_unit: 'celsius' });
+    const params = new URLSearchParams({ latitude: String(station.latitude), longitude: String(station.longitude), elevation: String(station.elevation), models: model.id, hourly: variables.join(','), past_days: '7', forecast_days: '1', timezone: 'GMT', temperature_unit: 'celsius' });
     try {
       const response = await scheduledFetch(`https://previous-runs-api.open-meteo.com/v1/forecast?${params}`, { optional: true });
       const raw = await response.json();
       if (!raw?.hourly || !Array.isArray(raw.hourly.time) || raw.utc_offset_seconds !== 0 || !finite(raw.latitude) || !finite(raw.longitude) || !finite(raw.elevation)) throw new RangeError('Invalid verification forecast location/time');
-      for (const day of offsets) for (const variable of ['temperature', 'wind'] as const) {
-        const field = `${variable === 'temperature' ? 'temperature_2m' : 'wind_speed_10m'}_previous_day${day}`;
-        const unit = variable === 'temperature' ? '°C' : 'm/s';
+      const next: VerificationForecast[] = [];
+      for (const day of offsets) {
+        const field = `temperature_2m_previous_day${day}`;
         const values = raw.hourly[field];
         if (!Array.isArray(values)) continue;
-        if (raw.hourly_units?.[field] !== unit || values.length !== raw.hourly.time.length) throw new RangeError(`Invalid verification units/length ${field}`);
+        if (raw.hourly_units?.[field] !== '°C' || values.length !== raw.hourly.time.length) throw new RangeError(`Invalid verification units/length ${field}`);
         raw.hourly.time.forEach((time: unknown, i: number) => {
           const validTime = typeof time === 'string' ? utc(time) : NaN;
           if (!finite(validTime) || !finite(values[i]) || validTime > now) return;
-          const f: VerificationForecast = { modelId: model.id, family: model.family, validTime, leadHours: day * 24, variable, value: values[i], station, forecastLocation: { latitude: raw.latitude, longitude: raw.longitude, elevation: raw.elevation }, provider: 'Open-Meteo Previous Runs', issuedAt: null, sourceTime: null, fetchedAt: now, unit, measurementCompatible: variable === 'temperature' };
-          if (!forecasts.has(key(f))) forecasts.set(key(f), f);
+          next.push({ modelId: model.id, family: model.family, validTime, leadHours: day * 24, variable: 'temperature', value: values[i], station, forecastLocation: { latitude: raw.latitude, longitude: raw.longitude, elevation: raw.elevation }, provider: 'Open-Meteo Previous Runs', issuedAt: null, sourceTime: null, fetchedAt: now, unit: '°C', measurementCompatible: true });
         });
       }
+      if (next.length) successfulModels++;
+      for (const forecast of next) if (!forecasts.has(key(forecast))) forecasts.set(key(forecast), forecast);
     } catch (error) { const message = `${model.id}: ${String(error)}`; failures.push(message); console.error(message); }
   }
-  const rows = [...forecasts.values()].filter(f => f.validTime >= now - 100 * 24 * HOUR).sort((a, b) => a.validTime - b.validTime || key(a).localeCompare(key(b)));
+  if (!successfulModels) throw new Error('No usable temperature responses; previous verification retained for retry');
+  const rows = [...forecasts.values()].filter(f => f.validTime >= now - VERIFICATION_RETENTION_MS).sort((a, b) => a.validTime - b.validTime || key(a).localeCompare(key(b)));
   if (!rows.length) throw new Error('No station forecasts; previous verification retained');
-  await save('verification/forecasts.json', { station, forecasts: rows, collectedAt: now, failures, note: 'Fixed Previous Runs lead offsets. Nulls beyond each model horizon are excluded. Genuine run issue times are not supplied.' });
   const results = evaluateVerification(rows, archive.observations, now);
-  const history = await read<{ evaluations: { time: number; results: typeof results }[] }>('verification/results.json', { evaluations: [] });
-  const evaluations = [...history.evaluations.filter(e => e.time >= now - 100 * 24 * HOUR), { time: now, results }];
-  await save('verification/results.json', { station, provider: 'AviationWeather / Open-Meteo Previous Runs', sourceTime: archive.sourceTime, collectedAt: now, results, evaluations, correctionEnabled: false, reweightingEnabled: false, failures });
+  await save('verification/forecasts.json', JSON.stringify(compactForecasts(rows, station, now)));
+  await save('verification/results.json', JSON.stringify(compactResults({ ...history, station, provider: 'AviationWeather / Open-Meteo Previous Runs', sourceTime: archive.sourceTime, collectedAt: now, results, correctionEnabled: false, reweightingEnabled: false, failures }, now)));
 }
 const requested = process.argv.slice(2);
 if (!requested.length) throw new Error('Specify metar, aurorawatch, iss or verification');
