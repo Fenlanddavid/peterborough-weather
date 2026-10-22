@@ -7,8 +7,8 @@
     "elevation": 74
   },
   "provider": "AviationWeather / Open-Meteo Previous Runs",
-  "sourceTime": 1792662600000,
-  "collectedAt": 1792664093099,
+  "sourceTime": 1792680600000,
+  "collectedAt": 1792682492946,
   "results": [
     {
       "modelId": "ecmwf_aifs025_single",
@@ -23,15 +23,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.9019704433497538,
-        "mse": 1.1762068965517252,
-        "bias": -0.23497536945812808
+        "mae": 0.9048076923076922,
+        "mse": 1.1928846153846164,
+        "bias": -0.20673076923076922
       },
       "training": {
         "n": 24,
@@ -64,8 +64,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_aifs025_single",
@@ -80,15 +80,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.7162561576354676,
-        "mse": 5.0951724137931045,
-        "bias": 0.8285714285714286
+        "mae": 1.7033653846153842,
+        "mse": 5.031682692307693,
+        "bias": 0.8341346153846154
       },
       "training": {
         "n": 24,
@@ -121,8 +121,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_aifs025_single",
@@ -137,15 +137,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.7128078817733989,
-        "mse": 0.8084236453201978,
-        "bias": -0.12857142857142867
+        "mae": 0.7274038461538461,
+        "mse": 0.84485576923077,
+        "bias": -0.14182692307692318
       },
       "training": {
         "n": 24,
@@ -178,8 +178,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_aifs025_single",
@@ -194,15 +194,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.7733990147783253,
-        "mse": 0.9682758620689661,
-        "bias": -0.269950738916256
+        "mae": 0.7802884615384615,
+        "mse": 0.9860096153846161,
+        "bias": -0.26009615384615364
       },
       "training": {
         "n": 24,
@@ -235,8 +235,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_aifs025_single",
@@ -251,15 +251,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.8758620689655171,
-        "mse": 1.4481773399014786,
-        "bias": -0.22561576354679808
+        "mae": 0.8730769230769229,
+        "mse": 1.4396153846153856,
+        "bias": -0.21250000000000005
       },
       "training": {
         "n": 24,
@@ -292,8 +292,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_ifs025",
@@ -308,15 +308,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.2423645320197045,
-        "mse": 2.55615763546798,
-        "bias": -0.5615763546798029
+        "mae": 1.2591346153846152,
+        "mse": 2.5967788461538457,
+        "bias": -0.5014423076923076
       },
       "training": {
         "n": 24,
@@ -349,8 +349,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_ifs025",
@@ -365,15 +365,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.9039408866995076,
-        "mse": 5.725960591133005,
-        "bias": 0.2783251231527094
+        "mae": 1.8908653846153847,
+        "mse": 5.650817307692309,
+        "bias": 0.3043269230769231
       },
       "training": {
         "n": 24,
@@ -406,8 +406,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_ifs025",
@@ -422,15 +422,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.7522167487684726,
-        "mse": 0.9044827586206904,
-        "bias": -0.22610837438423656
+        "mae": 0.7490384615384612,
+        "mse": 0.8938461538461547,
+        "bias": -0.2250000000000001
       },
       "training": {
         "n": 24,
@@ -463,8 +463,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_ifs025",
@@ -479,15 +479,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.8162561576354675,
-        "mse": 1.0893103448275867,
-        "bias": -0.26354679802955666
+        "mae": 0.8105769230769225,
+        "mse": 1.0790384615384618,
+        "bias": -0.24326923076923074
       },
       "training": {
         "n": 24,
@@ -520,8 +520,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ecmwf_ifs025",
@@ -536,15 +536,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.055665024630542,
-        "mse": 1.880541871921182,
-        "bias": -0.4832512315270936
+        "mae": 1.0533653846153845,
+        "mse": 1.8658173076923075,
+        "bias": -0.4504807692307692
       },
       "training": {
         "n": 24,
@@ -577,8 +577,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "gfs_global",
@@ -593,15 +593,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.824630541871921,
-        "mse": 4.916847290640392,
-        "bias": -0.11625615763546798
+        "mae": 1.814423076923077,
+        "mse": 4.857596153846153,
+        "bias": -0.07980769230769232
       },
       "training": {
         "n": 24,
@@ -634,8 +634,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "gfs_global",
@@ -650,15 +650,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 2.592610837438424,
-        "mse": 11.28270935960591,
-        "bias": -0.705911330049261
+        "mae": 2.5591346153846155,
+        "mse": 11.10110576923077,
+        "bias": -0.6629807692307692
       },
       "training": {
         "n": 24,
@@ -691,8 +691,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "gfs_global",
@@ -707,15 +707,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.8689655172413786,
-        "mse": 1.2001970443349756,
-        "bias": -0.13201970443349745
+        "mae": 0.8663461538461532,
+        "mse": 1.187211538461539,
+        "bias": -0.14423076923076913
       },
       "training": {
         "n": 24,
@@ -748,8 +748,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "gfs_global",
@@ -764,15 +764,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.0044334975369453,
-        "mse": 1.641428571428573,
-        "bias": -0.3285714285714287
+        "mae": 0.9903846153846149,
+        "mse": 1.6163461538461552,
+        "bias": -0.31346153846153857
       },
       "training": {
         "n": 24,
@@ -805,8 +805,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "gfs_global",
@@ -821,15 +821,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.1458128078817726,
-        "mse": 2.171034482758621,
-        "bias": -0.42758620689655197
+        "mae": 1.1384615384615377,
+        "mse": 2.1454807692307702,
+        "bias": -0.3971153846153849
       },
       "training": {
         "n": 24,
@@ -862,8 +862,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ncep_aigfs025",
@@ -878,15 +878,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.926600985221674,
-        "mse": 5.686157635467981,
-        "bias": -0.04187192118226595
+        "mae": 1.9158653846153835,
+        "mse": 5.63360576923077,
+        "bias": -0.0052884615384614685
       },
       "training": {
         "n": 24,
@@ -919,8 +919,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ncep_aigfs025",
@@ -935,15 +935,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 2.5729064039408867,
-        "mse": 10.374729064039412,
-        "bias": -0.22906403940886766
+        "mae": 2.5418269230769233,
+        "mse": 10.19004807692308,
+        "bias": -0.19471153846153907
       },
       "training": {
         "n": 24,
@@ -976,8 +976,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ncep_aigfs025",
@@ -992,15 +992,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.9024630541871916,
-        "mse": 1.2774384236453216,
-        "bias": -0.2344827586206896
+        "mae": 0.907211538461538,
+        "mse": 1.2832211538461553,
+        "bias": -0.2437499999999999
       },
       "training": {
         "n": 24,
@@ -1033,8 +1033,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ncep_aigfs025",
@@ -1049,15 +1049,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.0364532019704433,
-        "mse": 1.7325123152709367,
-        "bias": -0.30049261083743856
+        "mae": 1.0350961538461536,
+        "mse": 1.731875000000001,
+        "bias": -0.27355769230769245
       },
       "training": {
         "n": 24,
@@ -1090,8 +1090,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ncep_aigfs025",
@@ -1106,15 +1106,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.242857142857142,
-        "mse": 2.280344827586207,
-        "bias": -0.4221674876847292
+        "mae": 1.2288461538461528,
+        "mse": 2.2478846153846157,
+        "bias": -0.40384615384615397
       },
       "training": {
         "n": 24,
@@ -1147,8 +1147,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ukmo_global_deterministic_10km",
@@ -1163,15 +1163,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.3418719211822658,
-        "mse": 2.7511330049261087,
-        "bias": -0.17733990147783257
+        "mae": 1.3249999999999995,
+        "mse": 2.7018269230769225,
+        "bias": -0.1615384615384616
       },
       "training": {
         "n": 24,
@@ -1204,8 +1204,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ukmo_global_deterministic_10km",
@@ -1220,15 +1220,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.7399014778325121,
-        "mse": 0.8773399014778335,
-        "bias": -0.14384236453201973
+        "mae": 0.7394230769230768,
+        "mse": 0.868942307692309,
+        "bias": -0.15192307692307694
       },
       "training": {
         "n": 24,
@@ -1261,8 +1261,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ukmo_global_deterministic_10km",
@@ -1277,15 +1277,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.9541871921182264,
-        "mse": 1.4498029556650243,
-        "bias": -0.4527093596059113
+        "mae": 0.9466346153846152,
+        "mse": 1.4344711538461536,
+        "bias": -0.4495192307692307
       },
       "training": {
         "n": 24,
@@ -1318,8 +1318,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ukmo_global_deterministic_10km",
@@ -1334,15 +1334,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 1.1763546798029547,
-        "mse": 2.350443349753695,
-        "bias": -0.5970443349753696
+        "mae": 1.1653846153846146,
+        "mse": 2.310288461538462,
+        "bias": -0.5971153846153847
       },
       "training": {
         "n": 24,
@@ -1375,8 +1375,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     },
     {
       "modelId": "ukmo_uk_deterministic_2km",
@@ -1391,15 +1391,15 @@
       },
       "range": [
         1791936000000,
-        1792663200000
+        1792681200000
       ],
       "coverage": 1,
       "metrics": {
-        "n": 203,
+        "n": 208,
         "days": 9,
-        "mae": 0.7975369458128075,
-        "mse": 1.1085221674876853,
-        "bias": -0.2330049261083745
+        "mae": 0.7980769230769227,
+        "mse": 1.099807692307693,
+        "bias": -0.24038461538461547
       },
       "training": {
         "n": 24,
@@ -1432,8 +1432,8 @@
         "Wind scores disabled until observation/model measurement definitions are compatible",
         "Automatic corrections and reweighting disabled"
       ],
-      "meanMatchOffsetMinutes": 9.945812807881774,
-      "evaluatedAt": 1792664093099
+      "meanMatchOffsetMinutes": 9.947115384615385,
+      "evaluatedAt": 1792682492946
     }
   ],
   "evaluations": [
@@ -7154,6 +7154,1436 @@
           ],
           "meanMatchOffsetMinutes": 9.945812807881774,
           "evaluatedAt": 1792664093099
+        }
+      ]
+    },
+    {
+      "time": 1792682492946,
+      "results": [
+        {
+          "modelId": "ecmwf_aifs025_single",
+          "variable": "temperature",
+          "leadHours": 120,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.9048076923076922,
+            "mse": 1.1928846153846164,
+            "bias": -0.20673076923076922
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.2041666666666668,
+            "mse": 1.9829166666666669,
+            "bias": -0.7625000000000001
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.8595238095238092,
+            "mse": 1.0666666666666675,
+            "bias": -0.14285714285714285
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.1357142857142857,
+            "mse": 1.8819708994709003,
+            "bias": -0.21746031746031816
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_aifs025_single",
+          "variable": "temperature",
+          "leadHours": 168,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.7033653846153842,
+            "mse": 5.031682692307693,
+            "bias": 0.8341346153846154
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 2.7375000000000007,
+            "mse": 13.675416666666665,
+            "bias": 1.9374999999999998
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.498214285714286,
+            "mse": 3.6360119047619044,
+            "bias": 0.5398809523809524
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.8337797619047622,
+            "mse": 5.734505208333332,
+            "bias": -0.08169642857142814
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_aifs025_single",
+          "variable": "temperature",
+          "leadHours": 24,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.7274038461538461,
+            "mse": 0.84485576923077,
+            "bias": -0.14182692307692318
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 0.5125,
+            "mse": 0.5304166666666666,
+            "bias": -0.17916666666666667
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7369047619047616,
+            "mse": 0.8472619047619053,
+            "bias": -0.10000000000000005
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.6261904761904763,
+            "mse": 0.6244179894179896,
+            "bias": -0.17817460317460382
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_aifs025_single",
+          "variable": "temperature",
+          "leadHours": 48,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.7802884615384615,
+            "mse": 0.9860096153846161,
+            "bias": -0.26009615384615364
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 0.6583333333333335,
+            "mse": 0.7358333333333333,
+            "bias": 0.00833333333333323
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7672619047619046,
+            "mse": 0.9372023809523814,
+            "bias": -0.2648809523809522
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7557539682539688,
+            "mse": 0.8427513227513233,
+            "bias": -0.3329365079365087
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_aifs025_single",
+          "variable": "temperature",
+          "leadHours": 72,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.8730769230769229,
+            "mse": 1.4396153846153856,
+            "bias": -0.21250000000000005
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 0.6499999999999998,
+            "mse": 0.9924999999999998,
+            "bias": 0.44166666666666643
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.8476190476190478,
+            "mse": 1.3270238095238103,
+            "bias": -0.2273809523809525
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.8944444444444452,
+            "mse": 1.2152711640211646,
+            "bias": -0.45595238095238183
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_ifs025",
+          "variable": "temperature",
+          "leadHours": 120,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.2591346153846152,
+            "mse": 2.5967788461538457,
+            "bias": -0.5014423076923076
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.5291666666666661,
+            "mse": 3.353750000000001,
+            "bias": 0.37083333333333307
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.211904761904762,
+            "mse": 2.5038095238095233,
+            "bias": -0.6797619047619046
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.1357142857142857,
+            "mse": 1.8819708994709003,
+            "bias": -0.21746031746031816
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_ifs025",
+          "variable": "temperature",
+          "leadHours": 168,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.8908653846153847,
+            "mse": 5.650817307692309,
+            "bias": 0.3043269230769231
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.9583333333333333,
+            "mse": 6.101666666666667,
+            "bias": -1.0583333333333336
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.8880952380952383,
+            "mse": 5.73452380952381,
+            "bias": 0.3547619047619051
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.8337797619047622,
+            "mse": 5.734505208333332,
+            "bias": -0.08169642857142814
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_ifs025",
+          "variable": "temperature",
+          "leadHours": 24,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.7490384615384612,
+            "mse": 0.8938461538461547,
+            "bias": -0.2250000000000001
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 0.8958333333333334,
+            "mse": 1.3270833333333332,
+            "bias": 0.1958333333333334
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.71547619047619,
+            "mse": 0.8185714285714292,
+            "bias": -0.2404761904761906
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.6261904761904763,
+            "mse": 0.6244179894179896,
+            "bias": -0.17817460317460382
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_ifs025",
+          "variable": "temperature",
+          "leadHours": 48,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.8105769230769225,
+            "mse": 1.0790384615384618,
+            "bias": -0.24326923076923074
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.0375,
+            "mse": 1.5887500000000003,
+            "bias": 0.07083333333333337
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.783928571428571,
+            "mse": 1.031964285714286,
+            "bias": -0.29583333333333334
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7557539682539688,
+            "mse": 0.8427513227513233,
+            "bias": -0.3329365079365087
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ecmwf_ifs025",
+          "variable": "temperature",
+          "leadHours": 72,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.0533653846153845,
+            "mse": 1.8658173076923075,
+            "bias": -0.4504807692307692
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.2333333333333336,
+            "mse": 2.0483333333333333,
+            "bias": -1.4802973661668753e-16
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.9428571428571427,
+            "mse": 1.5238095238095244,
+            "bias": -0.4321428571428572
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.8944444444444452,
+            "mse": 1.2152711640211646,
+            "bias": -0.45595238095238183
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "gfs_global",
+          "variable": "temperature",
+          "leadHours": 120,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.814423076923077,
+            "mse": 4.857596153846153,
+            "bias": -0.07980769230769232
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.2958333333333332,
+            "mse": 2.927916666666667,
+            "bias": 0.7625000000000002
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.8619047619047624,
+            "mse": 5.075238095238093,
+            "bias": -0.0916666666666663
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.1357142857142857,
+            "mse": 1.8819708994709003,
+            "bias": -0.21746031746031816
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "gfs_global",
+          "variable": "temperature",
+          "leadHours": 168,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 2.5591346153846155,
+            "mse": 11.10110576923077,
+            "bias": -0.6629807692307692
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 2.6333333333333333,
+            "mse": 9.753333333333334,
+            "bias": 0.15000000000000044
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 2.6458333333333326,
+            "mse": 11.953869047619046,
+            "bias": -0.9660714285714285
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.8337797619047622,
+            "mse": 5.734505208333332,
+            "bias": -0.08169642857142814
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "gfs_global",
+          "variable": "temperature",
+          "leadHours": 24,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.8663461538461532,
+            "mse": 1.187211538461539,
+            "bias": -0.14423076923076913
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 0.9916666666666668,
+            "mse": 1.4583333333333337,
+            "bias": 0.2916666666666667
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7976190476190477,
+            "mse": 1.012619047619048,
+            "bias": -0.09166666666666659
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.6261904761904763,
+            "mse": 0.6244179894179896,
+            "bias": -0.17817460317460382
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "gfs_global",
+          "variable": "temperature",
+          "leadHours": 48,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.9903846153846149,
+            "mse": 1.6163461538461552,
+            "bias": -0.31346153846153857
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.1083333333333334,
+            "mse": 1.7058333333333329,
+            "bias": -0.10000000000000016
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.9410714285714282,
+            "mse": 1.5082738095238106,
+            "bias": -0.2791666666666667
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7557539682539688,
+            "mse": 0.8427513227513233,
+            "bias": -0.3329365079365087
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "gfs_global",
+          "variable": "temperature",
+          "leadHours": 72,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.1384615384615377,
+            "mse": 2.1454807692307702,
+            "bias": -0.3971153846153849
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.3583333333333334,
+            "mse": 2.5066666666666664,
+            "bias": 0.1499999999999999
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.048214285714285,
+            "mse": 1.8808928571428583,
+            "bias": -0.39583333333333376
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.8944444444444452,
+            "mse": 1.2152711640211646,
+            "bias": -0.45595238095238183
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ncep_aigfs025",
+          "variable": "temperature",
+          "leadHours": 120,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.9158653846153835,
+            "mse": 5.63360576923077,
+            "bias": -0.0052884615384614685
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 2.05,
+            "mse": 5.161666666666667,
+            "bias": 0.20833333333333326
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.9500000000000002,
+            "mse": 5.988571428571431,
+            "bias": -0.029761904761904597
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.1357142857142857,
+            "mse": 1.8819708994709003,
+            "bias": -0.21746031746031816
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ncep_aigfs025",
+          "variable": "temperature",
+          "leadHours": 168,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 2.5418269230769233,
+            "mse": 10.19004807692308,
+            "bias": -0.19471153846153907
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 2.725,
+            "mse": 9.431666666666667,
+            "bias": -0.5666666666666668
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 2.6363095238095227,
+            "mse": 10.9564880952381,
+            "bias": -0.25535714285714367
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.8337797619047622,
+            "mse": 5.734505208333332,
+            "bias": -0.08169642857142814
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ncep_aigfs025",
+          "variable": "temperature",
+          "leadHours": 24,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.907211538461538,
+            "mse": 1.2832211538461553,
+            "bias": -0.2437499999999999
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.3958333333333333,
+            "mse": 2.70125,
+            "bias": 0.07083333333333337
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.81547619047619,
+            "mse": 1.042142857142857,
+            "bias": -0.22380952380952382
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.6261904761904763,
+            "mse": 0.6244179894179896,
+            "bias": -0.17817460317460382
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ncep_aigfs025",
+          "variable": "temperature",
+          "leadHours": 48,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.0350961538461536,
+            "mse": 1.731875000000001,
+            "bias": -0.27355769230769245
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.6875000000000007,
+            "mse": 3.6812500000000017,
+            "bias": -0.2708333333333335
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.9482142857142863,
+            "mse": 1.4799404761904766,
+            "bias": -0.2839285714285716
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7557539682539688,
+            "mse": 0.8427513227513233,
+            "bias": -0.3329365079365087
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ncep_aigfs025",
+          "variable": "temperature",
+          "leadHours": 72,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.2288461538461528,
+            "mse": 2.2478846153846157,
+            "bias": -0.40384615384615397
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.654166666666667,
+            "mse": 3.6362500000000004,
+            "bias": -0.30416666666666653
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.205357142857142,
+            "mse": 2.158392857142858,
+            "bias": -0.4220238095238098
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.8944444444444452,
+            "mse": 1.2152711640211646,
+            "bias": -0.45595238095238183
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ukmo_global_deterministic_10km",
+          "variable": "temperature",
+          "leadHours": 120,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.3249999999999995,
+            "mse": 2.7018269230769225,
+            "bias": -0.1615384615384616
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.2791666666666668,
+            "mse": 2.8770833333333345,
+            "bias": 0.7375000000000002
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.2863095238095241,
+            "mse": 2.491845238095239,
+            "bias": -0.1803571428571431
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.1357142857142857,
+            "mse": 1.8819708994709003,
+            "bias": -0.21746031746031816
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ukmo_global_deterministic_10km",
+          "variable": "temperature",
+          "leadHours": 24,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.7394230769230768,
+            "mse": 0.868942307692309,
+            "bias": -0.15192307692307694
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 0.7708333333333331,
+            "mse": 1.0320833333333332,
+            "bias": 0.3624999999999999
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7095238095238093,
+            "mse": 0.810833333333334,
+            "bias": -0.15714285714285722
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.6261904761904763,
+            "mse": 0.6244179894179896,
+            "bias": -0.17817460317460382
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ukmo_global_deterministic_10km",
+          "variable": "temperature",
+          "leadHours": 48,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.9466346153846152,
+            "mse": 1.4344711538461536,
+            "bias": -0.4495192307692307
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 0.7875,
+            "mse": 0.897916666666667,
+            "bias": 0.04583333333333325
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.9238095238095239,
+            "mse": 1.380357142857143,
+            "bias": -0.4369047619047618
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7557539682539688,
+            "mse": 0.8427513227513233,
+            "bias": -0.3329365079365087
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ukmo_global_deterministic_10km",
+          "variable": "temperature",
+          "leadHours": 72,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 1.1653846153846146,
+            "mse": 2.310288461538462,
+            "bias": -0.5971153846153847
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 1.0958333333333334,
+            "mse": 2.09625,
+            "bias": 0.5791666666666665
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 1.0815476190476179,
+            "mse": 1.9336309523809536,
+            "bias": -0.6291666666666668
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.8944444444444452,
+            "mse": 1.2152711640211646,
+            "bias": -0.45595238095238183
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
+        },
+        {
+          "modelId": "ukmo_uk_deterministic_2km",
+          "variable": "temperature",
+          "leadHours": 24,
+          "station": {
+            "id": "EGXT",
+            "name": "Wittering Arpt, EN, GB",
+            "latitude": 52.611,
+            "longitude": -0.461,
+            "elevation": 74
+          },
+          "range": [
+            1791936000000,
+            1792681200000
+          ],
+          "coverage": 1,
+          "metrics": {
+            "n": 208,
+            "days": 9,
+            "mae": 0.7980769230769227,
+            "mse": 1.099807692307693,
+            "bias": -0.24038461538461547
+          },
+          "training": {
+            "n": 24,
+            "days": 1,
+            "mae": 0.7291666666666665,
+            "mse": 0.9187499999999997,
+            "bias": 0.2541666666666667
+          },
+          "heldOutRaw": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.7904761904761902,
+            "mse": 1.1201190476190477,
+            "bias": -0.2559523809523811
+          },
+          "heldOutProposed": null,
+          "heldOutBaseline": {
+            "n": 168,
+            "days": 7,
+            "mae": 0.6261904761904763,
+            "mse": 0.6244179894179896,
+            "bias": -0.17817460317460382
+          },
+          "proposal": null,
+          "enabled": false,
+          "reasons": [
+            "Training gate not met: require 200 paired hours across 20 dates",
+            "Held-out dates retained separately",
+            "Station bias is not automatically transferred to Peterborough",
+            "Wind scores disabled until observation/model measurement definitions are compatible",
+            "Automatic corrections and reweighting disabled"
+          ],
+          "meanMatchOffsetMinutes": 9.947115384615385,
+          "evaluatedAt": 1792682492946
         }
       ]
     }

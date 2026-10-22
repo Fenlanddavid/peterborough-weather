@@ -263906,9 +263906,6509 @@
       "fetchedAt": 1792664093099,
       "unit": "m/s",
       "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 2.91,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.97,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 5.26,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 4.52,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.61,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 5.26,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.02,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4.95,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 10.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.79,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 11.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 15.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 5.37,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.88,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 5.64,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 5.16,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 2.51,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.25,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4.55,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.98,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 10.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 3.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 9.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 3.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 9.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 9.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792666800000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.92,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 3.23,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.67,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 5.14,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 4.16,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.55,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 3.89,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.21,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4.96,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.98,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 6.02,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 11.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 7.65,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.31,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 6.23,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 5.24,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.82,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 13.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 2.53,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.16,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4.44,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.91,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 11.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 10.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 10.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792670400000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.43,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 3.08,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4.56,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.55,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.52,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 3.55,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.05,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4.83,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.99,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 11.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 7.17,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.81,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 5.74,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 5.44,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.64,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 13,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 2.79,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.71,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 3.89,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 3.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 10.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792674000000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 3.72,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 2.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.05,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 3.68,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 2.69,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 3.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.71,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4.53,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 13,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.64,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.88,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 6.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 5.26,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 5.34,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 5.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.24,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 3.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 3.89,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 3.22,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 2.77,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 3.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 2.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792677600000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 11.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 3.06,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 11.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 2.56,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 9.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 2.91,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 10.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 2.64,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_aifs025_single",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 2.06,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 3.96,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.5,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.16,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 12.3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ecmwf_ifs025",
+      "family": "ECMWF",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 3.18,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 13.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 5.55,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 12.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 5.84,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 3.75,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 12.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "gfs_global",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 4.91,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.658646,
+        "longitude": -0.46875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 4.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 168,
+      "variable": "temperature",
+      "value": 11.8,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 168,
+      "variable": "wind",
+      "value": 3.72,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 10.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 3,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 2.69,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ncep_aigfs025",
+      "family": "NOAA",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 2.61,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.5,
+        "longitude": -0.5,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "temperature",
+      "value": 12.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 120,
+      "variable": "wind",
+      "value": 3.7,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.2,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 3.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "temperature",
+      "value": 11.9,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 48,
+      "variable": "wind",
+      "value": 3.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "temperature",
+      "value": 11.6,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_global_deterministic_10km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 72,
+      "variable": "wind",
+      "value": 2.4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.59375,
+        "longitude": -0.421875,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "temperature",
+      "value": 11.1,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "°C",
+      "measurementCompatible": true
+    },
+    {
+      "modelId": "ukmo_uk_deterministic_2km",
+      "family": "UKMO",
+      "validTime": 1792681200000,
+      "leadHours": 24,
+      "variable": "wind",
+      "value": 4,
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "forecastLocation": {
+        "latitude": 52.615658,
+        "longitude": -0.45611572,
+        "elevation": 74
+      },
+      "provider": "Open-Meteo Previous Runs",
+      "issuedAt": null,
+      "sourceTime": null,
+      "fetchedAt": 1792682492946,
+      "unit": "m/s",
+      "measurementCompatible": false
     }
   ],
-  "collectedAt": 1792664093099,
+  "collectedAt": 1792682492946,
   "failures": [],
   "note": "Fixed Previous Runs lead offsets. Nulls beyond each model horizon are excluded. Genuine run issue times are not supplied."
 }
