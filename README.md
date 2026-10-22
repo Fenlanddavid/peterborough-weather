@@ -17,6 +17,7 @@ Requires Node.js 22.12 or later (the deployment uses Node.js 24).
 
 ```sh
 npm ci
+npm run data:pull  # optional: download the current observation/verification snapshot
 npm run dev
 ```
 
@@ -68,4 +69,4 @@ Optional collectors are disabled unless repository variables `COLLECT_METAR`, `C
 
 Verification collects temperature once per 20 hours, retaining 100 days of compact model/time/lead/value rows. The same station-matched scoring function produces the client results. Daily history keeps the last score set for each UTC collection date, rather than an hourly copy of the full evaluation. Failed source requests retain the previous usable data; a failed data-branch lookup stops the job.
 
-For the initial migration, keep `public/data` tracked until a manual run of `site.yml` has created and published the compact `data` branch. Only then remove `public/data` from the main index and ignore it. See [the archive migration notes](docs/data-archive-migration.md) for validation and local development.
+Generated `public/data` files are ignored on `main`. Run `npm run data:pull` to restore the current snapshot for local development; this replaces the local generated directory after a successful fetch and extraction. Changes to collection/publishing code belong on `main`, while generated files belong only on `data`. See [the archive migration notes](docs/data-archive-migration.md) for validation and recovery.

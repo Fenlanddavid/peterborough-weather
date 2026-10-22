@@ -3,7 +3,7 @@
 `site.yml` replaces the separate deployment and collection workflows. It rebuilds
 on every push to `main`, on manual runs, and on hourly scheduled runs that change
 data. It uploads only the Pages deployment artifact. There is no application-shell
-artifact lookup or expiry dependency. Public GitHub Actions and GitHub Pages keep
+artifact lookup or expiry dependency. [Public GitHub Actions and GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) keep
 the existing zero-cost hosting arrangement.
 
 ## Snapshot storage
@@ -65,3 +65,12 @@ volume gives about 2.46 MB for 100 days; this is an estimate, not a size cap.
 
 No main-branch history rewrite is part of the cutover. Existing large blobs remain
 in old commits; deleting that history would require a separate coordinated change.
+
+## Live cutover verification
+
+The [initial manual migration run](https://github.com/Fenlanddavid/peterborough-weather/actions/runs/39845682818) succeeded. Its `data` commit had no parent commits and contained 211,891-byte forecasts and 34,250-byte results. All 25 score objects, station details and result collection time matched the old main archive. The published Pages results JSON matched the data-branch product, and the run uploaded only `github-pages`.
+
+After this verification, generated data was removed from the main index and added
+to `.gitignore`. `npm run data:pull` uses the same checked restoration helper as
+Actions; failed downloads leave the local generated directory intact. It does not
+push or modify the main branch.
