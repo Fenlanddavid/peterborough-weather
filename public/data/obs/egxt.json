@@ -27139,10 +27139,200 @@
       "direction": 230,
       "raw": "METAR EGXT 211820Z AUTO 23012KT 9999 BKN079/// SCT100/// 08/05 Q1002",
       "fetchedAt": 1792609198418
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792608600000:METAR EGXT 211850Z AUTO 23013KT 9999 FEW063/// SCT086/// 08/05 Q1003",
+      "time": 1792608600000,
+      "reportTime": "2026-10-21T19:00:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 6.687772,
+      "gust": null,
+      "direction": 230,
+      "raw": "METAR EGXT 211850Z AUTO 23013KT 9999 FEW063/// SCT086/// 08/05 Q1003",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792610400000:METAR EGXT 211920Z AUTO 24016KT 9999 OVC080/// 08/05 Q1003",
+      "time": 1792610400000,
+      "reportTime": "2026-10-21T19:20:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 8.231104,
+      "gust": null,
+      "direction": 240,
+      "raw": "METAR EGXT 211920Z AUTO 24016KT 9999 OVC080/// 08/05 Q1003",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792612200000:METAR EGXT 211950Z AUTO 23016KT 9999 FEW084/// 08/04 Q1004",
+      "time": 1792612200000,
+      "reportTime": "2026-10-21T20:00:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 8.231104,
+      "gust": null,
+      "direction": 230,
+      "raw": "METAR EGXT 211950Z AUTO 23016KT 9999 FEW084/// 08/04 Q1004",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792614000000:METAR EGXT 212020Z AUTO 23016KT 9999 BKN220/// 08/04 Q1004",
+      "time": 1792614000000,
+      "reportTime": "2026-10-21T20:20:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 8.231104,
+      "gust": null,
+      "direction": 230,
+      "raw": "METAR EGXT 212020Z AUTO 23016KT 9999 BKN220/// 08/04 Q1004",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792615800000:METAR EGXT 212050Z AUTO 23015KT 9999 OVC190/// 08/04 Q1004",
+      "time": 1792615800000,
+      "reportTime": "2026-10-21T21:00:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 7.71666,
+      "gust": null,
+      "direction": 230,
+      "raw": "METAR EGXT 212050Z AUTO 23015KT 9999 OVC190/// 08/04 Q1004",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792617600000:METAR EGXT 212120Z AUTO 23014KT 9999 SCT200/// 07/04 Q1004",
+      "time": 1792617600000,
+      "reportTime": "2026-10-21T21:20:00.000Z",
+      "type": "METAR",
+      "temperature": 7,
+      "wind": 7.202216,
+      "gust": null,
+      "direction": 230,
+      "raw": "METAR EGXT 212120Z AUTO 23014KT 9999 SCT200/// 07/04 Q1004",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792619400000:METAR EGXT 212150Z AUTO 23015KT 9999 FEW220/// 08/04 Q1004",
+      "time": 1792619400000,
+      "reportTime": "2026-10-21T22:00:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 7.71666,
+      "gust": null,
+      "direction": 230,
+      "raw": "METAR EGXT 212150Z AUTO 23015KT 9999 FEW220/// 08/04 Q1004",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792621200000:METAR EGXT 212220Z AUTO 22012KT 9999 NCD 07/04 Q1004",
+      "time": 1792621200000,
+      "reportTime": "2026-10-21T22:20:00.000Z",
+      "type": "METAR",
+      "temperature": 7,
+      "wind": 6.173328,
+      "gust": null,
+      "direction": 220,
+      "raw": "METAR EGXT 212220Z AUTO 22012KT 9999 NCD 07/04 Q1004",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792623000000:METAR EGXT 212250Z AUTO 22015KT 9999 NCD 07/04 Q1004",
+      "time": 1792623000000,
+      "reportTime": "2026-10-21T23:00:00.000Z",
+      "type": "METAR",
+      "temperature": 7,
+      "wind": 7.71666,
+      "gust": null,
+      "direction": 220,
+      "raw": "METAR EGXT 212250Z AUTO 22015KT 9999 NCD 07/04 Q1004",
+      "fetchedAt": 1792627289555
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792624800000:METAR EGXT 212320Z AUTO 21014KT 9999 NCD 07/04 Q1005",
+      "time": 1792624800000,
+      "reportTime": "2026-10-21T23:20:00.000Z",
+      "type": "METAR",
+      "temperature": 7,
+      "wind": 7.202216,
+      "gust": null,
+      "direction": 210,
+      "raw": "METAR EGXT 212320Z AUTO 21014KT 9999 NCD 07/04 Q1005",
+      "fetchedAt": 1792627289555
     }
   ],
-  "sourceTime": 1792606800000,
-  "collectedAt": 1792609198418,
-  "watermark": 1792609198418,
+  "sourceTime": 1792624800000,
+  "collectedAt": 1792627289555,
+  "watermark": 1792627289555,
   "missingPeriods": []
 }
