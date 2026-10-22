@@ -13,6 +13,7 @@
     "check:scripts": "tsc -p tsconfig.scripts.json",
     "probe:sources": "node --experimental-strip-types scripts/probe-sources.ts",
     "probe:browser": "node --experimental-strip-types scripts/probe-browser.ts",
+    "smoke:hourly": "node --experimental-strip-types scripts/check-hourly-browser.ts",
     "smoke:browser": "node --experimental-strip-types scripts/smoke-browser.ts",
     "report:budget": "node --experimental-strip-types scripts/request-budget.ts",
     "report:bundle": "node --experimental-strip-types scripts/bundle-report.ts"

@@ -7,7 +7,7 @@ import { eventTimes, PRECIP_DAY, SNOW } from '../forecast/events.ts';
 import type { EnsembleIndex } from '../forecast/events.ts';
 import type { EventEstimate, Provenance } from '../data/contracts.ts';
 import { HOUR, msToMph, utc } from '../data/contracts.ts';
-import { getHourlyCondition } from './hourlyWeather.ts';
+import { getDailyCondition } from './hourlyWeather.ts';
 import type { IconName } from '../components/WeatherIcon';
 
 export interface SummaryDay {
@@ -163,9 +163,9 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date, options: Bri
     const winds = preferFresh(signals.aggregate('wind_speed_10m', sampleTimes, 'sum')).map(v => ({ ...v, value: v.value / sampleTimes.length }));
     const gusts = preferFresh(signals.aggregate('wind_gusts_10m', eventTimes({ ...SNOW, variable: 'wind_gusts_10m', operation: 'max' }, start, end), 'max'));
     const contributors = [...highs, ...lows, ...rainCohort, ...snowCohort, ...winds, ...gusts];
-    const conditions = times.map(t => getHourlyCondition(signals, t));
+    const conditions = times.map(t => getDailyCondition(signals, t));
     const condition = conditions.find(c => ['storm', 'fog', 'snow'].includes(c.icon ?? '') || /freezing/i.test(c.label))
-      ?? getHourlyCondition(signals, new Date(start + Math.min(12, times.length - 1) * HOUR).toISOString(), precipitation);
+      ?? getDailyCondition(signals, new Date(start + Math.min(12, times.length - 1) * HOUR).toISOString(), precipitation);
     const day: SummaryDay = {
       date, label: index === 0 ? 'Today' : new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Europe/London' }),
       remainingToday: index === 0 && !options.wholeToday, expectedHours: times.length,

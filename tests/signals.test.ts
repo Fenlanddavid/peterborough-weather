@@ -5,7 +5,7 @@ import { buildForecastSignals, familyMean } from '../src/forecast/signals.ts';
 import { buildLatestIndex } from '../src/metrics/utils.ts';
 import { latestDisplayToCanonical, HOUR, dayWindow, frostWindow, localTime } from '../src/data/contracts.ts';
 import { PRECIP_3H, SNOW } from '../src/forecast/events.ts';
-import { getHourlyCondition } from '../src/metrics/hourlyWeather.ts';
+import { buildHourlySlot } from '../src/metrics/hourlySlot.ts';
 const now = Date.parse('2026-10-21T12:00Z');
 function run(modelId: string, value: number | null, age = 0, variable: CachedRun['variable'] = 'precipitation'): CachedRun {
   return { key: `${modelId}:${age}:${variable}`, modelId, runTime: new Date(now - age * HOUR).toISOString().slice(0, 16), fetchedAt: now, variable, times: Array.from({ length: 8 }, (_, i) => new Date(now + i * HOUR).toISOString().slice(0, 16)), values: Array(8).fill(value) };
@@ -44,12 +44,12 @@ test('extra runs do not give a model additional influence; stale runs remain dis
   const stale = buildForecastSignals([run('gfs_global', 1, 37)], now);
   assert.equal(stale.mean('precipitation', now), 1); assert.equal(stale.agreement(PRECIP_3H, now, now + 3 * HOUR).value, null);
 });
-test('single snow trace cannot produce two-family consensus and unknown cloud never looks sunny', () => {
+test('single snow trace stays below event threshold but remains visible in hourly conditions', () => {
   const runs = [run('gfs_global', 0.01, 0, 'snowfall'), run('gfs_global', 0, 0, 'weather_code'), run('gfs_global', 1, 0, 'is_day')];
   const signals = buildForecastSignals(runs, now);
   assert.equal(signals.supporting(SNOW, now, now + 3 * HOUR).models, 0);
-  assert.equal(getHourlyCondition(signals, runs[0].times[0]).icon, null);
-  assert.equal(getHourlyCondition(buildForecastSignals([...runs, run('gfs_global', 95, 0, 'weather_code')], now), runs[0].times[0]).icon, 'storm');
+  assert.equal(buildHourlySlot(signals, runs[0].times[0]).condition.icon, 'snow');
+  assert.equal(buildHourlySlot(buildForecastSignals([...runs, run('gfs_global', 95, 0, 'weather_code')], now), runs[0].times[0]).condition.icon, 'storm');
 });
 test('calendar and frost windows preserve 25 October repeated hours and elapsed duration', () => {
   const [start, end] = dayWindow('2026-10-25'); assert.equal((end - start) / HOUR, 25);

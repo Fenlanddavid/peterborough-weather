@@ -128,8 +128,8 @@ body:has(.app--home) {
 .app--home .hourly-section .eyebrow { font-size: 8px; margin-bottom: 5px; }
 .app--home .hourly-section .section-heading { margin-bottom: 22px; }
 .app--home .hourly-scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: #3a4b60 transparent; }
-.app--home .hourly-grid { display: grid; grid-auto-flow: column; grid-auto-columns: 90px; width: max-content; min-width: 100%; }
-.app--home .hourly-item { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 4px 10px; border-right: 1px solid var(--home-line); }
+.app--home .hourly-grid { display: grid; grid-auto-flow: column; grid-auto-columns: 110px; width: max-content; min-width: 100%; }
+.app--home .hourly-item { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 4px 10px; border-right: 1px solid var(--home-line); }
 .app--home .hourly-item:last-child { border: 0; }
 .app--home .hourly-time { color: var(--home-muted); font-size: 10px; }
 .app--home .hourly-condition { display: grid; place-items: center; width: 32px; height: 32px; color: #bad0e2; }
@@ -138,9 +138,11 @@ body:has(.app--home) {
 .app--home .hourly-condition--rain, .app--home .hourly-condition--snow { color: #a9d9f6; }
 .app--home .hourly-condition--unknown { color: var(--home-muted); }
 .app--home .hourly-item strong { font-size: 24px; letter-spacing: -.6px; font-weight: 400; }
-.app--home .hourly-rain, .app--home .hourly-wind { display: flex; align-items: center; gap: 4px; color: #9cbdd6; font-size: 9px; white-space: nowrap; }
-.app--home .hourly-wind { color: var(--home-muted); }
+.app--home .hourly-rain, .app--home .hourly-wind, .app--home .hourly-gust { display: flex; align-items: center; gap: 4px; color: #9cbdd6; font-size: 12px; white-space: nowrap; }
+.app--home .hourly-wind, .app--home .hourly-gust, .app--home .hourly-cached { color: var(--home-muted); }
 .app--home .hourly-rain .weather-icon, .app--home .hourly-wind .weather-icon { width: 11px; height: 11px; }
+.app--home .hourly-cached { font-size: 11px; }
+.app--home .hourly-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .app--home .hourly-caption { font-size: 9px; color: var(--home-muted); margin-top: 23px; border-top: 1px solid var(--home-line); padding-top: 12px; }
 .app--home .forecast-note { display: flex; justify-content: center; align-items: baseline; gap: 7px; color: var(--home-muted); text-align: center; font-size: 10px; margin: 21px 0 10px; line-height: 1.8; }
 .app--home .note-mark { display: inline-flex; align-items: center; justify-content: center; font-size: 8px; border: 1px solid #8294a6; border-radius: 50%; width: 12px; height: 12px; flex-shrink: 0; }
@@ -232,11 +234,11 @@ body:has(.app--home) {
   .app--home .hourly-section .section-heading h2 { font-size: 16px; }
   .app--home .hourly-section .section-heading > span { font-size: 10px; white-space: nowrap; padding-bottom: 2px; }
   .app--home .hourly-scroll { margin-right: -17px; padding-bottom: 9px; }
-  .app--home .hourly-grid { grid-auto-columns: 75px; padding-right: 17px; }
+  .app--home .hourly-grid { grid-auto-columns: 104px; padding-right: 17px; }
   .app--home .hourly-item { gap: 13px; }
   .app--home .hourly-item strong { font-size: 24px; }
   .app--home .hourly-time { font-size: 11px; }
-  .app--home .hourly-rain, .app--home .hourly-wind { font-size: 10px; }
+  .app--home .hourly-rain, .app--home .hourly-wind, .app--home .hourly-gust { font-size: 12px; }
   .app--home .hourly-caption { margin-top: 10px; font-size: 10px; line-height: 1.7; }
   .app--home .week-briefing { order: 4; padding: 22px; border-radius: 16px; }
   .app--home .briefing-heading { margin-bottom: 13px; }

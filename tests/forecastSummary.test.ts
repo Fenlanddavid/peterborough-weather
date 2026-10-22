@@ -154,3 +154,15 @@ test('fills hours missing from a still-publishing run from the previous run', ()
   assert.equal(briefing.days[0].high, 7);
   assert.equal(briefing.days[0].low, 5);
 });
+
+test('daily precipitation symbol retains daily-period evidence when the representative hour is dry', () => {
+  const briefing = buildForecastBriefing([
+    run('precipitation', winterAccumulations, winterAccumulations.map(t => t === '2026-12-07T18:00' ? 2 : 0)),
+    run('weather_code', winterDay, winterDay.map(() => 2)),
+    run('is_day', winterDay, winterDay.map(() => 1)),
+  ], winterNow);
+  assert.equal(briefing.days[0].rainMm, 2);
+  assert.equal(briefing.days[0].precipitation.value, 1);
+  assert.equal(briefing.days[0].condition.icon, 'precipitation');
+  assert.match(briefing.days[0].condition.label, /daily period/);
+});

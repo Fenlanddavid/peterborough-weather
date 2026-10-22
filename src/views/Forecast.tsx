@@ -1,12 +1,11 @@
 import { useMemo, useRef, useState } from 'react';
 import type { CachedRun } from '../types';
 import type { EnsembleIndex } from '../forecast/events';
-import { PRECIP_3H } from '../forecast/events';
 import { buildForecastSignals } from '../forecast/signals';
 import { buildForecastBriefing } from '../metrics/forecastSummary';
-import { getHourlyCondition } from '../metrics/hourlyWeather';
+import { buildHourlySlot } from '../metrics/hourlySlot';
 import { getHourlyForecastTimes, getLocalDate, useLocalNow } from '../hooks/useLocalTime';
-import { HOUR, localTime, msToMph, utc } from '../data/contracts';
+import { HOUR } from '../data/contracts';
 import { SkyIllustration, WeatherIcon } from '../components/WeatherIcon';
 import { MonthlyOutlook } from '../components/MonthlyOutlook';
 import { RegimeBadge } from '../components/RegimeBadge';
@@ -21,12 +20,7 @@ export function Forecast({ runs, lastUpdated = null, ensembles }: Props) {
   const briefing = useMemo(() => buildForecastBriefing(runs, new Date(hour), { wholeToday: true, ensembles }), [runs, hour, ensembles]);
   const day = briefing.days[selectedIndex];
   const hourlyScroll = useRef<HTMLDivElement>(null);
-  const hourly = useMemo(() => getHourlyForecastTimes(day.date, now).map(time => {
-    const instant = utc(time);
-    const precipitation = signals.event(PRECIP_3H, instant, instant + 3 * HOUR, ensembles);
-    const rain = signals.mean('precipitation', instant);
-    return { time, instant, precipitation, condition: getHourlyCondition(signals, time, precipitation), temperature: signals.mean('temperature_2m', instant), wind: signals.mean('wind_speed_10m', instant), rain };
-  }), [day.date, now, signals, ensembles]);
+  const hourly = useMemo(() => getHourlyForecastTimes(day.date, now).map(time => buildHourlySlot(signals, time)), [day.date, now, signals]);
   const windyDays = briefing.days.filter(d => d.gustMph !== null && d.gustMph >= 30);
   const snowyDays = briefing.days.filter(d => d.snowCm !== null && d.snowCm > 0);
   const condition = day.condition;
@@ -46,7 +40,21 @@ export function Forecast({ runs, lastUpdated = null, ensembles }: Props) {
       const c = d.condition;
       return <button type="button" className={`day-card ${i === selectedIndex ? 'day-card--selected' : ''}`} key={d.date} aria-pressed={i === selectedIndex} onClick={() => { setSelectedIndex(i); hourlyScroll.current?.scrollTo(0, 0); }}><span className="day-name">{d.label}</span><span className="day-date">{d.date}</span><WeatherIcon name={c.icon ?? 'calendar'} /><span className="day-card-condition">{c.label}</span><span className="day-card-temps"><strong>{number(d.high)}°</strong><span>{number(d.low)}°</span></span><span className="day-card-rain"><WeatherIcon name="drop" />{d.rainMm === null ? '—' : d.rainMm.toFixed(1)} mm</span><span className="day-card-wind"><WeatherIcon name="wind" />{number(d.windMph)} mph</span></button>;
     })}</div></section>
-    <section className="hourly-section"><div className="section-heading"><div><p className="eyebrow">A closer look</p><h2>{day.label}, hour by hour</h2></div><span>Local time · °C</span></div><div className="hourly-scroll" ref={hourlyScroll} tabIndex={0}><div className="hourly-grid">{hourly.map(h => <div className="hourly-item" key={h.time}><span className="hourly-time">{localTime(h.instant)}</span><span className={`hourly-condition hourly-condition--${h.condition.icon ?? 'unknown'}`} title={h.condition.label}>{h.condition.icon ? <WeatherIcon name={h.condition.icon} /> : <span>—</span>}</span><strong>{number(h.temperature)}°</strong><span className="hourly-rain"><WeatherIcon name="drop" />{h.rain === null ? '—' : h.rain.toFixed(1)} mm</span><span className="hourly-wind"><WeatherIcon name="wind" />{number(h.wind === null ? null : msToMph(h.wind))} mph</span></div>)}</div></div><p className="hourly-caption">Hourly forecast · Rainfall is the forecast total for that hour.</p></section>
+    <section className="hourly-section">
+      <div className="section-heading"><div><p className="eyebrow">A closer look</p><h2>{day.label}, hour by hour</h2></div><span>Local time · °C</span></div>
+      <div className="hourly-scroll" ref={hourlyScroll} tabIndex={0} role="region" aria-label="Hourly forecast; scroll horizontally for more hours"><div className="hourly-grid">
+        {hourly.map(h => <div className="hourly-item" key={h.start} role="group" aria-label={h.accessible.interval}>
+          <span className="hourly-time">{h.display.time}</span>
+          <span className={`hourly-condition hourly-condition--${h.condition.icon ?? 'unknown'}`} role="img" aria-label={h.condition.label} title={h.condition.label}>{h.condition.icon ? <WeatherIcon name={h.condition.icon} /> : <span>—</span>}</span>
+          <strong><span aria-hidden="true">{h.display.temperature}</span><span className="hourly-sr-only">{h.accessible.temperature}</span></strong>
+          <span className="hourly-rain"><WeatherIcon name="drop" /><span aria-hidden="true">{h.display.precipitation}</span><span className="hourly-sr-only">{h.accessible.precipitation}</span></span>
+          <span className="hourly-wind"><span aria-hidden="true">Wind {h.display.wind}</span><span className="hourly-sr-only">{h.accessible.wind}</span></span>
+          <span className="hourly-gust"><span aria-hidden="true">Gust {h.display.gust}</span><span className="hourly-sr-only">{h.accessible.gust}</span></span>
+          {h.cached && <span className="hourly-cached">Cached</span>}
+        </div>)}
+      </div></div>
+      <p className="hourly-caption">Temperature and wind are at the shown time. Precipitation totals and gusts cover the following hour. Gusts blend model hourly maxima. Symbols combine slot totals with conditions indicated at the shown time.</p>
+    </section>
     <p className="forecast-note"><span className="note-mark">i</span> Based on available ECMWF, GFS and UKMO forecasts. See Trends for how the models have shifted run to run.</p>
   </div>;
 }

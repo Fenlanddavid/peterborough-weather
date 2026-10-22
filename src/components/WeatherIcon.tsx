@@ -1,4 +1,4 @@
-export type IconName = 'sun' | 'moon' | 'cloud' | 'partly-cloudy' | 'cloud-moon' | 'fog' | 'storm' | 'rain' | 'showers' | 'wind' | 'snow' | 'drop' | 'arrow' | 'refresh' | 'pin' | 'calendar' | 'star' | 'eye' | 'telescope' | 'aurora' | 'meteor' | 'compass';
+export type IconName = 'clear-sky' | 'precipitation' | 'sun' | 'moon' | 'cloud' | 'partly-cloudy' | 'cloud-moon' | 'fog' | 'storm' | 'rain' | 'showers' | 'wind' | 'snow' | 'drop' | 'arrow' | 'refresh' | 'pin' | 'calendar' | 'star' | 'eye' | 'telescope' | 'aurora' | 'meteor' | 'compass';
 
 export function WeatherIcon({ name, className = '' }: { name: IconName; className?: string }) {
   const sun = <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></>;
@@ -6,6 +6,8 @@ export function WeatherIcon({ name, className = '' }: { name: IconName; classNam
   return (
     <svg className={`weather-icon ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       {name === 'sun' && sun}
+      {name === 'clear-sky' && <><path d="M3 15h18M6 19h12" /><path d="M6 11a6 6 0 0 1 12 0" /></>}
+      {name === 'precipitation' && <>{cloud}<circle cx="7" cy="20" r=".7" /><path d="m12 19-1 2" /><circle cx="17" cy="20" r=".7" /></>}
       {name === 'moon' && <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />}
       {name === 'partly-cloudy' && <><circle cx="7" cy="6" r="3.5" className="icon-sun" /><path className="icon-sun" d="M7 1v1M1 6h1m.8-3.2.7.7M11 2l-.7.7" /></>}
       {name === 'cloud-moon' && <path d="M15 2a5 5 0 0 0 6 6 6 6 0 0 1-9-3" />}
