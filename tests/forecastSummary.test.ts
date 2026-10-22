@@ -164,5 +164,18 @@ test('daily precipitation symbol retains daily-period evidence when the represen
   assert.equal(briefing.days[0].rainMm, 2);
   assert.equal(briefing.days[0].precipitation.value, 1);
   assert.equal(briefing.days[0].condition.icon, 'precipitation');
-  assert.match(briefing.days[0].condition.label, /daily period/);
+  assert.equal(briefing.days[0].condition.label, 'Precipitation');
+});
+
+// A dry representative hour should not hide a known precipitation type later in the day.
+test('daily cards use simple supported weather labels from wet hours', () => {
+  for (const [code, label] of [[51, 'Light drizzle'], [61, 'Light rain'], [63, 'Rain'], [80, 'Rain showers']] as const) {
+    const briefing = buildForecastBriefing([
+      run('precipitation', winterAccumulations, winterAccumulations.map(t => t === '2026-12-07T18:00' ? 2 : 0)),
+      run('weather_code', winterDay, winterDay.map(t => t === '2026-12-07T17:00' ? code : 2)),
+      run('is_day', winterDay, winterDay.map(() => 1)),
+    ], winterNow);
+    assert.equal(briefing.days[0].condition.label, label);
+    assert.equal(briefing.days[0].condition.icon, 'rain');
+  }
 });

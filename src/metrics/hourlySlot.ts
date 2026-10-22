@@ -36,7 +36,7 @@ export function buildHourlySlot(signals: ForecastSignals, time: string) {
   const codes = rankedWeatherCodes(samples('weather_code', start));
   const resolved = getHourlyCondition({ codes, precipitation, snowfall, cloud, daylight });
   const cached = cachedFields.length > 0;
-  const condition = cached ? { ...resolved, label: `${resolved.label}; includes cached forecast data` } : resolved;
+  const condition = cached ? { ...resolved, description: `${resolved.description ?? resolved.label}; includes cached forecast data` } : resolved;
   const display = {
     time: localTime(start), interval: `${localDateTime(start)} to ${localDateTime(end)}`,
     temperature: temperature === null ? '—' : `${Math.round(temperature)}°C`,

@@ -7,10 +7,11 @@ import type { EventEstimate } from '../data/contracts.ts';
 
 export interface HourlyCondition {
   label: string;
+  description?: string;
   icon: IconName | null;
 }
 
-const UNAVAILABLE: HourlyCondition = { label: 'Weather conditions unavailable', icon: null };
+const UNAVAILABLE: HourlyCondition = { label: 'Unavailable', description: 'Weather conditions unavailable', icon: null };
 
 // Open-Meteo WMO weather interpretation codes.
 const CONDITIONS: Record<number, HourlyCondition> = {
@@ -107,30 +108,30 @@ export function getHourlyCondition(input: ConditionEvidence): HourlyCondition {
   let result: HourlyCondition;
   if (hazard !== undefined) {
     const condition = conditionForCode(hazard, isDay);
-    result = { ...condition, label: `${condition.label} indicated at the shown time; may not persist throughout the hour` };
+    result = { ...condition, description: `${condition.label} indicated at the shown time; may not persist throughout the hour` };
   } else if (snowfall !== null && Number.isFinite(snowfall) && snowfall > 0) {
-    result = { label: 'Snowfall indicated during the hour', icon: 'snow' };
+    result = { label: 'Snow', description: 'Snowfall indicated during the hour', icon: 'snow' };
   } else if (kind === 'wet') {
     const wet = codes.find(c => ordinaryWet.includes(c));
-    result = wet === undefined ? { label: 'Precipitation; type uncertain', icon: 'precipitation' } : conditionForCode(wet, isDay);
+    result = wet === undefined ? { label: 'Precipitation', description: 'Precipitation; type uncertain', icon: 'precipitation' } : conditionForCode(wet, isDay);
     const fogCode = codes.find(c => fog.includes(c));
-    if (fogCode !== undefined) result = { ...result, label: `${result.label}; ${conditionForCode(fogCode, isDay).label} indicated at the shown time` };
+    if (fogCode !== undefined) result = { ...result, description: `${result.description ?? result.label}; ${conditionForCode(fogCode, isDay).label} indicated at the shown time` };
   } else if (codes.some(c => fog.includes(c))) {
     const condition = conditionForCode(codes.find(c => fog.includes(c))!, isDay);
-    result = { ...condition, label: `${condition.label} indicated at the shown time` };
+    result = { ...condition, description: `${condition.label} indicated at the shown time` };
   } else if (kind === 'trace' && codes.some(c => lightWet.includes(c))) {
     result = conditionForCode(codes.find(c => lightWet.includes(c))!, isDay);
   } else if (kind === 'missing' && code !== null) {
     result = conditionForCode(code, isDay);
-    if (ordinaryWet.includes(code)) result = { ...result, label: `${result.label} indicated at the shown time; may not persist throughout the hour` };
+    if (ordinaryWet.includes(code)) result = { ...result, description: `${result.label} indicated at the shown time; may not persist throughout the hour` };
   } else {
     result = sky;
     if (kind === 'zero' && codes.some(c => ordinaryWet.includes(c))) {
-      result = { ...result, label: `${result.label}; instantaneous wet code conflicts with zero precipitation for this slot` };
+      result = { ...result, description: `${result.description ?? result.label}; instantaneous wet code conflicts with zero precipitation for this slot` };
     }
   }
-  if (kind === 'trace') result = { ...result, label: `${result.label}; Trace precipitation` };
-  if (kind === 'missing') result = { ...result, label: `${result.label}; hourly precipitation unavailable` };
+  if (kind === 'trace') result = { ...result, description: `${result.description ?? result.label}; Trace precipitation` };
+  if (kind === 'missing') result = { ...result, description: `${result.description ?? result.label}; hourly precipitation unavailable` };
   return result;
 }
 
@@ -144,7 +145,7 @@ export function getDailyCondition(input: CachedRun[] | ForecastSignals, validTim
   const daylight = index.mean('is_day', time, true);
   const isDay = daylight === null ? null : Math.round(daylight);
   if (code !== null && code >= 45) return conditionForCode(code, isDay);
-  if (precipitation?.value !== null && precipitation?.value !== undefined && precipitation.value > 0) return { label: 'Precipitation signal in the stated daily period', icon: 'precipitation' };
+  if (precipitation?.value !== null && precipitation?.value !== undefined && precipitation.value > 0) return { label: 'Precipitation', icon: 'precipitation' };
   if (code !== null) return conditionForCode(code, isDay);
   const cloud = index.mean('cloud_cover', time, true);
   return conditionForCode(cloud === null ? null : cloud < 0.15 ? 0 : cloud < 0.65 ? 2 : 3, isDay);

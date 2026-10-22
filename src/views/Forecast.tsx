@@ -45,7 +45,7 @@ export function Forecast({ runs, lastUpdated = null, ensembles }: Props) {
       <div className="hourly-scroll" ref={hourlyScroll} tabIndex={0} role="region" aria-label="Hourly forecast; scroll horizontally for more hours"><div className="hourly-grid">
         {hourly.map(h => <div className="hourly-item" key={h.start} role="group" aria-label={h.accessible.interval}>
           <span className="hourly-time">{h.display.time}</span>
-          <span className={`hourly-condition hourly-condition--${h.condition.icon ?? 'unknown'}`} role="img" aria-label={h.condition.label} title={h.condition.label}>{h.condition.icon ? <WeatherIcon name={h.condition.icon} /> : <span>—</span>}</span>
+          <span className={`hourly-condition hourly-condition--${h.condition.icon ?? 'unknown'}`} role="img" aria-label={h.condition.description ?? h.condition.label} title={h.condition.label}>{h.condition.icon ? <WeatherIcon name={h.condition.icon} /> : <span>—</span>}</span>
           <strong><span aria-hidden="true">{h.display.temperature}</span><span className="hourly-sr-only">{h.accessible.temperature}</span></strong>
           <span className="hourly-rain"><WeatherIcon name="drop" /><span aria-hidden="true">{h.display.precipitation}</span><span className="hourly-sr-only">{h.accessible.precipitation}</span></span>
           <span className="hourly-wind"><span aria-hidden="true">Wind {h.display.wind}</span><span className="hourly-sr-only">{h.accessible.wind}</span></span>
@@ -53,7 +53,7 @@ export function Forecast({ runs, lastUpdated = null, ensembles }: Props) {
           {h.cached && <span className="hourly-cached">Cached</span>}
         </div>)}
       </div></div>
-      <p className="hourly-caption">Temperature and wind are at the shown time. Precipitation totals and gusts cover the following hour. Gusts blend model hourly maxima. Symbols combine slot totals with conditions indicated at the shown time.</p>
+      <p className="hourly-caption">Temperature and wind are at the shown time. Precipitation and gusts cover the following hour.</p>
     </section>
     <p className="forecast-note"><span className="note-mark">i</span> Based on available ECMWF, GFS and UKMO forecasts. See Trends for how the models have shifted run to run.</p>
   </div>;

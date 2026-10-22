@@ -31,7 +31,7 @@ test('later rain and nonzero three-hour agreement cannot wet a dry slot', () => 
 test('ordinary wet code beside true zero uses sky and explains the conflict', () => {
   for (const code of [51, 53, 55, 61, 63, 65, 80, 81, 82]) {
     const condition = getHourlyCondition({ ...evidence, codes: [code] });
-    assert.equal(condition.icon, 'partly-cloudy'); assert.match(condition.label, /wet code conflicts with zero/);
+    assert.equal(condition.icon, 'partly-cloudy'); assert.match(condition.description!, /wet code conflicts with zero/);
   }
 });
 
@@ -43,7 +43,7 @@ test('raw trace and 0.1 boundary have identical formatting and condition semanti
     assert.equal(precipitationKind(value), kind); assert.equal(formatPrecipitation(value), formatted);
     const condition = getHourlyCondition({ ...evidence, precipitation: value });
     assert.equal(condition.icon, kind === 'wet' ? 'precipitation' : 'partly-cloudy');
-    if (kind === 'trace') assert.match(condition.label, /Trace precipitation/);
+    if (kind === 'trace') assert.match(condition.description!, /Trace precipitation/);
   }
   for (const value of [null, NaN, Infinity, -0.01]) assert.equal(formatPrecipitation(value), '—');
 });
@@ -55,16 +55,16 @@ test('supported types, trace drizzle and instantaneous hazards retain explanatio
   }
   for (const code of [45, 48]) {
     assert.equal(getHourlyCondition({ ...evidence, codes: [code] }).icon, 'fog');
-    assert.match(getHourlyCondition({ ...evidence, codes: [code], precipitation: 0.5 }).label, /fog|Fog/);
+    assert.match(getHourlyCondition({ ...evidence, codes: [code], precipitation: 0.5 }).description!, /fog|Fog/);
   }
   for (const code of [51, 80]) {
     const condition = getHourlyCondition({ ...evidence, codes: [code], precipitation: 0.03 });
-    assert.equal(condition.icon, 'rain'); assert.match(condition.label, /Trace precipitation/);
+    assert.equal(condition.icon, 'rain'); assert.match(condition.description!, /Trace precipitation/);
   }
   assert.equal(getHourlyCondition({ ...evidence, codes: [61], precipitation: 0.03 }).icon, 'partly-cloudy');
   for (const code of [56, 66, 71, 95]) {
     const condition = getHourlyCondition({ ...evidence, codes: [code] });
-    assert.match(condition.label, /shown time; may not persist/);
+    assert.match(condition.description!, /shown time; may not persist/);
     assert.notEqual(condition.icon, 'partly-cloudy');
   }
   assert.equal(getHourlyCondition({ ...evidence, snowfall: 0.001 }).icon, 'snow');
@@ -83,7 +83,7 @@ test('dry codes work without cloud; daylight and missing values do not invent su
     assert.ok(!['sun', 'partly-cloudy', 'showers'].includes(condition.icon!));
   }
   const missing = getHourlyCondition({ ...evidence, codes: [61], precipitation: null });
-  assert.equal(missing.icon, 'rain'); assert.match(missing.label, /shown time.*unavailable/);
+  assert.equal(missing.icon, 'rain'); assert.match(missing.description!, /shown time.*unavailable/);
 });
 
 test('provider end timestamps supply amounts and gusts; instantaneous values stay at start', () => {
@@ -121,7 +121,7 @@ test('family weighting and deterministic code ties are shared; fresh values excl
   const mixed = buildHourlySlot(buildForecastSignals([run('precipitation', [0, 0]), run('precipitation', [1, 1], 'ecmwf_ifs025', 40), run('weather_code', [2]), run('weather_code', [95], 'ecmwf_ifs025', 40)], start), time);
   assert.equal(mixed.precipitation, 0); assert.equal(mixed.condition.icon, 'cloud'); assert.equal(mixed.cached, false);
   const stale = buildHourlySlot(buildForecastSignals([run('precipitation', [0, 1], 'gfs_global', 40), run('weather_code', [61], 'gfs_global', 40)], start), time);
-  assert.equal(stale.precipitation, 1); assert.equal(stale.condition.icon, 'rain'); assert.match(stale.condition.label, /cached/);
+  assert.equal(stale.precipitation, 1); assert.equal(stale.condition.icon, 'rain'); assert.match(stale.condition.description!, /cached/);
   assert.match(stale.accessible.precipitation, /cached/);
 });
 
@@ -138,5 +138,24 @@ test('slots retain UTC duration across midnight, 23/25-hour days and repeated lo
       assert.match(localTime(slots[1].start), /01:00 BST/); assert.match(localTime(slots[2].start), /01:00 GMT/);
       assert.notEqual(slots[1].display.interval, slots[2].display.interval);
     }
+  }
+});
+
+test('hourly card names stay simple while descriptions retain trace, hazard and missing-data context', () => {
+  for (const [input, label, description] of [
+    [{ ...evidence, codes: [61] }, 'Partly cloudy', /conflicts with zero/],
+    [{ ...evidence, codes: [66] }, 'Freezing rain', /shown time/],
+    [{ ...evidence, codes: [95] }, 'Thunderstorm', /shown time/],
+    [{ ...evidence, codes: [45] }, 'Fog', /shown time/],
+    [{ ...evidence, snowfall: 0.1 }, 'Snow', /Snowfall/],
+    [{ ...evidence, codes: [], precipitation: 1 }, 'Precipitation', /type uncertain/],
+    [{ ...evidence, codes: [51], precipitation: 0.03 }, 'Light drizzle', /Trace precipitation/],
+    [{ ...evidence, precipitation: 0.03 }, 'Partly cloudy', /Trace precipitation/],
+    [{ ...evidence, codes: [61], precipitation: null }, 'Light rain', /unavailable/],
+    [{ ...evidence, codes: [], cloud: null, precipitation: null }, 'Unavailable', /unavailable/],
+  ] as const) {
+    const condition = getHourlyCondition(input);
+    assert.equal(condition.label, label);
+    assert.match(condition.description!, description);
   }
 });

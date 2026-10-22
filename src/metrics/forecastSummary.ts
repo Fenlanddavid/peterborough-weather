@@ -164,7 +164,9 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date, options: Bri
     const gusts = preferFresh(signals.aggregate('wind_gusts_10m', eventTimes({ ...SNOW, variable: 'wind_gusts_10m', operation: 'max' }, start, end), 'max'));
     const contributors = [...highs, ...lows, ...rainCohort, ...snowCohort, ...winds, ...gusts];
     const conditions = times.map(t => getDailyCondition(signals, t));
+    const wetCondition = precipitation.value !== null && precipitation.value > 0 ? conditions.find(c => c.icon === 'rain') : undefined;
     const condition = conditions.find(c => ['storm', 'fog', 'snow'].includes(c.icon ?? '') || /freezing/i.test(c.label))
+      ?? wetCondition
       ?? getDailyCondition(signals, new Date(start + Math.min(12, times.length - 1) * HOUR).toISOString(), precipitation);
     const day: SummaryDay = {
       date, label: index === 0 ? 'Today' : new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Europe/London' }),
