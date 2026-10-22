@@ -27519,10 +27519,219 @@
       "direction": 230,
       "raw": "METAR EGXT 220420Z AUTO 23005KT 9999 RA OVC003/// 08/08 Q1001",
       "fetchedAt": 1792644796170
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792644600000:METAR EGXT 220450Z AUTO 22005KT 9999 -DZ OVC006/// 08/07 Q1001",
+      "time": 1792644600000,
+      "reportTime": "2026-10-22T05:00:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 2.57222,
+      "gust": null,
+      "direction": 220,
+      "raw": "METAR EGXT 220450Z AUTO 22005KT 9999 -DZ OVC006/// 08/07 Q1001",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792646400000:METAR EGXT 220520Z AUTO 24008KT 9999 -DZ OVC004/// 09/08 Q1002",
+      "time": 1792646400000,
+      "reportTime": "2026-10-22T05:20:00.000Z",
+      "type": "METAR",
+      "temperature": 9,
+      "wind": 4.115552,
+      "gust": null,
+      "direction": 240,
+      "raw": "METAR EGXT 220520Z AUTO 24008KT 9999 -DZ OVC004/// 09/08 Q1002",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792648200000:METAR EGXT 220550Z 25010KT 9999 BKN007 09/08 Q1002 RMK GRN",
+      "time": 1792648200000,
+      "reportTime": "2026-10-22T06:00:00.000Z",
+      "type": "METAR",
+      "temperature": 9,
+      "wind": 5.14444,
+      "gust": null,
+      "direction": 250,
+      "raw": "METAR EGXT 220550Z 25010KT 9999 BKN007 09/08 Q1002 RMK GRN",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792650000000:METAR EGXT 220620Z 25008KT 9999 SCT009 09/08 Q1003 RMK GRN",
+      "time": 1792650000000,
+      "reportTime": "2026-10-22T06:20:00.000Z",
+      "type": "METAR",
+      "temperature": 9,
+      "wind": 4.115552,
+      "gust": null,
+      "direction": 250,
+      "raw": "METAR EGXT 220620Z 25008KT 9999 SCT009 09/08 Q1003 RMK GRN",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792651800000:METAR EGXT 220650Z 25008KT 9999 FEW010 08/07 Q1003 RMK BLU",
+      "time": 1792651800000,
+      "reportTime": "2026-10-22T07:00:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 4.115552,
+      "gust": null,
+      "direction": 250,
+      "raw": "METAR EGXT 220650Z 25008KT 9999 FEW010 08/07 Q1003 RMK BLU",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792653600000:METAR EGXT 220720Z 23006KT 9999 FEW012 08/07 Q1004 RMK BLU",
+      "time": 1792653600000,
+      "reportTime": "2026-10-22T07:20:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 3.086664,
+      "gust": null,
+      "direction": 230,
+      "raw": "METAR EGXT 220720Z 23006KT 9999 FEW012 08/07 Q1004 RMK BLU",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792655400000:METAR EGXT 220750Z 23007KT 9999 FEW012 08/08 Q1004 RMK BLU",
+      "time": 1792655400000,
+      "reportTime": "2026-10-22T08:00:00.000Z",
+      "type": "METAR",
+      "temperature": 8,
+      "wind": 3.601108,
+      "gust": null,
+      "direction": 230,
+      "raw": "METAR EGXT 220750Z 23007KT 9999 FEW012 08/08 Q1004 RMK BLU",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792657200000:METAR EGXT 220820Z 24011KT CAVOK 09/08 Q1004 RMK BLU",
+      "time": 1792657200000,
+      "reportTime": "2026-10-22T08:20:00.000Z",
+      "type": "METAR",
+      "temperature": 9,
+      "wind": 5.6588840000000005,
+      "gust": null,
+      "direction": 240,
+      "raw": "METAR EGXT 220820Z 24011KT CAVOK 09/08 Q1004 RMK BLU",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792659000000:METAR EGXT 220850Z 24012KT 9999 FEW010 10/08 Q1005 RMK BLU",
+      "time": 1792659000000,
+      "reportTime": "2026-10-22T09:00:00.000Z",
+      "type": "METAR",
+      "temperature": 10,
+      "wind": 6.173328,
+      "gust": null,
+      "direction": 240,
+      "raw": "METAR EGXT 220850Z 24012KT 9999 FEW010 10/08 Q1005 RMK BLU",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792660800000:METAR EGXT 220920Z 25015KT 9999 FEW012 10/07 Q1005 RMK BLU",
+      "time": 1792660800000,
+      "reportTime": "2026-10-22T09:20:00.000Z",
+      "type": "METAR",
+      "temperature": 10,
+      "wind": 7.71666,
+      "gust": null,
+      "direction": 250,
+      "raw": "METAR EGXT 220920Z 25015KT 9999 FEW012 10/07 Q1005 RMK BLU",
+      "fetchedAt": 1792664090466
+    },
+    {
+      "station": {
+        "id": "EGXT",
+        "name": "Wittering Arpt, EN, GB",
+        "latitude": 52.611,
+        "longitude": -0.461,
+        "elevation": 74
+      },
+      "id": "EGXT:1792662600000:METAR EGXT 220950Z 25015KT 9999 BKN018 11/07 Q1005 RMK WHT",
+      "time": 1792662600000,
+      "reportTime": "2026-10-22T10:00:00.000Z",
+      "type": "METAR",
+      "temperature": 11,
+      "wind": 7.71666,
+      "gust": null,
+      "direction": 250,
+      "raw": "METAR EGXT 220950Z 25015KT 9999 BKN018 11/07 Q1005 RMK WHT",
+      "fetchedAt": 1792664090466
     }
   ],
-  "sourceTime": 1792642800000,
-  "collectedAt": 1792644796170,
-  "watermark": 1792644796170,
+  "sourceTime": 1792662600000,
+  "collectedAt": 1792664090466,
+  "watermark": 1792664090466,
   "missingPeriods": []
 }
