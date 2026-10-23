@@ -1,3 +1,4 @@
+import { SNOW_HOURLY_THRESHOLD_CM } from '../config/forecast.ts';
 import type { CachedRun } from '../types';
 import type { IconName } from '../components/WeatherIcon';
 import { buildForecastSignals, familyWeights } from '../forecast/signals.ts';
@@ -129,7 +130,7 @@ export function getHourlyCondition(input: ConditionEvidence): HourlyCondition {
   if (hazard !== undefined) {
     const condition = conditionForCode(hazard, isDay);
     result = { ...condition, description: `${condition.label} indicated at the shown time; may not persist throughout the hour` };
-  } else if (snowfall !== null && Number.isFinite(snowfall) && snowfall > 0 && (input.snowSupport ?? (input.support ? 0 : 1)) >= threshold) {
+  } else if (snowfall !== null && Number.isFinite(snowfall) && snowfall > 0 && (input.snowSupport ?? (input.support || snowfall < SNOW_HOURLY_THRESHOLD_CM ? 0 : 1)) >= threshold) {
     result = { label: 'Snow', description: 'Snowfall indicated during the hour', icon: 'snow' };
   } else if (kind === 'wet') {
     const wet = codes.find(c => ordinaryWet.includes(c));
@@ -165,7 +166,7 @@ export function getDailyCondition(input: CachedRun[] | ForecastSignals, validTim
   const support = weightedWeatherCodes(preferFresh(index.samples('weather_code', time)));
   const daylight = forecastDaylight(index.samples('is_day', time));
   const snowValues = preferFresh(index.samples('snowfall', time + 3600_000));
-  const snowSupport = familyWeights(snowValues).filter(v => v.source.value > 0).reduce((sum, v) => sum + v.weight, 0);
+  const snowSupport = familyWeights(snowValues).filter(v => v.source.value >= SNOW_HOURLY_THRESHOLD_CM).reduce((sum, v) => sum + v.weight, 0);
   const condition = getHourlyCondition({ snowSupport, codes: support.map(v => v.code), support, precipitation: index.mean('precipitation', time + 3600_000), snowfall: index.mean('snowfall', time + 3600_000), cloud: index.mean('cloud_cover', time), daylight });
   if ((condition.icon === null || ['sun', 'moon', 'partly-cloudy', 'cloud-moon', 'cloud', 'clear-sky'].includes(condition.icon)) && precipitation?.value !== null && precipitation?.value !== undefined && precipitation.value > 0) return { label: 'Precipitation', icon: 'precipitation' };
   return condition;

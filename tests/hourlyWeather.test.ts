@@ -67,7 +67,7 @@ test('supported types, trace drizzle and instantaneous hazards retain explanatio
     assert.match(condition.description!, /shown time; may not persist/);
     assert.notEqual(condition.icon, 'partly-cloudy');
   }
-  assert.equal(getHourlyCondition({ ...evidence, snowfall: 0.001 }).icon, 'snow');
+  assert.equal(getHourlyCondition({ ...evidence, snowfall: 0.001 }).icon, 'partly-cloudy');
   assert.equal(getHourlyCondition({ ...evidence, precipitation: 1, codes: [] }).icon, 'precipitation');
 });
 

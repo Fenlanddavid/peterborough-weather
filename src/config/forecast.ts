@@ -1,1 +1,3 @@
 export const WIND_BANNER_PROBABILITY = 0.4;
+export const SNOW_HOURLY_THRESHOLD_CM = 0.1;
+export const SNOW_BANNER_PROBABILITY = 0.3;

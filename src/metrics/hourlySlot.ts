@@ -1,3 +1,4 @@
+import { SNOW_HOURLY_THRESHOLD_CM } from '../config/forecast.ts';
 import type { VariableId } from '../config/models.ts';
 import { HOUR, localTime, msToMph, utc } from '../data/contracts.ts';
 import { familyWeights } from '../forecast/policy.ts';
@@ -35,7 +36,7 @@ export function buildHourlySlot(signals: ForecastSignals, time: string, ensemble
   const daylight = forecastDaylight(samples('is_day', start));
   const support = weightedWeatherCodes(samples('weather_code', start));
   const codes = support.map(v => v.code);
-  const snowSupport = familyWeights(samples('snowfall', end)).filter(v => v.source.value > 0).reduce((sum, v) => sum + v.weight, 0);
+  const snowSupport = familyWeights(samples('snowfall', end)).filter(v => v.source.value >= SNOW_HOURLY_THRESHOLD_CM).reduce((sum, v) => sum + v.weight, 0);
   const resolved = getHourlyCondition({ codes, support, snowSupport, precipitation, snowfall, cloud, daylight });
   const windowHours = Math.max(3, ...samples('precipitation', end).map(s => s.nativeHours ?? 1)) > 3 ? 6 : 3;
   const windowStart = Math.floor(start / (windowHours * HOUR)) * windowHours * HOUR;

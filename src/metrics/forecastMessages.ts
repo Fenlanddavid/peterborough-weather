@@ -1,4 +1,5 @@
-import { WIND_BANNER_PROBABILITY } from '../config/forecast.ts';
+import { SNOW_BANNER_PROBABILITY, WIND_BANNER_PROBABILITY } from '../config/forecast.ts';
+import { SNOW } from '../forecast/events.ts';
 import { eventPercent } from '../data/contracts.ts';
 import type { SummaryDay } from './forecastSummary.ts';
 
@@ -9,3 +10,7 @@ export function windOutlook(day: Pick<SummaryDay, 'gustMph' | 'gustEvent'>): str
   const central = day.gustMph === null ? '—' : Math.round(day.gustMph);
   return `${central} mph${!centralTrigger ? ` · ${eventPercent(probability)} chance of 30+` : ''}`;
 }
+
+export const snowOutlook = (day: Pick<SummaryDay, 'snowCm' | 'snowEvent'>): boolean =>
+  day.snowCm !== null && day.snowCm >= SNOW.threshold ||
+  day.snowEvent.basis === 'ensemble-probability' && day.snowEvent.value !== null && day.snowEvent.value >= SNOW_BANNER_PROBABILITY;

@@ -44,11 +44,11 @@ test('extra runs do not give a model additional influence; stale runs remain dis
   const stale = buildForecastSignals([run('gfs_global', 1, 37)], now);
   assert.equal(stale.mean('precipitation', now), 1); assert.equal(stale.agreement(PRECIP_3H, now, now + 3 * HOUR).value, null);
 });
-test('single snow trace stays below event threshold but remains visible in hourly conditions', () => {
+test('single snow trace stays below event and hourly icon thresholds', () => {
   const runs = [run('gfs_global', 0.01, 0, 'snowfall'), run('gfs_global', 0, 0, 'weather_code'), run('gfs_global', 1, 0, 'is_day')];
   const signals = buildForecastSignals(runs, now);
   assert.equal(signals.supporting(SNOW, now, now + 3 * HOUR).models, 0);
-  assert.equal(buildHourlySlot(signals, runs[0].times[0]).condition.icon, 'snow');
+  assert.equal(buildHourlySlot(signals, runs[0].times[0]).condition.icon, 'sun');
   assert.equal(buildHourlySlot(buildForecastSignals([...runs, run('gfs_global', 95, 0, 'weather_code')], now), runs[0].times[0]).condition.icon, 'storm');
 });
 test('calendar and frost windows preserve 25 October repeated hours and elapsed duration', () => {

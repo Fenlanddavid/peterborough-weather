@@ -136,7 +136,7 @@ test('totals the local seven-day forecast and reports rain timing, snow and free
   assert.match(briefing.rainfall, /5.0 mm/);
   assert.match(briefing.days[1].rainTiming!, /afternoon/);
   assert.match(briefing.cold, /below-freezing/);
-  assert.match(briefing.cold, /snowfall signal/);
+  assert.doesNotMatch(briefing.cold, /snowfall signal/); // 0.2 cm is below the banner threshold
   assert.equal(briefing.days[0].snowCm, 0.2);
   assert.equal(briefing.days[6].temperatureHours, 24);
   const coldOnly = buildForecastBriefing([run('temperature_2m', times, times.map(() => -2))], winterNow);

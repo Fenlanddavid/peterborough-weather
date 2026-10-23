@@ -138,3 +138,12 @@ The existing banner lists a day only for central gust >=30 mph or genuine
 ensemble P(>=30 mph) >=40%. It displays the central figure; probability-only
 triggers append the chance of 30+. Ensemble and Met Office p90 references
 remain in Summary. The banner's structure and styling are unchanged.
+
+## Existing snow outlook and hourly snow
+
+Summary now carries the 0.5 cm snow event. The existing snow banner and the
+briefing's snowfall-signal text require blended snowfall >=0.5 cm or ensemble
+P(>=0.5 cm) >=30%. Deterministic agreement alone cannot trigger it. Trace
+amounts remain in day detail. Hourly snow support counts only amounts >=0.1 cm
+per hour, in both hourly slots and daily-condition sampling. No new banner,
+box or explanatory home sentence is added.

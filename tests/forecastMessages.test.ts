@@ -10,3 +10,12 @@ test('wind outlook uses central gust or genuine probability, with central figure
   assert.equal(windOutlook({ gustMph: 26, gustEvent: event(1, 'deterministic-agreement') }), null);
   assert.equal(windOutlook({ gustMph: 26, gustEvent: event(0.4) }), '26 mph · 40% chance of 30+');
 });
+
+test('snow outlook ignores traces and accepts ensemble probability without a deterministic total', async () => {
+  const { snowOutlook } = await import('../src/metrics/forecastMessages.ts');
+  assert.equal(snowOutlook({ snowCm: 0.02 / 3, snowEvent: event(0) }), false);
+  assert.equal(snowOutlook({ snowCm: 0, snowEvent: event(0.35) }), true);
+  assert.equal(snowOutlook({ snowCm: null, snowEvent: event(0.35) }), true);
+  assert.equal(snowOutlook({ snowCm: 0.5, snowEvent: event(0) }), true);
+  assert.equal(snowOutlook({ snowCm: 0, snowEvent: event(1, 'deterministic-agreement') }), false);
+});
