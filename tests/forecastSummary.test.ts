@@ -2,7 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { CachedRun } from '../src/types';
 import { buildForecastBriefing } from '../src/metrics/forecastSummary.ts';
-import { getLocalDayHours } from '../src/hooks/useLocalTime.ts';
+import { getLocalDayHours, toLocalTime } from '../src/hooks/useLocalTime.ts';
+import { buildHourlySlot } from '../src/metrics/hourlySlot.ts';
+import { buildForecastSignals } from '../src/forecast/signals.ts';
+import { HOUR, utc } from '../src/data/contracts.ts';
 
 function run(variable: CachedRun['variable'], times: string[], values: (number | null)[], modelId = 'ecmwf_ifs025', runTime = '2026-12-07T00:00'): CachedRun {
   return { key: `${modelId}:${variable}:${runTime}`, modelId, runTime, variable, times, values, fetchedAt: Date.parse(`${runTime}Z`) };
@@ -10,6 +13,77 @@ function run(variable: CachedRun['variable'], times: string[], values: (number |
 const winterDay = getLocalDayHours('2026-12-07');
 const winterNow = new Date('2026-12-07T00:00:00Z');
 const winterAccumulations = [...winterDay, '2026-12-08T00:00'];
+
+test('Sunday and Wednesday cards reflect sunny daytime rather than longer clear nights, including the clock change', () => {
+  const times = Array.from({ length: 7 }, (_, i) => getLocalDayHours(`2026-10-${23 + i}`)).flat();
+  const isDay = (time: string) => {
+    const hour = Number(toLocalTime(time, 'time').slice(0, 2));
+    return hour >= 8 && hour < 17 ? 1 : 0;
+  };
+  const now = new Date('2026-10-23T00:00:00Z');
+  const runs = [
+    run('weather_code', times, times.map(() => 0), 'ecmwf_ifs025', '2026-10-23T00:00'),
+    run('is_day', times, times.map(isDay), 'ecmwf_ifs025', '2026-10-23T00:00'),
+  ];
+  const briefing = buildForecastBriefing(runs, now, { wholeToday: true });
+  const signals = buildForecastSignals(runs, now.getTime());
+  for (const day of briefing.days) {
+    assert.equal(day.condition.label, 'Sunny', day.label);
+    assert.equal(day.condition.icon, 'sun', day.label);
+    const daytimeHour = getLocalDayHours(day.date).find(t => isDay(t))!;
+    assert.equal(day.condition.label, buildHourlySlot(signals, daytimeHour).condition.label);
+    assert.equal(buildHourlySlot(signals, getLocalDayHours(day.date).at(-1)!).condition.icon, 'moon');
+  }
+  assert.equal(briefing.days[2].label, 'Sunday');
+  assert.equal(briefing.days[2].expectedHours, 25);
+  assert.equal(briefing.days[5].label, 'Wednesday');
+});
+
+test('daytime conditions determine the headline while overnight rain totals and hazards remain visible', () => {
+  const daytime = (t: string) => Number(t.slice(11, 13)) >= 9 && Number(t.slice(11, 13)) < 16;
+  for (const [dayCode, nightCode, expectedLabel, expectedIcon] of [
+    [0, 95, 'Sunny', 'sun'],
+    [2, 61, 'Partly cloudy', 'partly-cloudy'],
+    [61, 0, 'Light rain', 'rain'],
+    [95, 0, 'Thunderstorm', 'storm'],
+  ] as const) {
+    const rows = [
+      run('weather_code', winterDay, winterDay.map(t => daytime(t) ? dayCode : nightCode)),
+      run('is_day', winterDay, winterDay.map(t => daytime(t) ? 1 : 0)),
+      run('precipitation', winterAccumulations, winterAccumulations.map(t => {
+        const slot = new Date(utc(t) - HOUR).toISOString();
+        return (daytime(slot) ? dayCode : nightCode) >= 51 ? 1 : 0;
+      })),
+    ];
+    const day = buildForecastBriefing(rows, winterNow, { wholeToday: true }).days[0];
+    assert.equal(day.condition.label, expectedLabel);
+    assert.equal(day.condition.icon, expectedIcon);
+    assert.equal(day.rainMm, dayCode >= 51 ? 7 : 17);
+    if (nightCode === 95) assert.ok(day.hazardTiming.some(t => t.includes('Thunderstorm') && t.includes('03:00')));
+  }
+});
+
+test('missing daytime evidence stays unavailable and missing daylight flags retain neutral artwork', () => {
+  const codes = run('weather_code', winterDay, winterDay.map(t => Number(t.slice(11, 13)) < 6 ? 0 : null));
+  const day = buildForecastBriefing([codes], winterNow, { wholeToday: true }).days[0];
+  assert.equal(day.condition.label, 'Unavailable');
+  assert.equal(day.condition.icon, null);
+  const neutral = buildForecastBriefing([
+    run('weather_code', winterDay, winterDay.map(t => Number(t.slice(11, 13)) >= 9 && Number(t.slice(11, 13)) < 17 ? 0 : 3)),
+  ], winterNow, { wholeToday: true }).days[0];
+  assert.equal(neutral.condition.label, 'Clear sky');
+  assert.equal(neutral.condition.icon, 'clear-sky');
+});
+
+test('whole-today cards keep daytime conditions in the evening while the remaining-today summary can describe night', () => {
+  const rows = [
+    run('weather_code', winterDay, winterDay.map(() => 0)),
+    run('is_day', winterDay, winterDay.map(t => Number(t.slice(11, 13)) >= 9 && Number(t.slice(11, 13)) < 16 ? 1 : 0)),
+  ];
+  const evening = new Date('2026-12-07T20:00:00Z');
+  assert.equal(buildForecastBriefing(rows, evening, { wholeToday: true }).days[0].condition.label, 'Sunny');
+  assert.equal(buildForecastBriefing(rows, evening).days[0].condition.label, 'Clear night');
+});
 
 test('uses latest forecast runs including UKV, and converts wind from m/s to mph', () => {
   const briefing = buildForecastBriefing([

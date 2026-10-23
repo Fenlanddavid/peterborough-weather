@@ -146,7 +146,7 @@ test('minority thunder/snow/freezing signals remain risks until family support r
 test('daily condition follows duration, with a brief hazard and gust interval retained separately', () => {
   const start = utc('2026-12-07T00:00');
   const times = Array.from({ length: 25 }, (_, i) => new Date(start + i * HOUR).toISOString().slice(0, 16));
-  const rows = ['weather_code', 'is_day', 'precipitation', 'wind_gusts_10m'].map(variable => ({ ...run('gfs_global', variable as CachedRun['variable'], 0), runTime: '2026-12-07T00:00', times, values: times.map((_, i) => variable === 'weather_code' ? i === 3 ? 95 : 3 : variable === 'wind_gusts_10m' ? i === 8 ? 20 : 5 : 0) }));
+  const rows = ['weather_code', 'is_day', 'precipitation', 'wind_gusts_10m'].map(variable => ({ ...run('gfs_global', variable as CachedRun['variable'], 0), runTime: '2026-12-07T00:00', times, values: times.map((_, i) => variable === 'weather_code' ? i === 3 ? 95 : 3 : variable === 'wind_gusts_10m' ? i === 8 ? 20 : 5 : variable === 'is_day' && i >= 9 && i < 16 ? 1 : 0) }));
   const day = buildForecastBriefing(rows, new Date(start)).days[0];
   assert.equal(day.condition.label, 'Cloudy'); assert.ok(day.hazardTiming.some(s => s.includes('Thunderstorm') && s.includes('03:00')));
   assert.equal(day.gustTime, '07:00–08:00');

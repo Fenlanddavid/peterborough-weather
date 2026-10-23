@@ -7,7 +7,7 @@ import { eventTimes, PRECIP_DAY, SNOW, GUST } from '../forecast/events.ts';
 import type { EnsembleIndex } from '../forecast/events.ts';
 import type { EventEstimate, Provenance } from '../data/contracts.ts';
 import { HOUR, msToMph, utc, eventPercent } from '../data/contracts.ts';
-import { getDailyCondition } from './hourlyWeather.ts';
+import { forecastDaylight, getDailyCondition } from './hourlyWeather.ts';
 import type { IconName } from '../components/WeatherIcon';
 
 export interface SummaryDay {
@@ -178,11 +178,23 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date, options: Bri
     const gusts = preferFresh(signals.aggregate('wind_gusts_10m', eventTimes({ ...SNOW, variable: 'wind_gusts_10m', operation: 'max' }, start, end), 'max'));
     const contributors = [...highs, ...lows, ...rainCohort, ...snowCohort, ...winds, ...gusts];
     const conditions = times.map(t => getDailyCondition(signals, t));
+    // Day cards describe daytime, so longer nights cannot outvote the day's weather.
+    // Without daylight flags use 09:00–17:00 local, retaining neutral sky artwork.
+    const daytimeConditions = conditions.filter((_, i) => {
+      const daylight = forecastDaylight(signals.samples('is_day', utc(times[i])));
+      const localHour = Number(toLocalTime(times[i], 'time').slice(0, 2));
+      return daylight === 1 || daylight === null && localHour >= 9 && localHour < 17;
+    });
+    // The detail summary can cover only the remaining evening of today.
+    const headlineConditions = !daytimeConditions.length && index === 0 && !options.wholeToday ? conditions : daytimeConditions;
     const counts = new Map<string, { condition: typeof conditions[number]; hours: number }>();
-    for (const condition of conditions) { const key = condition.label; const current = counts.get(key); counts.set(key, { condition, hours: (current?.hours ?? 0) + 1 }); }
+    for (const condition of headlineConditions) {
+      if (condition.icon === null) continue;
+      const key = condition.label; const current = counts.get(key); counts.set(key, { condition, hours: (current?.hours ?? 0) + 1 });
+    }
     const rankedConditions = [...counts.values()].sort((a, b) => b.hours - a.hours || a.condition.label.localeCompare(b.condition.label));
     const isHazard = (c: typeof conditions[number]) => ['storm', 'snow', 'fog'].includes(c.icon ?? '') || /freezing/i.test(c.label);
-    const condition = rankedConditions.find(c => !isHazard(c.condition) || c.hours >= times.length / 2)?.condition ?? rankedConditions[0]?.condition ?? getDailyCondition(signals, new Date(start).toISOString(), precipitation);
+    const condition = rankedConditions.find(c => !isHazard(c.condition) || c.hours >= headlineConditions.length / 2)?.condition ?? rankedConditions[0]?.condition ?? { label: 'Unavailable', icon: null };
     const hazardTiming = conditions.flatMap((c, i) => {
       const hazard = ['storm', 'snow'].includes(c.icon ?? '') || /freezing/i.test(c.label);
       const labels = [...(hazard ? [c.label] : []), ...(c.risks ?? []).map(r => `${r.label} risk (${Math.round(r.support * 100)}% family support, not probability)` )];

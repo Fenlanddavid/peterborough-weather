@@ -4,7 +4,7 @@ import { familyWeights } from '../forecast/policy.ts';
 import { PRECIP_3H, PRECIP_6H, GUST } from '../forecast/events.ts';
 import type { EnsembleIndex } from '../forecast/events.ts';
 import type { ForecastSignals } from '../forecast/signals.ts';
-import { formatPrecipitation, getHourlyCondition, weightedWeatherCodes } from './hourlyWeather.ts';
+import { forecastDaylight, formatPrecipitation, getHourlyCondition, weightedWeatherCodes } from './hourlyWeather.ts';
 
 export const formatHourlySpeed = (ms: number | null) => ms === null || !Number.isFinite(ms) || ms < 0 ? '—' : `${Math.round(msToMph(ms))} mph`;
 const localDateTime = (time: number) => new Intl.DateTimeFormat('en-GB', {
@@ -32,9 +32,7 @@ export function buildHourlySlot(signals: ForecastSignals, time: string, ensemble
   const snowfall = mean('snowfall', end);
   const gust = mean('wind_gusts_10m', end);
   const cloud = mean('cloud_cover', start);
-  const daylightSamples = samples('is_day', start).filter(v => v.value === 0 || v.value === 1);
-  // Disagreement about daylight uses neutral art; never guess sunshine.
-  const daylight = daylightSamples.length && daylightSamples.every(v => v.value === daylightSamples[0].value) ? daylightSamples[0].value : null;
+  const daylight = forecastDaylight(samples('is_day', start));
   const support = weightedWeatherCodes(samples('weather_code', start));
   const codes = support.map(v => v.code);
   const snowSupport = familyWeights(samples('snowfall', end)).filter(v => v.source.value > 0).reduce((sum, v) => sum + v.weight, 0);
