@@ -8,7 +8,7 @@ export interface MetOfficeBudget { date: string; calls: number; blockedUntil: nu
 export function canRequestMetOffice(budget: MetOfficeBudget, now: number) {
   return now >= budget.blockedUntil && (budget.date !== new Date(now).toISOString().slice(0, 10) || budget.calls < 48);
 }
-interface Discovery { version?: 2; checkedAt: number; collections: { id: string; parameters: string[] }[]; instances: Record<string, { checkedAt: number; id: string; issuedAt: number | null }> }
+interface Discovery { version?: 3; checkedAt: number; collections: { id: string; parameters: string[] }[]; instances: Record<string, { checkedAt: number; id: string; issuedAt: number | null }> }
 const safeId = (id: string) => encodeURIComponent(id);
 export async function collectMetOffice(store: CollectorStore, key: string | undefined, now = Date.now(), request: typeof fetch = fetch) {
   if (!key) { await store.save('forecast/metoffice-status.json', { checkedAt: now, connected: false, reason: 'One-time setup: subscribe to Met Office Site-Specific Blended Probabilistic Forecast v2 Free plan and add repository Actions secret MET_OFFICE_API_KEY.' }); return; }
@@ -22,7 +22,7 @@ export async function collectMetOffice(store: CollectorStore, key: string | unde
   }
   let discovery: Discovery;
   try { discovery = await store.read<Discovery>('forecast/metoffice-discovery.json', { checkedAt: 0, collections: [], instances: {} }); if (!discovery || !Array.isArray(discovery.collections) || !discovery.instances || !finite(discovery.checkedAt)) throw new Error('Invalid discovery'); } catch { discovery = { checkedAt: 0, collections: [], instances: {} }; }
-  const rebuildDiscovery = discovery.version !== 2;
+  const rebuildDiscovery = discovery.version !== 3;
   if (!rebuildDiscovery && now - budget.lastAttempt < 3 * HOUR || !canRequestMetOffice(budget, now)) return;
   const get = async (path: string) => {
     if (!canRequestMetOffice(budget, now)) throw new Error('Met Office daily quota/backoff; previous product retained');
@@ -61,7 +61,7 @@ export async function collectMetOffice(store: CollectorStore, key: string | unde
       // collections for our configured Peterborough point, including probabilities.
       const ukCollections = compatible.filter(c => c.id.startsWith('uk-'));
       const selected = ukCollections.length ? ukCollections : compatible;
-      discovery = { version: 2, checkedAt: now, collections: selected.sort((a, b) => b.parameters.length - a.parameters.length).slice(0, 3), instances: discovery.instances };
+      discovery = { version: 3, checkedAt: now, collections: selected.sort((a, b) => b.parameters.length - a.parameters.length).slice(0, 3), instances: discovery.instances };
       await store.save('forecast/metoffice-discovery.json', discovery);
     }
     if (!discovery.collections.length) throw new Error('No documented compatible v2 diagnostics discovered');

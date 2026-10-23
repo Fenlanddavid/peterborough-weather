@@ -9,6 +9,7 @@ export const MET_OFFICE_PARAMETERS = [
   'airTemperature1p5m', 'windSpeed10m', 'windSpeedOfGust10mMaximumPt01h', 'windSpeedOfGust10mMaximumPt03h',
   'probabilityOfWindSpeedOfGustAboveThreshold10mMaximumPt01h', 'probabilityOfWindSpeedOfGustAboveThreshold10mMaximumPt03h',
   'probabilityOfLweThicknessOfPrecipitationAmountAboveThresholdSumPt01h', 'probabilityOfLweThicknessOfPrecipitationAmountAboveThresholdSumPt03h',
+  'probabilityOfLweThicknessOfPrecipitationAmountAboveThresholdSumPt06h', 'probabilityOfLweThicknessOfPrecipitationAmountAboveThresholdSumPt24h',
   'lweThicknessOfPrecipitationAmountSumPt01h', 'lweThicknessOfPrecipitationAmountSumPt03h', 'cloudAreaFraction',
 ] as const;
 export interface Site { id: string; latitude: number; longitude: number; elevation: number | null; distanceKm: number }

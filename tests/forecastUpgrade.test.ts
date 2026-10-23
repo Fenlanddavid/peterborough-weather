@@ -46,6 +46,7 @@ const policy = (): BlendPolicy => ({ schema: 1, version: 'test-observed-v1', mod
 test('latest UKV selection uses actual metadata, a publication buffer and only three hourly probes', () => {
   assert.deepEqual(latestRunCandidates(ukv, update, now), ['2026-10-23T14:00', '2026-10-23T13:00', '2026-10-23T12:00']);
   assert.equal(latestRunCandidates(ukv, update, update.availableAt + PUBLICATION_BUFFER - 1)[0], '2026-10-23T13:00');
+  assert.deepEqual(latestRunCandidates(ukv, { ...update, initialisedAt: now - 2 * HOUR }, now), ['2026-10-23T17:00', '2026-10-23T16:00', '2026-10-23T15:00', '2026-10-23T12:00'], 'an operational update must not displace the newest cycle actually offered by Single Runs');
   const tasks = getRunTasks([], now, { [ukv]: update }).filter(t => t.modelId === ukv);
   assert.ok(tasks.length <= 23, 'five-day backfill stays sparse, plus at most three recent probes');
   assert.equal(tasks.filter(t => ![0, 6, 12, 18].includes(new Date(t.runTime + 'Z').getUTCHours())).length, 2);

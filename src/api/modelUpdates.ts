@@ -25,7 +25,14 @@ export function latestRunCandidates(modelId: string, update: ModelUpdate | undef
     const latest = update.initialisedAt - (now < update.availableAt + PUBLICATION_BUFFER ? update.cadence : 0);
     // Metadata supplies the actual hourly UKV initialisation. Probe at most three
     // recent runs; the five-day comparison archive retains its six-hour sampling.
-    return Array.from({ length: 3 }, (_, i) => new Date(latest - i * update.cadence).toISOString().slice(0, 16));
+    const candidates = Array.from({ length: 3 }, (_, i) => new Date(latest - i * update.cadence).toISOString().slice(0, 16));
+    // Single Runs can archive only the regular cycles even when the operational
+    // product updates hourly. Keep its newest supported comparison cycle usable.
+    for (let age = 0; age < 24; age++) {
+      const time = latest - age * HOUR;
+      if (model.runCycles.includes(new Date(time).getUTCHours())) { candidates.push(new Date(time).toISOString().slice(0, 16)); break; }
+    }
+    return [...new Set(candidates)];
   }
   const candidates: string[] = [];
   for (let age = 0; age < 24; age++) {
