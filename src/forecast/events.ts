@@ -19,6 +19,19 @@ export function eventTimes(spec: EventSpec, start: number, end: number): number[
   const preceding = spec.operation === 'sum' || spec.variable === 'wind_gusts_10m';
   return Array.from({ length: (end - start) / HOUR }, (_, i) => start + (i + (preceding ? 1 : 0)) * HOUR);
 }
+/** Long local-day windows may move at most one hour to native UTC boundaries.
+ * Keep length unchanged; short windows and incompatible lengths stay excluded. */
+export function nativeWindow(spec: EventSpec, start: number, end: number, nativeHours: number) {
+  if (spec.operation === 'point') return { start, end, shiftHours: 0 };
+  const step = nativeHours * HOUR;
+  if (end - start < step) return null;
+  const shiftedStart = Math.round(start / step) * step;
+  const shift = shiftedStart - start;
+  if ((end + shift) % step || shift && (end - start < 12 * HOUR || Math.abs(shift) > HOUR)) return null;
+  return { start: shiftedStart, end: end + shift, shiftHours: shift / HOUR };
+}
+export const alignmentCoverage = (coverage: string, window: { shiftHours: number }) => window.shiftHours
+  ? `${coverage}; native window shifted ${window.shiftHours > 0 ? '+' : ''}${window.shiftHours} h (same duration)` : coverage;
 export function aggregateEvent(values: (number | null)[], operation: EventSpec['operation']): number | null {
   if (!values.length || values.some(v => v === null)) return null;
   const numbers = values as number[];
@@ -64,14 +77,14 @@ export function buildEnsembleIndex(snapshots: EnsembleSnapshot[]): EnsembleIndex
         }));
       },
       event(spec: EventSpec, start: number, end: number): EventEstimate {
-        const required = eventTimes(spec, start, end);
         const systems = selected.map(({ snapshot, times }) => {
+          const window = nativeWindow(spec, start, end, snapshot.nativeHours);
+          const required = eventTimes(spec, window?.start ?? start, window?.end ?? end);
           const values = Object.values(snapshot.members[spec.variable] ?? {}).flatMap(member => {
             const value = aggregateEvent(required.map(t => { const i = times.get(t); return i === undefined ? null : member[i]; }), spec.operation);
             return value === null ? [] : [value];
           });
-          const nativeCompatible = spec.operation === 'point' || (end - start >= snapshot.nativeHours * HOUR && start % (snapshot.nativeHours * HOUR) === 0 && end % (snapshot.nativeHours * HOUR) === 0);
-          return { snapshot, values, eligible: nativeCompatible && values.length >= Math.ceil(snapshot.expected * 0.8) };
+          return { snapshot, values, window, eligible: window !== null && values.length >= Math.ceil(snapshot.expected * 0.8) };
         });
         const eligible = systems.filter(s => s.eligible);
         const totalExpected = systems.reduce((s, v) => s + v.snapshot.expected, 0);
@@ -83,7 +96,8 @@ export function buildEnsembleIndex(snapshots: EnsembleSnapshot[]): EnsembleIndex
           start, end, threshold: spec.label, usable, expected: totalExpected, systems: eligible.map(s => s.snapshot.modelId), status: !eligible.length ? 'unavailable' : eligible.length < systems.length || usable < totalExpected ? 'partial' : 'ok',
           expectedAmount: eligible.length ? weighted.reduce((sum, s) => sum + s.weight * s.source.values.reduce((a, b) => a + b, 0) / s.source.values.length, 0) : null,
           conditionalAmount: weightedMedian(wet), upperAmount: weightedQuantile(mixture, 0.9), nativeHours: Math.max(1, ...eligible.map(s => s.snapshot.nativeHours)),
-          components: eligible.map(s => ({ family: s.snapshot.family!, modelId: s.snapshot.modelId, value: s.values.filter(v => meets(v, spec)).length / s.values.length })), provenance: eligible.map(s => provenanceOf(s.snapshot)) };
+          alignedWindows: eligible.filter(s => s.window!.shiftHours !== 0).map(s => ({ modelId: s.snapshot.modelId, ...s.window! })),
+          components: eligible.map(s => ({ family: s.snapshot.family!, modelId: s.snapshot.modelId, value: s.values.filter(v => meets(v, spec)).length / s.values.length })), provenance: eligible.map(s => ({ ...provenanceOf(s.snapshot), validFrom: s.window!.start, validTo: s.window!.end, coverage: alignmentCoverage(s.snapshot.coverage, s.window!) })) };
       },
     };
   };

@@ -36,6 +36,7 @@ export interface EventEstimate {
   expectedAmount: number | null;
   conditionalAmount: number | null;
   provenance: Provenance[];
+  alignedWindows?: { modelId: string; start: number; end: number; shiftHours: number }[];
   components?: { family: Family; modelId: string; value: number }[];
   metOfficeProbability?: number;
   upperAmount?: number | null;

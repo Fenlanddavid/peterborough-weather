@@ -121,3 +121,13 @@ complete midnight-to-midnight day. Missing remaining hours stay unknown.
 Baseline `report:budget`: planned HTTP 476/620/692 and weighted
 644/788/860 for publication lag 0/6/9 h; scheduled weighted limit 1500,
 Met Office persistent cap 48 calls/day. No request changes in T1.
+
+## Native day-window alignment
+
+For event windows of at least 12 hours, each system may use the same-length
+window shifted to its nearest native UTC boundary, only if both boundaries
+then fit and the shift is at most one hour. BST 23Z–23Z daily windows thus
+include IFS and GEFS at 00Z–00Z, alongside hourly MOGREPS-G at the original
+window. Deterministic agreement uses the same rule. Estimates record
+`alignedWindows`; provenance and Summary retain the shift. Three-hour slots
+and already aligned GMT windows are unchanged. No extra requests are made.

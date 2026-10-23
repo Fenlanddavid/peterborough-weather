@@ -85,3 +85,16 @@ test('event percentage display preserves a non-zero signal and does not round po
   assert.equal(eventPercent(0.599), '59%'); assert.equal(eventPercent(0.6), '60%');
   assert.equal(eventPercent(null), 'unknown'); assert.equal(eventPercent(NaN), 'unknown');
 });
+
+test('coarse deterministic daily agreement aligns BST windows, retaining equal-family votes and provenance', async () => {
+  const { PRECIP_DAY } = await import('../src/forecast/events.ts');
+  const begin = Date.parse('2026-10-23T23:00Z');
+  const times = Array.from({ length: 27 }, (_, i) => new Date(begin + i * HOUR).toISOString());
+  const data = ['gfs_global', 'ecmwf_ifs025'].map(modelId => ({ ...run(modelId, 1), runTime: '2026-10-23T18:00', times, values: times.map(() => 1), nativeHours: 3 }));
+  const signals = buildForecastSignals(data, begin);
+  const event = signals.agreement(PRECIP_DAY, begin, begin + 24 * HOUR);
+  assert.equal(event.value, 1); assert.equal(event.systems.length, 2);
+  assert.ok(event.alignedWindows!.every(w => w.shiftHours === 1));
+  assert.ok(event.provenance.every(p => /shifted \+1 h/.test(p.coverage)));
+  assert.equal(signals.agreement(PRECIP_3H, begin, begin + 3 * HOUR).value, null);
+});

@@ -3,7 +3,7 @@ import { DETERMINISTIC_MODELS } from '../config/models.ts';
 import type { VariableId } from '../config/models.ts';
 import { finite, HOUR, utc, provenanceOf } from '../data/contracts.ts';
 import type { Family, EventEstimate, Provenance } from '../data/contracts.ts';
-import { aggregateEvent, eventTimes, meets, weightedMedian } from './events.ts';
+import { aggregateEvent, eventTimes, meets, weightedMedian, nativeWindow, alignmentCoverage } from './events.ts';
 import type { EventSpec, EnsembleIndex } from './events.ts';
 
 export interface ModelValue extends Provenance { family: Family; value: number; runTime: number; validTime: number; gapFilled: boolean; stale: boolean; nativeHours?: number; contributions?: Provenance[] }
@@ -86,10 +86,22 @@ export function buildForecastSignals(runs: CachedRun[], now = Date.now(), contex
     const value = modelAggregate(model.id, variable, times, operation, freshOnly); return value ? [value] : [];
   });
   const agreement = (spec: EventSpec, start: number, end: number): EventEstimate => {
-    const values = aggregate(spec.variable, eventTimes(spec, start, end), spec.operation, true).filter(v => spec.operation === 'point' || (end - start >= (v.nativeHours ?? 1) * HOUR && start % ((v.nativeHours ?? 1) * HOUR) === 0 && end % ((v.nativeHours ?? 1) * HOUR) === 0));
+    const alignedWindows: NonNullable<EventEstimate['alignedWindows']> = [];
+    const required = eventTimes(spec, start, end);
+    const values = DETERMINISTIC_MODELS.flatMap(model => {
+      const native = Math.max(1, ...required.flatMap(t => samples(spec.variable, t, true).filter(v => v.modelId === model.id).map(v => v.nativeHours ?? 1)));
+      const window = nativeWindow(spec, start, end, native);
+      if (!window) return [];
+      const value = modelAggregate(model.id, spec.variable, eventTimes(spec, window.start, window.end), spec.operation, true);
+      if (!value) return [];
+      const check = nativeWindow(spec, window.start, window.end, value.nativeHours ?? 1);
+      if (!check || check.shiftHours) return [];
+      if (window.shiftHours) alignedWindows.push({ modelId: model.id, ...window });
+      return [{ ...value, contributions: (value.contributions ?? [provenanceOf(value)]).map(p => ({ ...p, coverage: alignmentCoverage(p.coverage, window) })) }];
+    });
     const weights = familyWeights(values);
     return { basis: 'deterministic-agreement', value: values.length ? weights.reduce((s, v) => s + (meets(v.source.value, spec) ? v.weight : 0), 0) : null,
-      start, end, threshold: spec.label, usable: values.length, expected: DETERMINISTIC_MODELS.length, systems: values.map(v => v.modelId), status: !values.length ? 'unavailable' : values.length < DETERMINISTIC_MODELS.length ? 'partial' : 'ok',
+      start, end, alignedWindows, threshold: spec.label, usable: values.length, expected: DETERMINISTIC_MODELS.length, systems: values.map(v => v.modelId), status: !values.length ? 'unavailable' : values.length < DETERMINISTIC_MODELS.length ? 'partial' : 'ok',
       expectedAmount: familyMean(values), conditionalAmount: weightedMedian(weights.filter(v => meets(v.source.value, spec)).map(v => ({ value: v.source.value, weight: v.weight }))), provenance: values.flatMap(v => v.contributions ?? [provenanceOf(v)]) };
   };
   const support = (spec: EventSpec, start: number, end: number): EventEstimate => {

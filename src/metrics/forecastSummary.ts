@@ -124,6 +124,9 @@ function describeDay(day: SummaryDay): string[] {
 
   if (day.gustUpperMph !== null) lines.push(`Ensemble upper (90th percentile) period-maximum gust: ${Math.round(day.gustUpperMph)} mph${day.gustEvent.value !== null ? `; ${eventPercent(day.gustEvent.value)} probability of at least 30 mph` : ''}.`);
   if (day.gustReference) lines.push(`Met Office source-specific 90th percentile reference: ${Math.round(day.gustReference.mph)} mph for ${toLocalTime(new Date(day.gustReference.start).toISOString(), 'time')}–${toLocalTime(new Date(day.gustReference.end).toISOString(), 'time')}. This is a source period reference, not a blended daily percentile.`);
+  const aligned = [...day.precipitation.alignedWindows ?? [], ...day.gustEvent.alignedWindows ?? []];
+  const uniqueAlignments = [...new Map(aligned.map(w => [`${w.modelId}:${w.start}:${w.end}`, w])).values()];
+  if (uniqueAlignments.length) lines.push(`Native timing: ${uniqueAlignments.map(w => `${w.modelId} shifted ${w.shiftHours > 0 ? '+' : ''}${w.shiftHours} h for the same-length event window`).join('; ')}.`);
   for (const risk of day.hazardTiming) lines.push(risk);
   if (day.disagreements.length) lines.push('Forecast sources disagree on matching quantities; the difference is a diagnostic, not an observed error.');
   if (day.snowCm !== null && day.snowCm > 0) lines.push(`The models indicate ${day.snowCm < 0.1 ? 'a trace of snowfall' : `around ${day.snowCm.toFixed(1)} cm of snowfall`} across the available hours; settling is uncertain.`);

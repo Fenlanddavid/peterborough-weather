@@ -85,3 +85,25 @@ test('clock views reuse an indexed snapshot but exclude stale/unknown run recenc
   assert.equal(index.atTime(start + HOUR).event(PRECIP_3H, start, start + 3 * HOUR).value, 0);
   assert.equal(index.atTime(start + 7 * HOUR).event(PRECIP_3H, start, start + 3 * HOUR).value, null);
 });
+
+test('BST daily rain/gust include all native systems with recorded one-hour shifts; GMT and slots stay aligned', async () => {
+  const { PRECIP_DAY, nativeWindow } = await import('../src/forecast/events.ts');
+  for (const spec of [PRECIP_DAY, GUST]) {
+    const snapshots = await Promise.all(ENSEMBLE_MODELS.map(async model => parseEnsemble(await fixture(`ensemble-${model.id}-${spec.variable}`), model.id, start)));
+    const index = buildEnsembleIndex(snapshots);
+    const bst = Date.parse('2026-10-23T23:00Z');
+    const shifted = index.event(spec, bst, bst + 24 * HOUR);
+    assert.deepEqual(shifted.systems, ENSEMBLE_MODELS.map(m => m.id));
+    assert.equal(shifted.alignedWindows?.length, 2);
+    assert.ok(shifted.alignedWindows!.every(w => w.shiftHours === 1 && w.end - w.start === 24 * HOUR));
+    assert.ok(shifted.provenance.filter(p => /shifted/.test(p.coverage)).length === 2);
+    const gmt = index.event(spec, bst + HOUR, bst + 25 * HOUR);
+    assert.deepEqual(gmt.alignedWindows, []);
+    assert.equal(nativeWindow(spec, bst, bst + 3 * HOUR, 3), null);
+    assert.equal(nativeWindow(spec, bst - HOUR, bst + 23 * HOUR, 6), null);
+    const slot = index.event(spec, bst + HOUR, bst + 4 * HOUR);
+    assert.deepEqual(slot.alignedWindows, []);
+    // MOGREPS is hourly; coarse systems now evaluate the exact GMT window.
+    for (const id of ['ecmwf_ifs025', 'gfs025']) assert.equal(shifted.components!.find(c => c.modelId === id)!.value, gmt.components!.find(c => c.modelId === id)!.value);
+  }
+});
