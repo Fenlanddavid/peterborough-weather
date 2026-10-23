@@ -5,7 +5,7 @@ import { buildForecastSignals, familyMean } from '../forecast/signals.ts';
 import type { ModelValue, ForecastContext, Disagreement } from '../forecast/signals.ts';
 import { eventTimes, PRECIP_DAY, SNOW, GUST } from '../forecast/events.ts';
 import type { EnsembleIndex } from '../forecast/events.ts';
-import type { EventEstimate, Provenance } from '../data/contracts.ts';
+import type { EventEstimate, Provenance, Family } from '../data/contracts.ts';
 import { HOUR, msToMph, utc, eventPercent } from '../data/contracts.ts';
 import { snowOutlook } from './forecastMessages.ts';
 import { forecastDaylight, getDailyCondition } from './hourlyWeather.ts';
@@ -26,6 +26,7 @@ export interface SummaryDay {
   snowEvent: EventEstimate;
   windMph: number | null;
   gustMph: number | null;
+  gustFamilies: Family[];
   gustTime: string | null;
   gustUpperMph: number | null;
   gustEvent: EventEstimate;
@@ -124,6 +125,7 @@ function describeDay(day: SummaryDay): string[] {
   else if (day.gustMph !== null) lines.push(`Peak gusts are around ${Math.round(day.gustMph)} mph${day.gustTime ? ` near ${day.gustTime}` : ''}; average wind data is unavailable.`);
   else lines.push('Wind and gust data is unavailable.');
 
+  if (day.gustMph !== null) lines.push(`Peak-gust contributing families: ${day.gustFamilies.join(', ') || 'unavailable'}.`);
   if (day.gustUpperMph !== null) lines.push(`Ensemble upper (90th percentile) period-maximum gust: ${Math.round(day.gustUpperMph)} mph${day.gustEvent.value !== null ? `; ${eventPercent(day.gustEvent.value)} probability of at least 30 mph` : ''}.`);
   if (day.gustReference) lines.push(`Met Office source-specific 90th percentile reference: ${Math.round(day.gustReference.mph)} mph for ${toLocalTime(new Date(day.gustReference.start).toISOString(), 'time')}–${toLocalTime(new Date(day.gustReference.end).toISOString(), 'time')}. This is a source period reference, not a blended daily percentile.`);
   const aligned = [...day.precipitation.alignedWindows ?? [], ...day.gustEvent.alignedWindows ?? [], ...day.snowEvent.alignedWindows ?? []];
@@ -229,6 +231,7 @@ export function buildForecastBriefing(runs: CachedRun[], now: Date, options: Bri
       rainMm: precipitation.basis === 'ensemble-probability' ? precipitation.expectedAmount : signals.blendPeriod('precipitation', eventTimes(PRECIP_DAY, start, end), 'sum'),
       snowCm: familyMean(snowCohort), snowEvent: signals.event(SNOW, start, end, options.ensembles),
       windMph: signals.blendPeriod('wind_speed_10m', sampleTimes, 'sum') === null ? null : msToMph(signals.blendPeriod('wind_speed_10m', sampleTimes, 'sum')! / sampleTimes.length), gustMph: periodGust === null ? null : msToMph(periodGust),
+      gustFamilies: [...new Set<Family>([...gusts.map(g => g.family), ...(sampleTimes.length && sampleTimes.every(t => signals.processed('wind_gusts_10m', t, t + HOUR)) ? ['UKMO' as const] : [])])],
       gustTime: uncertainPeak, gustUpperMph: gustEvent.basis === 'ensemble-probability' && gustEvent.upperAmount !== null && gustEvent.upperAmount !== undefined ? msToMph(gustEvent.upperAmount) : null, gustEvent, gustReference: references[0] ?? null, hazardTiming, disagreements: signals.disagreements.filter(d => d.flagged && d.start >= start && d.start < end),
       rainTiming: rainTiming(hours), modelCount: Math.max(0, ...hours.map((hour) => hour.temperatureModels)),
       temperatureSpread: max(available(hours.map((hour) => hour.temperatureSpread))), paragraphs: [], precipitation, completeModels: rainCohort.length, condition,

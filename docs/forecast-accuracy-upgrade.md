@@ -231,3 +231,35 @@ fraction. The 20 training dates, seven subsequent held-out dates and two weekly
 blocks remain unchanged. Promotion requires about five or more weeks; **no
 immediate learned effect is expected**. Changing the default prior resets old
 learning state rather than mixing incompatible baseline evidence.
+
+## IFS gust investigation (T9)
+
+IFS Single Runs 2026-10-23 00Z, 06Z and 12Z all have null gusts at +93–149 h;
+06Z remains null through the returned +167 h. The other two also have a
++153–155 h gap. Exact request URLs, time axes and all null spans are recorded
+in [ifs-gust-probe.json](ifs-gust-probe.json). AIFS/AIGFS gust absence remains a
+source limitation. No interpolation or new gap filling is introduced. Summary
+now lists each day's actual complete-window peak-gust contributing families,
+including UKMO when a compatible complete processed period contributes. The
+source limitation is also noted in Summary and the capability documentation;
+Forecast home gets no new elements or explanatory sentences.
+
+The optional UKV short-lead factor is intentionally not included in this
+change; UKMO raw models continue to split their family equally by default.
+
+## Validation of the forecast-quality fixes
+
+All required checks pass: `npm test` (22 files), `test:timezones` (the same
+22 files under UTC and Europe/London), `lint`, `check:scripts`, `build`, and
+`smoke:upgrade` against the production preview. The browser check covers
+320/390/1280 px, a 26 mph central gust with a 100% ensemble trigger (displayed
+as 26 mph rather than p90), missing central gusts, and existing view controls;
+there are no page errors or page-width overflow. Report:
+[upgrade-browser-smoke.json](upgrade-browser-smoke.json).
+
+`report:budget` is identical to the pre-change report except its retrieval
+timestamp: HTTP 476/620/692, weighted 644/788/860 across the existing scenarios,
+scheduled limit 1500, Met Office hard cap 48/day. These fixes add no scheduled
+requests, paid services, new home elements or CSS. Night Sky, Seasonal and
+Drivers implementation files are unchanged. The pre-existing local
+`code-dump.txt` edit is excluded from the task commits.

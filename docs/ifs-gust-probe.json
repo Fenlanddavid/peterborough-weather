@@ -1,0 +1,108 @@
+{
+  "probedAtUTC": "2026-10-23T23:16:15.455709+00:00",
+  "providerMetadata": {
+    "chunk_time_length": 104,
+    "crs_wkt": "GEOGCRS[\"WGS 84\",\n    DATUM[\"World Geodetic System 1984\",\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north],\n        AXIS[\"longitude\",east],\n        ANGLEUNIT[\"degree\",0.0174532925199433]\n    USAGE[\n        SCOPE[\"grid\"],\n        BBOX[-90.0,-180.0,90.0,179.75]]]",
+    "data_end_time": 1794063600,
+    "last_run_availability_time": 1792791034,
+    "last_run_initialisation_time": 1792756800,
+    "last_run_modification_time": 1792790974,
+    "temporal_resolution_seconds": 10800,
+    "update_interval_seconds": 21600
+  },
+  "runs": [
+    {
+      "run": "2026-10-23T00:00",
+      "url": "https://single-runs-api.open-meteo.com/v1/forecast?latitude=52.5739&longitude=-0.2417&hourly=wind_gusts_10m&models=ecmwf_ifs025&run=2026-10-23T00:00&forecast_days=7&timezone=UTC&wind_speed_unit=ms",
+      "axis": [
+        "2026-10-23T00:00",
+        "2026-10-29T23:00"
+      ],
+      "firstNonNull": "2026-10-23T03:00",
+      "lastNonNull": "2026-10-29T23:00",
+      "nullSpans": [
+        {
+          "start": "2026-10-23T00:00",
+          "end": "2026-10-23T02:00",
+          "firstLeadHours": 0.0,
+          "lastLeadHours": 2.0,
+          "hours": 3
+        },
+        {
+          "start": "2026-10-26T21:00",
+          "end": "2026-10-29T05:00",
+          "firstLeadHours": 93.0,
+          "lastLeadHours": 149.0,
+          "hours": 57
+        },
+        {
+          "start": "2026-10-29T09:00",
+          "end": "2026-10-29T11:00",
+          "firstLeadHours": 153.0,
+          "lastLeadHours": 155.0,
+          "hours": 3
+        }
+      ]
+    },
+    {
+      "run": "2026-10-23T06:00",
+      "url": "https://single-runs-api.open-meteo.com/v1/forecast?latitude=52.5739&longitude=-0.2417&hourly=wind_gusts_10m&models=ecmwf_ifs025&run=2026-10-23T06:00&forecast_days=7&timezone=UTC&wind_speed_unit=ms",
+      "axis": [
+        "2026-10-23T06:00",
+        "2026-10-30T05:00"
+      ],
+      "firstNonNull": "2026-10-23T09:00",
+      "lastNonNull": "2026-10-27T02:00",
+      "nullSpans": [
+        {
+          "start": "2026-10-23T06:00",
+          "end": "2026-10-23T08:00",
+          "firstLeadHours": 0.0,
+          "lastLeadHours": 2.0,
+          "hours": 3
+        },
+        {
+          "start": "2026-10-27T03:00",
+          "end": "2026-10-30T05:00",
+          "firstLeadHours": 93.0,
+          "lastLeadHours": 167.0,
+          "hours": 75
+        }
+      ]
+    },
+    {
+      "run": "2026-10-23T12:00",
+      "url": "https://single-runs-api.open-meteo.com/v1/forecast?latitude=52.5739&longitude=-0.2417&hourly=wind_gusts_10m&models=ecmwf_ifs025&run=2026-10-23T12:00&forecast_days=7&timezone=UTC&wind_speed_unit=ms",
+      "axis": [
+        "2026-10-23T12:00",
+        "2026-10-30T11:00"
+      ],
+      "firstNonNull": "2026-10-23T15:00",
+      "lastNonNull": "2026-10-30T11:00",
+      "nullSpans": [
+        {
+          "start": "2026-10-23T12:00",
+          "end": "2026-10-23T14:00",
+          "firstLeadHours": 0.0,
+          "lastLeadHours": 2.0,
+          "hours": 3
+        },
+        {
+          "start": "2026-10-27T09:00",
+          "end": "2026-10-29T17:00",
+          "firstLeadHours": 93.0,
+          "lastLeadHours": 149.0,
+          "hours": 57
+        },
+        {
+          "start": "2026-10-29T21:00",
+          "end": "2026-10-29T23:00",
+          "firstLeadHours": 153.0,
+          "lastLeadHours": 155.0,
+          "hours": 3
+        }
+      ]
+    }
+  ],
+  "conclusion": "Persistent +93 to +149 hour gap in all three probes. The 06Z run continues null through +167 h. No interpolation or new gap filling."
+}

@@ -255,3 +255,17 @@ test('a brief shower does not replace the duration-weighted daily condition and 
     assert.match(briefing.days[0].rainTiming!, /afternoon/);
   }
 });
+
+test('daily peak gust details list only contributing families with complete windows, leaving the IFS gap unknown', () => {
+  const rows = [
+    run('wind_gusts_10m', winterAccumulations, winterAccumulations.map(() => 10), 'gfs_global'),
+    run('wind_gusts_10m', winterAccumulations, winterAccumulations.map(() => 12), 'ukmo_global_deterministic_10km'),
+    run('wind_gusts_10m', winterAccumulations, winterAccumulations.map((_, i) => i > 8 && i < 20 ? null : 15), 'ecmwf_ifs025'),
+  ];
+  const day = buildForecastBriefing(rows, winterNow).days[0];
+  assert.deepEqual(day.gustFamilies, ['NOAA', 'UKMO']);
+  assert.ok(Math.abs(day.gustMph! - 11 * 2.23694) < 1e-10);
+  assert.match(day.paragraphs.join(' '), /Peak-gust contributing families: NOAA, UKMO/);
+  const onlyGap = buildForecastBriefing([rows[2]], winterNow).days[0];
+  assert.equal(onlyGap.gustMph, null); assert.deepEqual(onlyGap.gustFamilies, []);
+});

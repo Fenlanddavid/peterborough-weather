@@ -113,3 +113,7 @@ five or more weeks. EA gauge timestamps are explicitly **assumed period-end**;
 the possible 15-minute offset is at most 1/12 of the three-hour verification
 window. Cached unknown metadata migrates automatically; EA quality filters
 and complete-window requirements stay in place.
+
+Three recent IFS Single Runs confirm missing gusts at +93–149 h; Summary
+lists each day's contributing peak-gust families. No interpolation or new
+fill was added. The optional UKV default factor is not included.

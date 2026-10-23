@@ -107,3 +107,14 @@ Report assembled 2026-10-21T20:08:02.673Z; individual retrieval times remain in 
 | ukmo_uk_deterministic_2km | cloud_cover | 200 | 55/168 | 2026-10-20T00:00 | 2026-10-22T06:00 |
 
 Combined production nine-day ensemble/core/optional requests are saved as runtime-*.response.txt and sidecars. All were HTTP 200. Negative IFS precipitation cells are finite but invalid; the parser excludes them as unknown and marks affected member windows partial.
+
+## IFS Single Runs gust source limitation (23 October 2026)
+
+Live probes of 2026-10-23 00Z, 06Z and 12Z confirm null `wind_gusts_10m`
+through +93 to +149 h. The 06Z run continues null through +167 h; 00Z and
+12Z also have +153–155 h nulls. All three start with +0–2 h nulls.
+Exact requests, axes and null spans are in [ifs-gust-probe.json](ifs-gust-probe.json).
+AIFS and AIGFS provide no gusts in the existing capability fixtures.
+No interpolation or new gap filling was added. Summary lists the contributing
+families of each day's complete source peak-gust windows, so the loss of ECMWF
+coverage is visible beside the central figure.
