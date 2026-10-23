@@ -329,3 +329,49 @@ test('Night Sky glance symbols describe cloud independently of viewing quality o
   assert.equal(skyHourlyPresentation(null, null, 60).label, 'Sky unknown');
   assert.equal(skyHourlyPresentation(0.1, null, 0).suitability.label, 'Twilight');
 });
+
+test('derived Peterborough rules transfer bounded weights/share, never station correction or occurrence calibration', async () => {
+  const { derivePeterboroughPolicy } = await import('../src/verification/learning.ts');
+  const p = policy();
+  const source = { ...rule(), location: 'EGXT', band: 2, familyFactors: { ECMWF: 1.2 }, modelFactors: { gfs_global: 0.8 }, metOfficeShare: 0.6, temperatureCorrection: -0.5 };
+  p.rules = [source, { ...source, variable: 'precipitation_probability', location: 'EA:test', temperatureCorrection: 0, occurrenceSlope: 1.2, occurrenceIntercept: -0.1 }];
+  const published = derivePeterboroughPolicy(p)!;
+  validatePolicy(published, now);
+  const derived = published.rules.filter(r => r.location === 'peterborough');
+  assert.equal(derived.length, 2);
+  for (const r of derived) {
+    assert.deepEqual(r.familyFactors, source.familyFactors); assert.deepEqual(r.modelFactors, source.modelFactors);
+    assert.equal(r.metOfficeShare, 0.6); assert.equal(r.temperatureCorrection, 0);
+    assert.equal(r.occurrenceSlope, 1); assert.equal(r.occurrenceIntercept, 0); assert.ok(r.derivedFrom);
+  }
+  assert.equal(p.rules.length, 2, 'active source state is not mutated');
+  const transferred = published.rules.find(r => r.location === 'peterborough' && r.variable === 'temperature_2m')!;
+  transferred.band = -1;
+  const localPolicy = { ...published, rules: [transferred] };
+  const localRuns = [run('ecmwf_ifs025', 'temperature_2m', 0), run('gfs_global', 'temperature_2m', 10)];
+  const local = buildForecastSignals(localRuns, now, { policy: localPolicy }).mean('temperature_2m', now)!;
+  assert.ok(Math.abs(local - 10 / 2.2) < 1e-10, 'client lookup reaches Peterborough weights without the -0.5 station correction');
+
+  assert.equal(derivePeterboroughPolicy({ ...p, rules: [] })!.rules.length, 0);
+  assert.equal(derivePeterboroughPolicy(undefined), undefined);
+  const conflicting = { ...p, rules: [source, { ...source, location: 'EA:other' }] };
+  const conflicts: string[] = [];
+  assert.equal(derivePeterboroughPolicy(conflicting, conflicts)!.rules.filter(r => r.location === 'peterborough').length, 0);
+  assert.deepEqual(conflicts, ['peterborough:temperature_2m:2']);
+  for (const change of [{ temperatureCorrection: 0.1 }, { occurrenceSlope: 1.1 }, { familyFactors: { ECMWF: 2 } }, { derivedFrom: 123 }]) {
+    const invalid = structuredClone(published); Object.assign(invalid.rules[2], change); assert.throws(() => validatePolicy(invalid, now));
+  }
+});
+
+test('assumed period-end rainfall can verify complete windows while EA quality failures stay excluded', async () => {
+  const { assumeGaugePeriodEnd } = await import('../src/verification/observations.ts');
+  const gauge: RainGauge = { id: 'EA:assumed', latitude: 52.6, longitude: -0.2, measure: 'https://environment.data.gov.uk/measure', period: 900, unit: 'mm', valueType: 'total', timestampConvention: 'unknown' };
+  const assumed = assumeGaugePeriodEnd(gauge);
+  assert.equal(gauge.timestampConvention, 'unknown'); assert.equal(assumed.conventionSource, 'assumed');
+  const start = now - 4 * HOUR;
+  const items = Array.from({ length: 12 }, (_, i) => ({ dateTime: new Date(start + (i + 1) * 15 * 60_000).toISOString(), value: 0.1, measure: gauge.measure, quality: 'good' }));
+  assert.equal(gaugeObservations(gauge, parseGaugeReadings({ items }, gauge, now), now).length, 0);
+  assert.equal(gaugeObservations(assumed, parseGaugeReadings({ items }, assumed, now), now).length, 2);
+  items[1].quality = 'suspect';
+  assert.equal(gaugeObservations(assumed, parseGaugeReadings({ items }, assumed, now), now).length, 0);
+});

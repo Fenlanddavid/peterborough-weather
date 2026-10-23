@@ -16,10 +16,10 @@ import { ENSEMBLE_MODELS, parseEnsemble } from '../../src/forecast/ensembles.ts'
 import type { EnsembleSnapshot } from '../../src/forecast/ensembles.ts';
 import { DEFAULT_VERSION, MODEL_VERSION, familyMean, policyRule, validatePolicy } from '../../src/forecast/policy.ts';
 import { validateMetOffice, distanceKm, DIAGNOSTIC_THRESHOLDS } from '../../src/forecast/metOffice.ts';
-import { newLearningState, evaluateLearning, predictCase, matchLearning, validateLearningState, weekStart, DAY } from '../../src/verification/learning.ts';
+import { newLearningState, evaluateLearning, predictCase, matchLearning, validateLearningState, derivePeterboroughPolicy, weekStart, DAY } from '../../src/verification/learning.ts';
 import type { LearningState, LearningCase, LearningObservation } from '../../src/verification/learning.ts';
 import type { Observation } from '../../src/verification/verification.ts';
-import { TEMPERATURE_DEFINITION, RAIN_DEFINITION, GUST_DEFINITION, metarLearningObservations, parseGaugeReadings, gaugeObservations } from '../../src/verification/observations.ts';
+import { TEMPERATURE_DEFINITION, RAIN_DEFINITION, GUST_DEFINITION, metarLearningObservations, parseGaugeReadings, gaugeObservations, assumeGaugePeriodEnd } from '../../src/verification/observations.ts';
 import type { RainGauge, GaugeReading } from '../../src/verification/observations.ts';
 import { collectMetOffice } from './metOfficeCollector.ts';
 import { budgetedCollectorJson } from './collectorBudget.ts';
@@ -43,7 +43,7 @@ interface SiteConfig { id: string; latitude: number; longitude: number; elevatio
 interface SavedSite { location: SiteConfig; runs: CachedRun[]; ensembles: EnsembleSnapshot[]; operational?: OperationalForecast; checkedAt: number }
 export interface Generation { schema: 1; generatedAt: number; modelVersion: string; policyVersion: string; context: ForecastContext; sites: SavedSite[]; cases: LearningCase[]; candidateRules: LearningState['candidates'] }
 interface StoredGeneration extends Omit<Generation, 'sites' | 'context'> { inputs: { path: string; fetchedAt: number }[]; contextPath: string }
-async function collectRain(store: CollectorStore, now: number, failures: string[], fetchJson: ReturnType<typeof budgetedCollectorJson>): Promise<{ gauge?: RainGauge; observations: LearningObservation[] }> {
+export async function collectRain(store: CollectorStore, now: number, failures: string[], fetchJson: ReturnType<typeof budgetedCollectorJson>): Promise<{ gauge?: RainGauge; observations: LearningObservation[] }> {
   let discovery = await store.read<{ checkedAt: number; gauge?: RainGauge }>('obs/rain-gauge.json', { checkedAt: 0 });
   if (now - discovery.checkedAt > 30 * DAY || !discovery.gauge) {
     try {
@@ -56,23 +56,33 @@ async function collectRain(store: CollectorStore, now: number, failures: string[
         const info = await fetchJson(measure['@id'].replace('http:', 'https:'));
         if (info.items?.valueType !== 'total') continue;
         // This API documents totals and cadence but not whether dateTime denotes
-        // interval start or end. Collect telemetry; never invent verification intervals.
-        discovery = { checkedAt: now, gauge: { id: `EA:${station.stationReference}`, latitude: station.lat, longitude: station.long, measure: measure['@id'].replace('http:', 'https:'), unit: 'mm', valueType: 'total', period: 900, timestampConvention: 'unknown' } };
+        // interval start or end. Assume period-end, retaining the assumption in metadata.
+        discovery = { checkedAt: now, gauge: { id: `EA:${station.stationReference}`, latitude: station.lat, longitude: station.long, measure: measure['@id'].replace('http:', 'https:'), unit: 'mm', valueType: 'total', period: 900, timestampConvention: 'period-end', conventionSource: 'assumed' } };
         await store.save('obs/rain-gauge.json', discovery); break;
       }
     } catch (error) { failures.push(`Rain gauge discovery: ${String(error)}`); }
   }
-  const gauge = discovery.gauge;
-  if (!gauge) return { observations: [] };
-  const previous = await store.read<{ checkedAt: number; readings: GaugeReading[] }>('obs/rain-readings.json', { checkedAt: 0, readings: [] });
+  const oldGauge = discovery.gauge;
+  if (!oldGauge) return { observations: [] };
+  const gauge = assumeGaugePeriodEnd(oldGauge);
+  const migrated = gauge !== oldGauge;
+  if (migrated) { discovery = { ...discovery, gauge }; await store.save('obs/rain-gauge.json', discovery); }
+  const previous = await store.read<{ checkedAt: number; gauge?: RainGauge; readings: GaugeReading[] }>('obs/rain-readings.json', { checkedAt: 0, readings: [] });
   let readings = previous.readings;
+  const note = 'EA 15-minute totals assumed period-end; conventionSource=assumed. Maximum 15-minute timing error is 1/12 of the 3-hour verification window. EA quality exclusions retained.';
+  if (migrated && previous.gauge?.timestampConvention === 'unknown') {
+    // In the old parser only unknown convention made a reading provisional;
+    // explicit EA quality failures were already rejected and stay rejected.
+    readings = readings.map(r => r.quality === 'provisional' ? { ...r, quality: 'accepted' as const } : r);
+    await store.save('obs/rain-readings.json', { ...previous, gauge, readings, note });
+  }
   if (now - previous.checkedAt >= 6 * HOUR) {
     try {
       const begin = new Date(now - 7 * DAY).toISOString().slice(0, 10);
       const raw = await fetchJson(`${gauge.measure}/readings?startdate=${begin}&_limit=10000`);
       const next = parseGaugeReadings(raw, gauge, now);
       readings = [...new Map([...readings, ...next].filter(r => r.time >= now - 120 * DAY).map(r => [r.time, r])).values()].sort((a, b) => a.time - b.time);
-      await store.save('obs/rain-readings.json', { checkedAt: now, gauge, readings, note: 'Measured 15-minute rainfall amounts. Unconfirmed interval timestamp convention: excluded from learning until compatible metadata is supplied automatically.' });
+      await store.save('obs/rain-readings.json', { checkedAt: now, gauge, readings, note });
     } catch (error) { failures.push(`Rainfall collection: ${String(error)}`); }
   }
   return { gauge, observations: gaugeObservations(gauge, readings, now) };
@@ -182,7 +192,7 @@ export async function collectForecastUpgrade(root: URL, apiKey: string | undefin
     try { updates[model.id] = parseModelUpdate(await fetchJson(`https://api.open-meteo.com/data/${model.id}/static/meta.json`), now); }
     catch (error) { failures.push(`${model.id} publication metadata: ${String(error)}`); }
   }
-  const context: ForecastContext = { updates, policy: state.active };
+  const context: ForecastContext = { updates, policy: derivePeterboroughPolicy(state.active) };
   try { context.metOffice = validateMetOffice(await store.read('forecast/metoffice.json', null)); } catch { /* optional feed */ }
   const collected: SavedSite[] = [];
   for (const site of sites) collected.push(await collectSite(site, previous.sites.find(s => s.location.id === site.id), updates, now, failures, fetchJson));
@@ -237,10 +247,13 @@ export async function collectForecastUpgrade(root: URL, apiKey: string | undefin
   if (due) for (const file of (await readdir(sourceDirectory)).filter(n => /^[a-f0-9]{64}\.json\.gz$/.test(n))) if (!liveInputs.has(`forecast/inputs/${file}`)) await unlink(new URL(file, sourceDirectory));
   state = evaluateLearning(state, [...historyMap.values()], matchedObservations, now);
   await store.save('forecast/learning-state.json', state);
-  await store.save('forecast/policy.json', { schema: 1, publishedAt: now, revision: state.active?.version ?? `default-${state.evaluatedAt}`, policy: state.active ?? null, reason: state.active ? 'Automatically promoted using subsequent observations; monitored weekly' : 'Conservative default; no active policy has passed observation gates' });
+  const derivedPolicyConflicts: string[] = [];
+  const publishedPolicy = derivePeterboroughPolicy(state.active, derivedPolicyConflicts);
+  if (publishedPolicy) validatePolicy(publishedPolicy, now);
+  await store.save('forecast/policy.json', { schema: 1, publishedAt: now, revision: state.active?.version ?? `default-${state.evaluatedAt}`, policy: publishedPolicy ?? null, reason: state.active ? 'Automatically promoted using subsequent observations; monitored weekly' : 'Conservative default; no active policy has passed observation gates' });
   const peterborough = collected.find(s => s.location.id === 'peterborough')!;
   await store.save('forecast/latest.json', { schema: 1, generatedAt: now, location: 'peterborough', runs: peterborough.runs, updates, operational: peterborough.operational });
   await store.save('forecast/collector-cache.json', { generatedAt: now, sites: collected });
-  await store.save('forecast/diagnostics.json', { generatedAt: now, defaultVersion: DEFAULT_VERSION, activeVersion: state.active?.version ?? DEFAULT_VERSION, evaluationCaseCount: historyMap.size, matchedObservationCount: matchedObservations.length, disagreements: cases.filter(c => c.disagreement?.flagged).map(c => ({ location: c.location, variable: c.variable, start: c.start, end: c.end, original: c.unadjustedValue, metOffice: c.metOfficeValue, ...c.disagreement })), candidates: state.candidates.map(c => ({ id: c.id, state: c.state, trainingCases: c.trainingCases, trainingDates: c.trainingDates, blocks: c.blocks })), changes: state.changes, failures, limitations: ['No validated numerical radar nowcast is connected; immediate outlook uses fresh model data.', 'Wittering temperature verification is station-specific; no temperature correction or weight policy is transferred to central Peterborough.', 'METAR gust periods are incompatible with preceding-hour maximum gusts; gust learning is disabled without matching observations.', ...(rainfall.gauge?.timestampConvention === 'unknown' ? ['EA measured rainfall is archived provisionally; its unconfirmed interval timestamp convention prevents rainfall learning.'] : []), 'No measured improvement is claimed before observation-based promotion gates pass.'] });
+  await store.save('forecast/diagnostics.json', { generatedAt: now, defaultVersion: DEFAULT_VERSION, activeVersion: state.active?.version ?? DEFAULT_VERSION, derivedPolicyConflicts, evaluationCaseCount: historyMap.size, matchedObservationCount: matchedObservations.length, disagreements: cases.filter(c => c.disagreement?.flagged).map(c => ({ location: c.location, variable: c.variable, start: c.start, end: c.end, original: c.unadjustedValue, metOffice: c.metOfficeValue, ...c.disagreement })), candidates: state.candidates.map(c => ({ id: c.id, state: c.state, trainingCases: c.trainingCases, trainingDates: c.trainingDates, blocks: c.blocks })), changes: state.changes, failures, limitations: ['No validated numerical radar nowcast is connected; immediate outlook uses fresh model data.', 'Active station/gauge weight factors and Met Office shares can transfer to Peterborough. Temperature corrections and occurrence calibration remain observation-location specific; transfer is a heuristic.', 'METAR gust periods are incompatible with preceding-hour maximum gusts; gust learning is disabled without matching observations.', ...(rainfall.gauge?.conventionSource === 'assumed' ? ['EA 15-minute rainfall is assumed period-end (timing error at most 1/12 of a 3-hour window); explicit quality failures remain excluded.'] : []), 'No measured improvement is claimed before observation-based promotion gates pass.'] });
   console.log(`Forecast upgrade: ${cases.length} new cases; ${state.candidates.filter(c => c.state === 'pending').length} pending automatic candidates; active ${state.active?.version ?? DEFAULT_VERSION}; ${failures.length} source failures retained as diagnostics`);
 }

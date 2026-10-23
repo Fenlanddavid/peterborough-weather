@@ -102,3 +102,14 @@ Rain icons require >=50% fresh family support for >=0.1 mm/hour; weaker
 occurrence uses the existing “Showers possible” risk mechanism. Displayed
 amounts stay unchanged. Day-card rain wording now uses amount and genuine
 ensemble probability tiers, with deterministic agreement labelled separately.
+
+Approved station/gauge rules can now affect Peterborough family/model weights
+and the Met Office share through explicit `derivedFrom` rules. Temperature
+corrections and occurrence slope/intercept never transfer; conflicting source
+keys are skipped and source rollback removes the transfer. This regional
+weight transfer remains a heuristic. No immediate learned effect is expected:
+20 training dates, subsequent held-out dates and two weekly blocks need about
+five or more weeks. EA gauge timestamps are explicitly **assumed period-end**;
+the possible 15-minute offset is at most 1/12 of the three-hour verification
+window. Cached unknown metadata migrates automatically; EA quality filters
+and complete-window requirements stay in place.

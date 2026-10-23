@@ -232,3 +232,23 @@ export function evaluateLearning(previous: LearningState, cases: LearningCase[],
   state.evaluatedAt = boundary;
   return state;
 }
+
+/** Derive publication-only weight rules; source state remains observation-scoped.
+ * Rebuilding from active sources automatically removes transfers on rollback. */
+export function derivePeterboroughPolicy(policy: BlendPolicy | undefined, conflicts: string[] = []): BlendPolicy | undefined {
+  if (!policy) return;
+  const sources = policy.rules.filter(r => r.derivedFrom === undefined);
+  const grouped = new Map<string, PolicyRule[]>();
+  for (const rule of sources.filter(r => r.location !== 'peterborough')) {
+    const key = `peterborough:${rule.variable}:${rule.band}`;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key)!.push(rule);
+  }
+  const derived: PolicyRule[] = [];
+  for (const [key, rules] of grouped) {
+    if (rules.length !== 1 || sources.some(r => `${r.location}:${r.variable}:${r.band}` === key)) { conflicts.push(key); continue; }
+    const rule = rules[0];
+    derived.push({ ...structuredClone(rule), location: 'peterborough', derivedFrom: `${rule.location}:${rule.variable}:${rule.band}`, temperatureCorrection: 0, occurrenceSlope: 1, occurrenceIntercept: 0 });
+  }
+  return { ...structuredClone(policy), rules: [...structuredClone(sources), ...derived] };
+}

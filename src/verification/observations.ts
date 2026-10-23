@@ -16,7 +16,7 @@ export function metarLearningObservations(rows: Observation[]): LearningObservat
   // Gust reports cover a different period, and weather codes are not rainfall gauges.
   return [...selected].map(([time, row]) => ({ id: row.id, location: row.station.id, latitude: row.station.latitude, longitude: row.station.longitude, start: time, end: time, variable: 'temperature_2m', unit: '°C', definition: TEMPERATURE_DEFINITION, value: row.temperature!, quality: 'accepted', collectedAt: row.fetchedAt }));
 }
-export interface RainGauge { id: string; latitude: number; longitude: number; measure: string; period: 900; unit: 'mm'; valueType: 'total'; timestampConvention: 'unknown' | 'period-end' | 'period-start' }
+export interface RainGauge { id: string; latitude: number; longitude: number; measure: string; period: 900; unit: 'mm'; valueType: 'total'; timestampConvention: 'unknown' | 'period-end' | 'period-start'; conventionSource?: 'assumed' | 'documented' }
 export interface GaugeReading { time: number; value: number; quality: 'accepted' | 'provisional' | 'rejected' }
 export function parseGaugeReadings(raw: unknown, gauge: RainGauge, now = Date.now()): GaugeReading[] {
   const body = raw as { items?: { dateTime?: string; value?: number; quality?: string; measure?: string }[]; meta?: { limit?: number } };
@@ -45,3 +45,8 @@ export function gaugeObservations(gauge: RainGauge, readings: GaugeReading[], co
   }
   return result;
 }
+
+/** EA 15-minute totals are assumed end-labelled; retain explicit provenance.
+ * Unknown conventions elsewhere still yield no verification observations. */
+export const assumeGaugePeriodEnd = (gauge: RainGauge): RainGauge => gauge.timestampConvention === 'unknown'
+  ? { ...gauge, timestampConvention: 'period-end', conventionSource: 'assumed' } : gauge;

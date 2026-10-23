@@ -7,7 +7,8 @@ import { pathToFileURL } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { collectForecastUpgrade, forecastStore } from '../scripts/lib/forecastCollector.ts';
 import { HOUR } from '../src/data/contracts.ts';
-import { DEFAULT_VERSION } from '../src/forecast/policy.ts';
+import { newLearningState, DAY, weekStart } from '../src/verification/learning.ts';
+import { DEFAULT_VERSION, MODEL_VERSION } from '../src/forecast/policy.ts';
 import { buildForecastSignals } from '../src/forecast/signals.ts';
 import { validateForecastProduct, validatePolicyProduct } from '../src/forecast/product.ts';
 const fixture = async (name: string) => JSON.parse(await readFile(new URL(`fixtures/live/${name}.response.txt`, import.meta.url), 'utf8'));
@@ -59,5 +60,40 @@ test('scheduled collection publishes reproducible app forecasts, source inputs a
     await collectForecastUpgrade(root, undefined, now + HOUR);
     assert.equal(validatePolicyProduct(await store.read('forecast/policy.json', null), now + HOUR).policy, null);
     assert.ok((await store.read<any>('forecast/diagnostics.json', null)).failures.some((s: string) => s.includes('Corrupt learning state rejected')));
+    const state = newLearningState(); const nextTime = now + 2 * HOUR;
+    state.evaluatedAt = weekStart(nextTime - 2 * DAY);
+    state.active = { schema: 1, version: 'source-observed-fixture', modelVersion: MODEL_VERSION, createdAt: now, expiresAt: now + 28 * DAY,
+      evidence: { observationThrough: now, trainingCases: 200, trainingDates: 20, heldOutDates: 14, successfulBlocks: 2 },
+      rules: [{ variable: 'temperature_2m', band: -1, location: 'EGXT', familyFactors: { ECMWF: 1.2 }, modelFactors: {}, metOfficeShare: 0.6, temperatureCorrection: -0.5, occurrenceSlope: 1, occurrenceIntercept: 0 }] };
+    await store.save('forecast/learning-state.json', state);
+    await collectForecastUpgrade(root, undefined, nextTime);
+    const transferred = validatePolicyProduct(await store.read('forecast/policy.json', null), nextTime).policy!;
+    assert.equal(transferred.rules.find(r => r.location === 'peterborough')!.derivedFrom, 'EGXT:temperature_2m:-1');
+    assert.equal(transferred.rules.find(r => r.location === 'peterborough')!.temperatureCorrection, 0);
+    assert.equal((await store.read<any>('forecast/learning-state.json', null)).active.rules.length, 1);
+    delete state.active;
+    await store.save('forecast/learning-state.json', state);
+    await collectForecastUpgrade(root, undefined, nextTime + HOUR);
+    assert.equal(validatePolicyProduct(await store.read('forecast/policy.json', null), nextTime + HOUR).policy, null, 'source rollback clears the derived publication');
+
   } finally { globalThis.fetch = originalFetch; await rm(directory, { recursive: true, force: true }); }
+});
+
+test('cached unknown gauge and provisional readings migrate without extra network calls or lost quality rejections', async () => {
+  const { collectRain } = await import('../scripts/lib/forecastCollector.ts');
+  const directory = await mkdtemp(join(tmpdir(), 'pb-gauge-migrate-'));
+  const root = pathToFileURL(directory + '/'); const store = forecastStore(root);
+  const now = Date.parse('2026-10-23T18:00Z');
+  const gauge = { id: 'EA:cached', latitude: 52.6, longitude: -0.2, measure: 'https://environment.data.gov.uk/measure', period: 900, unit: 'mm', valueType: 'total', timestampConvention: 'unknown' };
+  const readings = Array.from({ length: 24 }, (_, i) => ({ time: now - 6 * HOUR + (i + 1) * HOUR / 4, value: 0.1, quality: i === 0 ? 'rejected' : 'provisional' }));
+  try {
+    await store.save('obs/rain-gauge.json', { checkedAt: now, gauge });
+    await store.save('obs/rain-readings.json', { checkedAt: now, gauge, readings });
+    const result = await collectRain(store, now, [], async () => { throw new Error('no network calls expected'); });
+    assert.equal(result.gauge!.timestampConvention, 'period-end'); assert.equal(result.gauge!.conventionSource, 'assumed');
+    assert.equal(result.observations.length, 2, 'only the complete accepted second 3-hour period verifies');
+    const cached = await store.read<any>('obs/rain-readings.json', null);
+    assert.equal(cached.readings[0].quality, 'rejected'); assert.equal(cached.readings[1].quality, 'accepted');
+    assert.equal((await store.read<any>('obs/rain-gauge.json', null)).gauge.conventionSource, 'assumed');
+  } finally { await rm(directory, { recursive: true, force: true }); }
 });

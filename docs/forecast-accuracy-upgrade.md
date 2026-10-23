@@ -41,7 +41,7 @@ There is **no validated numerical radar nowcast** connected. Immediate forecasts
 
 The collector produces forecast cases for Peterborough and separately at the observation/gauge locations. It archives default/active/frozen-candidate outputs, generation time, policy/model versions, requested location, quantity definition, units, valid interval and source versions. Gzipped daily generation files reference content-addressed source inputs, including ensemble members, enabling decisions to be reproduced without storing the same full input on every check. Retention is 120 days; unreferenced generated inputs are removed during weekly evaluation.
 
-Only forecasts generated before the verifying observation are eligible. Matching requires the same location, coordinates, quantity definition, units and interval. Repeated predictions of the same interval are reduced before scoring. Wittering temperature observations are checked for time offset, plausible values and report validity; each model is requested at Wittering with its station elevation. A station policy is scoped to `EGXT` and is never silently transferred to central Peterborough.
+Only forecasts generated before the verifying observation are eligible. Matching requires the same location, coordinates, quantity definition, units and interval. Repeated predictions of the same interval are reduced before scoring. Wittering temperature observations are checked for time offset, plausible values and report validity; each model is requested at Wittering with its station elevation. Source rules remain scoped to `EGXT` or the gauge; publication explicitly derives Peterborough weight-only rules with `derivedFrom`. Temperature corrections and occurrence calibration never transfer.
 
 Candidates are fitted on preceding dates and frozen before their subsequent evaluation weeks. The implementation uses regularised bounded weights, a small station-specific temperature correction and a separate regularised linear occurrence calibration. Rainfall amounts never receive additive offsets; model agreement is never treated as a probability. Greater fresh short-range UKV influence is a candidate only when training observations support it. The processed/raw UKMO split can also receive a small regularised candidate adjustment.
 
@@ -83,9 +83,9 @@ Before adjustment, matching raw app/Met Office values and their differences are 
 ## Source connections and verification limits
 
 - **Met Office:** connected through the repository Actions secret `MET_OFFICE_API_KEY`; compatible fresh values contribute within UKMO. The owner does not need to repeat the setup above.
-- **Central Peterborough:** no validated representative temperature observations are connected. Wittering learning remains station-specific.
+- **Central Peterborough:** no validated representative temperature observations are connected. Wittering temperature correction remains station-specific; approved weight factors may transfer as a documented heuristic.
 - **Gust observations:** METAR gust reporting periods are incompatible with the app's preceding-hour maxima, so gust learning remains disabled.
-- **Rainfall:** a nearby EA gauge is discovered automatically and measured amounts are archived. Its public feed documents totals/cadence but does not establish start-versus-end timestamp semantics in the inspected metadata. These readings remain provisional and excluded from interval-matched learning. The adapter supports complete, quality-checked intervals once a compatible source supplies validated semantics; no timing convention is invented.
+- **Rainfall:** a nearby EA gauge is discovered automatically and measured amounts are archived. Its public feed documents totals/cadence but does not establish start-versus-end timestamp semantics in the inspected metadata. The collector explicitly assumes period-end timestamps (`conventionSource: assumed`) and migrates cached unknown metadata. Only complete, quality-accepted windows enter interval-matched learning. A possible 15-minute timestamp error is at most 1/12 of the three-hour window.
 - **Numerical radar nowcast:** none validated/connected.
 
 These limits disable only the affected learning/feed contribution. The forecast and other automatic collection continue on defaults. No measured central Peterborough accuracy gain is claimed.
@@ -200,3 +200,34 @@ unchanged equal-family baseline, using only subsequent dates as before.
 New learning cases archive `defaultVersion`; state with an older default is
 reset, and older cases are excluded from the new prior's promotion cohorts.
 Collection and diagnostics use the new default version without extra calls.
+
+
+## Peterborough learning reachability and gauge assumption (T8)
+
+Published policy derives one `peterborough` rule per active source variable/band,
+copying family/model factors and Met Office share while forcing temperature
+correction to zero, occurrence slope to one and intercept to zero. `derivedFrom`
+records the source key. Validation still enforces all weight/correction bounds
+and neutral transfer corrections. Derived rules exist only in publication and
+the generation context, never in observation-scoped learning state. Each
+publication is rebuilt, so source rollback removes its transfer. Multiple
+sources for the same Peterborough variable/band suppress that derived key and
+are recorded in `derivedPolicyConflicts`. This transfer of weights is itself a
+regional heuristic, not measured local validation.
+
+The current EA:E46341 gauge cache was inspected with `timestampConvention:
+unknown`. New discovery and migration use `period-end`, `conventionSource:
+assumed`. The local generated cache has been migrated; the next scheduled
+collector invocation migrates the persisted data-branch cache automatically
+without extra requests. Old cached provisional readings can be accepted only
+when their recorded gauge convention was unknown (the old parser's sole
+reason for provisional status); explicit EA rejections are retained. Otherwise
+unknown conventions continue to yield no observations. Missing intervals and
+EA quality failures never become dry/accepted observations.
+
+The timestamp assumption is explicit: the possible 15-minute offset is at most
+1/12 of a three-hour verification window; rainfall error is not bounded by that
+fraction. The 20 training dates, seven subsequent held-out dates and two weekly
+blocks remain unchanged. Promotion requires about five or more weeks; **no
+immediate learned effect is expected**. Changing the default prior resets old
+learning state rather than mixing incompatible baseline evidence.
