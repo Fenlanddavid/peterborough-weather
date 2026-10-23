@@ -1,6 +1,20 @@
 {
-  "checkedAt": "2026-10-23T20:13:43.154Z",
+  "checkedAt": "2026-10-23T23:38:29.543Z",
   "base": "http://127.0.0.1:5188/",
+  "forecastLayouts": [
+    {
+      "width": 1280,
+      "pageWidth": 1280
+    },
+    {
+      "width": 390,
+      "pageWidth": 390
+    },
+    {
+      "width": 320,
+      "pageWidth": 320
+    }
+  ],
   "layouts": [
     {
       "width": 1280,
@@ -35,7 +49,7 @@
   "expandableDetails": true,
   "keyboardActivation": true,
   "sourceFallbacks": true,
-  "compactHighestGustBanner": true,
+  "compactCentralGustBanner": true,
   "uncertaintyBoxRemoved": true,
   "screenshot": "/tmp/peterborough-sky-glance-390.png",
   "note": "Assembled fixtures validate UI and fallback wiring, not observed forecast skill."

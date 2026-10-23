@@ -1,0 +1,1 @@
+export const WIND_BANNER_PROBABILITY = 0.4;

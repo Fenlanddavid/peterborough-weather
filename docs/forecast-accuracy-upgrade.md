@@ -131,3 +131,10 @@ include IFS and GEFS at 00Z–00Z, alongside hourly MOGREPS-G at the original
 window. Deterministic agreement uses the same rule. Estimates record
 `alignedWindows`; provenance and Summary retain the shift. Three-hour slots
 and already aligned GMT windows are unchanged. No extra requests are made.
+
+## Existing strong-wind outlook
+
+The existing banner lists a day only for central gust >=30 mph or genuine
+ensemble P(>=30 mph) >=40%. It displays the central figure; probability-only
+triggers append the chance of 30+. Ensemble and Met Office p90 references
+remain in Summary. The banner's structure and styling are unchanged.

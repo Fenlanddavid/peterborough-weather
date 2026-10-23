@@ -12,17 +12,16 @@ const cloud = (t: string) => [10, 45, 80, 100][Math.floor(Date.parse(t.endsWith(
 single.hourly.cloud_cover = single.hourly.time.map(cloud);
 single.hourly.snowfall = single.hourly.time.map(() => 0);
 single.hourly.weather_code = single.hourly.time.map(() => 3);
-single.hourly.wind_gusts_10m = single.hourly.time.map(() => 20);
+single.hourly.wind_gusts_10m = single.hourly.time.map(() => 26 / 2.23694);
 const core = Object.fromEntries(await Promise.all(skyModels.map(async model => {
   const data = await fixture(`runtime-sky-core-${model}`);
   data.hourly.cloud_cover = data.hourly.time.map(cloud);
   return [model, data];
 })));
 const optional = Object.fromEntries(await Promise.all(skyModels.map(async model => [model, await fixture(`runtime-sky-optional-${model}`)])));
-const ensemble = Object.fromEntries(await Promise.all(['ecmwf_ifs025', 'gfs025', 'ukmo_global_ensemble_20km'].map(async model => [model, await fixture(`runtime-ensemble-${model}`)])));
-// Keep a stronger ensemble outcome than the 20 m/s central fixture. The banner
-// should show that single highest figure, rounded to 67 mph.
-for (const [key, values] of Object.entries(ensemble.ukmo_global_ensemble_20km.hourly)) {
+const ensemble: Record<string, any> = Object.fromEntries(await Promise.all(['ecmwf_ifs025', 'gfs025', 'ukmo_global_ensemble_20km'].map(async model => [model, await fixture(`runtime-ensemble-${model}`)])));
+// A probability-only trigger must display the 26 mph central value, not p90.
+for (const system of Object.values(ensemble)) for (const [key, values] of Object.entries(system.hourly)) {
   if (key.startsWith('wind_gusts_10m') && Array.isArray(values)) values.fill(30);
 }
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
@@ -59,9 +58,18 @@ try {
   assert.ok(await page.locator('.hourly-item').count() > 0);
   assert.equal(await page.locator('.forecast-details').count(), 0);
   assert.equal(await page.getByRole('heading', { name: 'Rain and wind uncertainty', exact: true }).count(), 0);
-  await page.waitForFunction(() => [...document.querySelectorAll('.wind-warning li strong')].some(e => e.textContent === '67 mph'));
+  await page.waitForFunction(() => [...document.querySelectorAll('.wind-warning li strong')].some(e => e.textContent === '26 mph · 100% chance of 30+'));
   assert.equal(await page.locator('.wind-warning p').count(), 0);
-  for (const gust of await page.locator('.wind-warning li strong').allTextContents()) assert.equal(gust, '67 mph');
+  for (const gust of await page.locator('.wind-warning li strong').allTextContents()) assert.match(gust, /^(26|—) mph · 100% chance of 30\+$/);
+  assert.equal(await page.locator('.forecast-warning').count(), 1);
+  const forecastLayouts = [];
+  for (const width of [1280, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    const layout = await page.evaluate(() => ({ width: innerWidth, pageWidth: document.documentElement.scrollWidth }));
+    assert.ok(layout.pageWidth <= width, JSON.stringify(layout));
+    forecastLayouts.push(layout);
+    await page.screenshot({ path: `/tmp/peterborough-forecast-quality-${width}.png` });
+  }
   await page.getByRole('button', { name: 'Night Sky', exact: true }).click();
   await page.getByRole('heading', { name: 'The night sky ahead.' }).waitFor();
   await page.waitForFunction(() => document.querySelectorAll('.sky-period-symbol svg').length >= 10 && !!document.querySelector('.sky-period--clear'));
@@ -99,7 +107,7 @@ try {
   assert.equal(await cards.first().getAttribute('aria-expanded'), 'true');
   assert.deepEqual(pageErrors, []);
   requests.push(...await page.evaluate(() => (window as any).__sourceRequests ?? []));
-  const report = { checkedAt: new Date().toISOString(), base, layouts, pageErrors, requestCount: requests.length, iconConditions: ['Mostly clear', 'Some cloud', 'Mostly cloudy', 'Overcast'], expandableDetails: true, keyboardActivation: true, sourceFallbacks: true, compactHighestGustBanner: true, uncertaintyBoxRemoved: true, screenshot: '/tmp/peterborough-sky-glance-390.png', note: 'Assembled fixtures validate UI and fallback wiring, not observed forecast skill.' };
+  const report = { checkedAt: new Date().toISOString(), base, forecastLayouts, layouts, pageErrors, requestCount: requests.length, iconConditions: ['Mostly clear', 'Some cloud', 'Mostly cloudy', 'Overcast'], expandableDetails: true, keyboardActivation: true, sourceFallbacks: true, compactCentralGustBanner: true, uncertaintyBoxRemoved: true, screenshot: '/tmp/peterborough-sky-glance-390.png', note: 'Assembled fixtures validate UI and fallback wiring, not observed forecast skill.' };
   await writeFile(new URL('../docs/upgrade-browser-smoke.json', import.meta.url), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report, null, 2));
 } finally { await browser.close(); }

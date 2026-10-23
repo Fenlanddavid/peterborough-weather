@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import type { CachedRun } from '../types';
 import type { EnsembleIndex } from '../forecast/events';
 import type { ForecastContext } from '../forecast/signals';
+import { windOutlook } from '../metrics/forecastMessages';
 import { formatPrecipitation } from '../metrics/hourlyWeather';
 import { DEFAULT_VERSION } from '../forecast/policy';
 import { eventPercent } from '../data/contracts';
@@ -25,15 +26,15 @@ export function Forecast({ runs, lastUpdated = null, ensembles, context, sourceN
   const day = briefing.days[selectedIndex];
   const hourlyScroll = useRef<HTMLDivElement>(null);
   const hourly = useMemo(() => getHourlyForecastTimes(day.date, now).map(time => buildHourlySlot(signals, time, ensembles)), [day.date, now, signals, ensembles]);
-  const windyDays = briefing.days.map(d => {
-    const gusts = [d.gustMph, d.gustUpperMph, d.gustReference?.mph ?? null].filter((value): value is number => value !== null && Number.isFinite(value));
-    return { date: d.date, label: d.label, gustMph: gusts.length ? Math.max(...gusts) : null };
-  }).filter(d => d.gustMph !== null && d.gustMph >= 30);
+  const windyDays = briefing.days.flatMap(d => {
+    const text = windOutlook(d);
+    return text === null ? [] : [{ date: d.date, label: d.label, text }];
+  });
   const snowyDays = briefing.days.filter(d => d.snowCm !== null && d.snowCm > 0);
   const condition = day.condition;
   return <div className="view-forecast">
     <div className="forecast-intro"><div><p className="eyebrow">A little local perspective</p><h1>Your weather, at a glance.</h1><p>A clearer outlook for the Savorys and the days ahead.</p></div></div>
-    {windyDays.length > 0 && <div className="forecast-warning wind-warning" role="status"><WeatherIcon name="wind" /><div><h2>Strong-wind outlook</h2><ul>{windyDays.map(d => <li key={d.date}>{d.label} · <strong>{number(d.gustMph)} mph</strong></li>)}</ul></div></div>}
+    {windyDays.length > 0 && <div className="forecast-warning wind-warning" role="status"><WeatherIcon name="wind" /><div><h2>Strong-wind outlook</h2><ul>{windyDays.map(d => <li key={d.date}>{d.label} · <strong>{d.text}</strong></li>)}</ul></div></div>}
     {snowyDays.length > 0 && <div className="forecast-warning snow-warning" role="status"><WeatherIcon name="snow" /><div><h2>Snow outlook</h2><p>Some forecasts indicate snowfall in the next 7 days; settling is uncertain.</p><ul>{snowyDays.map(d => <li key={d.date}>{d.label} · <strong>{d.snowCm! < 0.1 ? '<0.1' : d.snowCm!.toFixed(1)} cm</strong></li>)}</ul></div></div>}
     <div className="forecast-overview">
       <section className={`outlook-card ${day.high === null ? 'outlook-card--pending' : ''}`}><div className="outlook-topline"><span className="eyebrow">{day.label}'s outlook</span></div>
