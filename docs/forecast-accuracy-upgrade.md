@@ -12,7 +12,7 @@ For the optional Met Office feed:
 2. Add its key as repository **Settings → Secrets and variables → Actions → New repository secret → `MET_OFFICE_API_KEY`**. Never use a `VITE_` variable or put the key in a public data file.
 3. The next scheduled run connects it. An initial **Actions → Build and publish weather site → Run workflow** can connect immediately after deployment. No further testing/tuning is requested from the owner.
 
-No key was available in the development process, so authenticated live Met Office delivery could not be checked here. Discovery, parsing, weighting, failures, caching and quota behaviour have automated fixture checks. Connection status is published at `data/forecast/metoffice-status.json`.
+Authenticated Met Office delivery was verified on 23 October 2026 through the repository secret, without retrieving its value into the development process. The returned Peterborough site is `00310120`, about 0.52 km from the requested point, at 2 m elevation. Discovery prefers the UK collections; far-away global-domain sites are excluded. Connection status is published at `data/forecast/metoffice-status.json`.
 
 The adapter uses the documented `2.0.0` EDR/CoverageJSON service and v2 parameter keys. It discovers available compatible collections/instances, batches diagnostics, caches discovery for 24 hours and instances for six hours, and fetches at most every three hours. Every request is reserved before sending, including metadata/discovery and failures. Its persistent limit is **48 calls per UTC day**, below the currently published 55-call free allowance. A 429 retains the previous product and defers until the next UTC day. No subscription is created by the code.
 
@@ -80,9 +80,9 @@ Night Sky's hour strip now uses stars, cloud-and-stars and cloud symbols with sh
 
 Before adjustment, matching raw app/Met Office values and their differences are retained in `signals.disagreements`. Flags start at 3°C, 10 mph for matching central gust maxima, and 30 percentage points for the identical precipitation event. The display can say “Forecast sources disagree” and retain ranges/timing. Disagreement neither discards a source nor reduces a probability. Met Office agreement is never a training target or evidence of observed skill. Rainfall medians are not compared as if they were means.
 
-## Sources not connected or not eligible for learning
+## Source connections and verification limits
 
-- **Met Office:** authenticated connection awaits `MET_OFFICE_API_KEY` in the deployment environment.
+- **Met Office:** connected through the repository Actions secret `MET_OFFICE_API_KEY`; compatible fresh values contribute within UKMO. The owner does not need to repeat the setup above.
 - **Central Peterborough:** no validated representative temperature observations are connected. Wittering learning remains station-specific.
 - **Gust observations:** METAR gust reporting periods are incompatible with the app's preceding-hour maxima, so gust learning remains disabled.
 - **Rainfall:** a nearby EA gauge is discovered automatically and measured amounts are archived. Its public feed documents totals/cadence but does not establish start-versus-end timestamp semantics in the inspected metadata. These readings remain provisional and excluded from interval-matched learning. The adapter supports complete, quality-checked intervals once a compatible source supplies validated semantics; no timing convention is invented.

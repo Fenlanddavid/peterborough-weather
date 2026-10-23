@@ -8,7 +8,7 @@ export interface MetOfficeBudget { date: string; calls: number; blockedUntil: nu
 export function canRequestMetOffice(budget: MetOfficeBudget, now: number) {
   return now >= budget.blockedUntil && (budget.date !== new Date(now).toISOString().slice(0, 10) || budget.calls < 48);
 }
-interface Discovery { checkedAt: number; collections: { id: string; parameters: string[] }[]; instances: Record<string, { checkedAt: number; id: string; issuedAt: number | null }> }
+interface Discovery { version?: 2; checkedAt: number; collections: { id: string; parameters: string[] }[]; instances: Record<string, { checkedAt: number; id: string; issuedAt: number | null }> }
 const safeId = (id: string) => encodeURIComponent(id);
 export async function collectMetOffice(store: CollectorStore, key: string | undefined, now = Date.now(), request: typeof fetch = fetch) {
   if (!key) { await store.save('forecast/metoffice-status.json', { checkedAt: now, connected: false, reason: 'One-time setup: subscribe to Met Office Site-Specific Blended Probabilistic Forecast v2 Free plan and add repository Actions secret MET_OFFICE_API_KEY.' }); return; }
@@ -20,7 +20,10 @@ export async function collectMetOffice(store: CollectorStore, key: string | unde
     budget = { date: new Date(now).toISOString().slice(0, 10), calls: 48, blockedUntil: Math.floor(now / (24 * HOUR)) * 24 * HOUR + 24 * HOUR, lastAttempt: now - 3 * HOUR };
     await store.save('forecast/metoffice-budget.json', budget);
   }
-  if (now - budget.lastAttempt < 3 * HOUR || !canRequestMetOffice(budget, now)) return;
+  let discovery: Discovery;
+  try { discovery = await store.read<Discovery>('forecast/metoffice-discovery.json', { checkedAt: 0, collections: [], instances: {} }); if (!discovery || !Array.isArray(discovery.collections) || !discovery.instances || !finite(discovery.checkedAt)) throw new Error('Invalid discovery'); } catch { discovery = { checkedAt: 0, collections: [], instances: {} }; }
+  const rebuildDiscovery = discovery.version !== 2;
+  if (!rebuildDiscovery && now - budget.lastAttempt < 3 * HOUR || !canRequestMetOffice(budget, now)) return;
   const get = async (path: string) => {
     if (!canRequestMetOffice(budget, now)) throw new Error('Met Office daily quota/backoff; previous product retained');
     if (budget.date !== new Date(now).toISOString().slice(0, 10)) budget = { date: new Date(now).toISOString().slice(0, 10), calls: 0, blockedUntil: 0, lastAttempt: now };
@@ -35,9 +38,7 @@ export async function collectMetOffice(store: CollectorStore, key: string | unde
     return response.json();
   };
   try {
-    let discovery: Discovery;
-    try { discovery = await store.read<Discovery>('forecast/metoffice-discovery.json', { checkedAt: 0, collections: [], instances: {} }); if (!discovery || !Array.isArray(discovery.collections) || !discovery.instances || !finite(discovery.checkedAt)) throw new Error('Invalid discovery'); } catch { discovery = { checkedAt: 0, collections: [], instances: {} }; }
-    if (now - discovery.checkedAt >= 24 * HOUR || !discovery.collections.length) {
+    if (rebuildDiscovery || now - discovery.checkedAt >= 24 * HOUR || !discovery.collections.length) {
       const root = await get('/collections');
       if (!Array.isArray(root.collections)) throw new RangeError('Met Office discovery has no collections');
       const compatible: { id: string; parameters: string[] }[] = root.collections.flatMap((c: { id?: string; parameter_names?: Record<string, unknown>; parameters?: Record<string, unknown> }) => {
@@ -55,7 +56,12 @@ export async function collectMetOffice(store: CollectorStore, key: string | unde
         if (parameters.length) compatible.push({ id: c.id, parameters });
         if (compatible.length >= 3) break;
       }
-      discovery = { checkedAt: now, collections: compatible.sort((a, b) => b.parameters.length - a.parameters.length).slice(0, 3), instances: discovery.instances };
+      // Global Spot's global domain excludes UK sites and can legitimately return
+      // a nearest site hundreds of kilometres away. Prefer the discovered UK
+      // collections for our configured Peterborough point, including probabilities.
+      const ukCollections = compatible.filter(c => c.id.startsWith('uk-'));
+      const selected = ukCollections.length ? ukCollections : compatible;
+      discovery = { version: 2, checkedAt: now, collections: selected.sort((a, b) => b.parameters.length - a.parameters.length).slice(0, 3), instances: discovery.instances };
       await store.save('forecast/metoffice-discovery.json', discovery);
     }
     if (!discovery.collections.length) throw new Error('No documented compatible v2 diagnostics discovered');

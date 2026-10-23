@@ -255,6 +255,36 @@ test('discovery and a batched v2 forecast work with the one server key, and unch
   } finally { await rm(dir, { recursive: true, force: true }); }
 });
 
+test('Peterborough discovery prefers UK percentiles and probabilities over the global domain', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'pb-mo-uk-discovery-'));
+  try {
+    const store = forecastStore(pathToFileURL(dir + '/')); const paths: string[] = [];
+    const parameters = { airTemperature1p5m: {} };
+    const probabilityKey = 'probabilityOfLweThicknessOfPrecipitationAmountAboveThresholdSumPt03h';
+    const request: typeof fetch = async input => {
+      const url = new URL(String(input)); paths.push(url.pathname);
+      const body = url.pathname.endsWith('/collections') ? { collections: [
+        { id: 'global-spot-percentiles', parameter_names: parameters },
+        { id: 'uk-spot-percentiles', parameter_names: parameters },
+        { id: 'global-spot-probabilities', parameter_names: { [probabilityKey]: {} } },
+        { id: 'uk-spot-probabilities', parameter_names: { [probabilityKey]: {} } },
+      ] } : url.pathname.endsWith('/instances') ? { instances: [{ id: 'blended' }] }
+        : { coverages: [url.pathname.includes('probabilities') ? coverage(probabilityKey, '1', now, now + 3 * HOUR, [0.4], 'probabilityThreshold', ['>=0.0002']) : coverage('airTemperature1p5m', 'K')] };
+      return new Response(JSON.stringify(body), { headers: { 'content-type': 'application/json' } });
+    };
+    // An older discovery can be repaired immediately, without resetting its budget
+    // or waiting for the normal three-hour forecast cadence.
+    await store.save('forecast/metoffice-discovery.json', { checkedAt: now - HOUR, collections: [{ id: 'global-spot-percentiles', parameters: ['airTemperature1p5m'] }], instances: {} });
+    await store.save('forecast/metoffice-budget.json', { date: new Date(now).toISOString().slice(0, 10), calls: 7, blockedUntil: 0, lastAttempt: now - HOUR });
+    await collectMetOffice(store, 'fake-test-key', now, request);
+    assert.equal(paths.length, 5); assert.ok(paths.every(path => !path.includes('/global-spot-')));
+    const p = await store.read<any>('forecast/metoffice.json', null);
+    assert.ok(p.values.some((v: any) => v.variable === 'temperature_2m'));
+    assert.ok(p.values.some((v: any) => v.variable === 'precipitation_probability'));
+    assert.equal((await store.read<any>('forecast/metoffice-budget.json', null)).calls, 12);
+  } finally { await rm(dir, { recursive: true, force: true }); }
+});
+
 test('rainfall telemetry requires complete matched accumulation windows and never substitutes missing amounts', () => {
   const gauge: RainGauge = { id: 'EA:test', latitude: 52.6, longitude: -0.2, measure: 'https://environment.data.gov.uk/measure', period: 900, unit: 'mm', valueType: 'total', timestampConvention: 'period-end' };
   const start = Math.floor(now / (3 * HOUR)) * 3 * HOUR - 3 * HOUR;
