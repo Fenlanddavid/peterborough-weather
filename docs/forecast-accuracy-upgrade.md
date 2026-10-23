@@ -68,7 +68,7 @@ Ensemble expectations, wet-condition medians and deterministic central totals ha
 
 Sustained wind remains distinct from preceding-hour maximum gusts. The central estimate retains a blend of model maxima. Source peak times determine an honest peak window when timing differs. Compatible member distributions provide a genuine family-weighted mixture 90th percentile and threshold probability, including 30 mph. Percentiles are not averaged, and probabilities are not inferred from the gap between a mean and a percentile.
 
-Met Office source period 90th percentiles remain separately labelled references. Strong plausible outcomes can trigger the app's **Strong-wind outlook** even when the typical estimate is lower. App wind/snow advice is labelled separately from official warnings.
+Met Office source period 90th percentiles remain separately labelled references. Strong plausible outcomes can trigger the app's **Strong-wind outlook** even when the typical estimate is lower. App wind/snow advice is labelled separately from official warnings. The Forecast home keeps the owner’s preferred compact layout: one highest available gust per day, no explanatory wind-banner sentence and no separate rain/wind uncertainty box. Detailed statistics remain in Summary and diagnostics.
 
 ## 6. Conditions and missing values
 

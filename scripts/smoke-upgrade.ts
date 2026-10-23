@@ -12,6 +12,7 @@ const cloud = (t: string) => [10, 45, 80, 100][Math.floor(Date.parse(t.endsWith(
 single.hourly.cloud_cover = single.hourly.time.map(cloud);
 single.hourly.snowfall = single.hourly.time.map(() => 0);
 single.hourly.weather_code = single.hourly.time.map(() => 3);
+single.hourly.wind_gusts_10m = single.hourly.time.map(() => 20);
 const core = Object.fromEntries(await Promise.all(skyModels.map(async model => {
   const data = await fixture(`runtime-sky-core-${model}`);
   data.hourly.cloud_cover = data.hourly.time.map(cloud);
@@ -19,6 +20,11 @@ const core = Object.fromEntries(await Promise.all(skyModels.map(async model => {
 })));
 const optional = Object.fromEntries(await Promise.all(skyModels.map(async model => [model, await fixture(`runtime-sky-optional-${model}`)])));
 const ensemble = Object.fromEntries(await Promise.all(['ecmwf_ifs025', 'gfs025', 'ukmo_global_ensemble_20km'].map(async model => [model, await fixture(`runtime-ensemble-${model}`)])));
+// Keep a stronger ensemble outcome than the 20 m/s central fixture. The banner
+// should show that single highest figure, rounded to 67 mph.
+for (const [key, values] of Object.entries(ensemble.ukmo_global_ensemble_20km.hourly)) {
+  if (key.startsWith('wind_gusts_10m') && Array.isArray(values)) values.fill(30);
+}
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 try {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, timezoneId: 'Europe/London', reducedMotion: 'reduce' });
@@ -51,8 +57,11 @@ try {
   await page.getByRole('heading', { name: 'Your weather, at a glance.' }).waitFor();
   await page.getByRole('button', { name: 'Refresh forecast', exact: true }).waitFor();
   assert.ok(await page.locator('.hourly-item').count() > 0);
-  assert.ok((await page.locator('.forecast-details').innerText()).includes('Deterministic wet agreement') || (await page.locator('.forecast-details').innerText()).includes('Ensemble rain probability'));
-  assert.equal(await page.getByRole('heading', { name: 'Wind warning', exact: true }).count(), 0);
+  assert.equal(await page.locator('.forecast-details').count(), 0);
+  assert.equal(await page.getByRole('heading', { name: 'Rain and wind uncertainty', exact: true }).count(), 0);
+  await page.waitForFunction(() => [...document.querySelectorAll('.wind-warning li strong')].some(e => e.textContent === '67 mph'));
+  assert.equal(await page.locator('.wind-warning p').count(), 0);
+  for (const gust of await page.locator('.wind-warning li strong').allTextContents()) assert.equal(gust, '67 mph');
   await page.getByRole('button', { name: 'Night Sky', exact: true }).click();
   await page.getByRole('heading', { name: 'The night sky ahead.' }).waitFor();
   await page.waitForFunction(() => document.querySelectorAll('.sky-period-symbol svg').length >= 10 && !!document.querySelector('.sky-period--clear'));
@@ -90,7 +99,7 @@ try {
   assert.equal(await cards.first().getAttribute('aria-expanded'), 'true');
   assert.deepEqual(pageErrors, []);
   requests.push(...await page.evaluate(() => (window as any).__sourceRequests ?? []));
-  const report = { checkedAt: new Date().toISOString(), base, layouts, pageErrors, requestCount: requests.length, iconConditions: ['Mostly clear', 'Some cloud', 'Mostly cloudy', 'Overcast'], expandableDetails: true, keyboardActivation: true, sourceFallbacks: true, screenshot: '/tmp/peterborough-sky-glance-390.png', note: 'Assembled fixtures validate UI and fallback wiring, not observed forecast skill.' };
+  const report = { checkedAt: new Date().toISOString(), base, layouts, pageErrors, requestCount: requests.length, iconConditions: ['Mostly clear', 'Some cloud', 'Mostly cloudy', 'Overcast'], expandableDetails: true, keyboardActivation: true, sourceFallbacks: true, compactHighestGustBanner: true, uncertaintyBoxRemoved: true, screenshot: '/tmp/peterborough-sky-glance-390.png', note: 'Assembled fixtures validate UI and fallback wiring, not observed forecast skill.' };
   await writeFile(new URL('../docs/upgrade-browser-smoke.json', import.meta.url), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report, null, 2));
 } finally { await browser.close(); }

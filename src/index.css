@@ -19,9 +19,5 @@ a { color: inherit; }
 .install-offer button { min-height: 44px; padding: 8px 14px; border: 1px solid #bbddc950; border-radius: 8px; background: #bbddc9; color: #14231c; font: inherit; cursor: pointer; }
 .install-offer button:focus-visible { outline: 2px solid #bbddc9; outline-offset: 4px; }
 
-.forecast-details { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--border, #dde5eb); border-radius: 1rem; background: var(--card-bg, #fff); color: var(--text, #233b4d); }
-.forecast-details h2 { font-size: 1.15rem; }
-.forecast-details p, .rain-windows { font-size: .88rem; line-height: 1.65; }
-.rain-windows { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: .2rem 1rem; }
 .hourly-window, .hourly-risk { display: block; font-size: .65rem; line-height: 1.3; max-width: 100%; white-space: normal; }
 .hourly-risk { color: #8a4216; }

@@ -4,7 +4,7 @@ import type { EnsembleIndex } from '../forecast/events';
 import type { ForecastContext } from '../forecast/signals';
 import { formatPrecipitation } from '../metrics/hourlyWeather';
 import { DEFAULT_VERSION } from '../forecast/policy';
-import { eventPercent, localTime } from '../data/contracts';
+import { eventPercent } from '../data/contracts';
 import { buildForecastSignals } from '../forecast/signals';
 import { buildForecastBriefing } from '../metrics/forecastSummary';
 import { buildHourlySlot } from '../metrics/hourlySlot';
@@ -25,13 +25,16 @@ export function Forecast({ runs, lastUpdated = null, ensembles, context, sourceN
   const day = briefing.days[selectedIndex];
   const hourlyScroll = useRef<HTMLDivElement>(null);
   const hourly = useMemo(() => getHourlyForecastTimes(day.date, now).map(time => buildHourlySlot(signals, time, ensembles)), [day.date, now, signals, ensembles]);
-  const windyDays = briefing.days.filter(d => d.gustMph !== null && d.gustMph >= 30 || d.gustUpperMph !== null && d.gustUpperMph >= 30 || d.gustReference !== null && d.gustReference.mph >= 30);
+  const windyDays = briefing.days.map(d => {
+    const gusts = [d.gustMph, d.gustUpperMph, d.gustReference?.mph ?? null].filter((value): value is number => value !== null && Number.isFinite(value));
+    return { date: d.date, label: d.label, gustMph: gusts.length ? Math.max(...gusts) : null };
+  }).filter(d => d.gustMph !== null && d.gustMph >= 30);
   const snowyDays = briefing.days.filter(d => d.snowCm !== null && d.snowCm > 0);
   const condition = day.condition;
   return <div className="view-forecast">
     <div className="forecast-intro"><div><p className="eyebrow">A little local perspective</p><h1>Your weather, at a glance.</h1><p>A clearer outlook for the Savorys and the days ahead.</p></div></div>
-    {windyDays.length > 0 && <div className="forecast-warning wind-warning" role="status"><WeatherIcon name="wind" /><div><h2>Strong-wind outlook</h2><p>Gusts of 30 mph or more are indicated centrally or among stronger plausible outcomes. App advice. See <a href="https://www.metoffice.gov.uk/weather/warnings-and-advice/uk-warnings" target="_blank" rel="noopener noreferrer">official Met Office weather warnings</a>.</p><ul>{windyDays.map(d => <li key={d.date}>{d.label} · <strong>{number(d.gustMph)} mph typical{d.gustUpperMph !== null ? ` · upper ${number(d.gustUpperMph)} mph` : ''}</strong></li>)}</ul></div></div>}
-    {snowyDays.length > 0 && <div className="forecast-warning snow-warning" role="status"><WeatherIcon name="snow" /><div><h2>Snow outlook</h2><p>Some forecasts indicate snowfall in the next 7 days; check the qualified risks and timing below.</p><ul>{snowyDays.map(d => <li key={d.date}>{d.label} · <strong>{d.snowCm! < 0.1 ? '<0.1' : d.snowCm!.toFixed(1)} cm</strong></li>)}</ul></div></div>}
+    {windyDays.length > 0 && <div className="forecast-warning wind-warning" role="status"><WeatherIcon name="wind" /><div><h2>Strong-wind outlook</h2><ul>{windyDays.map(d => <li key={d.date}>{d.label} · <strong>{number(d.gustMph)} mph</strong></li>)}</ul></div></div>}
+    {snowyDays.length > 0 && <div className="forecast-warning snow-warning" role="status"><WeatherIcon name="snow" /><div><h2>Snow outlook</h2><p>Some forecasts indicate snowfall in the next 7 days; settling is uncertain.</p><ul>{snowyDays.map(d => <li key={d.date}>{d.label} · <strong>{d.snowCm! < 0.1 ? '<0.1' : d.snowCm!.toFixed(1)} cm</strong></li>)}</ul></div></div>}
     <div className="forecast-overview">
       <section className={`outlook-card ${day.high === null ? 'outlook-card--pending' : ''}`}><div className="outlook-topline"><span className="eyebrow">{day.label}'s outlook</span></div>
         <div className="outlook-main"><div className="outlook-weather"><span className="daily-high-label">Daily high</span><div className="outlook-temperature">{number(day.high)}<span>°C</span></div><h2>{condition.label}</h2><p>{day.high === null ? 'Your daily outlook will appear here.' : <>Low of {number(day.low)}° · {day.rainMm === null || day.rainHours < day.expectedHours ? 'Rainfall data incomplete or unavailable' : day.rainMm >= 0.5 ? 'Keep an umbrella handy' : 'A mostly dry day'}</>}</p></div><SkyIllustration wet={day.rainMm !== null && day.rainMm >= 0.5} /></div>
@@ -60,17 +63,6 @@ export function Forecast({ runs, lastUpdated = null, ensembles, context, sourceN
         </div>)}
       </div></div>
       <p className="hourly-caption">Temperature and wind are at the shown time. Precipitation and gusts cover the following hour. Rain windows respect three- or six-hour native timing. Daily rain totals use ensemble expectations where available; hourly amounts use the deterministic blend, so these different statistics may not add to the same total.</p>
-    </section>
-    <section className="forecast-details"><h2>Rain and wind uncertainty</h2>
-      <p>{day.precipitation.value === null ? 'Rain occurrence estimate unavailable.' : `${day.precipitation.basis === 'ensemble-probability' ? 'Ensemble rain probability' : 'Deterministic wet agreement (not probability)'} ${eventPercent(day.precipitation.value)} · ${day.precipitation.threshold}.`}</p>
-      {day.precipitation.conditionalAmount !== null && <p>Wet-condition median: {day.precipitation.conditionalAmount.toFixed(1)} mm when the stated event occurs. The daily total uses {day.precipitation.basis === 'ensemble-probability' ? 'an ensemble expectation' : 'a deterministic blend'}.</p>}
-      {day.rainTiming && <p>{day.rainTiming} Exact shower timing remains uncertain.</p>}
-      {day.gustUpperMph !== null && <p>Upper gust (ensemble mixture 90th percentile): {number(day.gustUpperMph)} mph. {eventPercent(day.gustEvent.value)} probability of at least 30 mph over this period.</p>}
-      {day.gustReference && <p>Met Office source period 90th percentile reference: {number(day.gustReference.mph)} mph for {localTime(day.gustReference.start)}–{localTime(day.gustReference.end)}. A source-specific reference; separate from the daily ensemble mixture.</p>}
-      {day.gustTime && <p>Typical gust peak near {day.gustTime}.</p>}
-      {day.hazardTiming.length > 0 && <details><summary>Qualified weather risks and timing</summary>{day.hazardTiming.map((risk, i) => <p key={i}>{risk}</p>)}</details>}
-      {day.disagreements.length > 0 && <p>Forecast sources disagree. Their differences are diagnostics, not measured errors.</p>}
-      <div className="rain-windows">{hourly.filter(h => h.start === h.rainWindow.start).map(h => <p key={h.start}>{localTime(h.rainWindow.start)}–{localTime(h.rainWindow.end)}: {h.rainWindow.basis === 'ensemble-probability' ? 'rain probability' : 'wet agreement'} {eventPercent(h.rainWindow.value)}; {h.rainWindow.threshold}{h.rainWindow.basis === 'ensemble-probability' && h.rainWindow.expectedAmount !== null ? `; expected ${h.rainWindow.expectedAmount.toFixed(1)} mm` : ''}{h.rainWindow.conditionalAmount !== null ? `; wet-condition median ${h.rainWindow.conditionalAmount.toFixed(1)} mm` : ''}{h.rainWindow.metOfficeProbability !== undefined ? `; Met Office probability ${eventPercent(h.rainWindow.metOfficeProbability)}` : ''}.</p>)}</div>
     </section>
     <details className="forecast-note"><summary>Forecast sources and learning</summary><p>Local policy: {context?.policy?.rules.some(r => r.location === 'peterborough') ? context.policy.version : DEFAULT_VERSION}. Published revision: {context?.policy?.version ?? DEFAULT_VERSION}. Equal-family defaults and the optional Met Office split are configured heuristics. Measured accuracy improvement has not yet been established.</p>
       <p>No validated numerical radar nowcast is connected. The immediate forecast uses fresh model output; a radar image would not provide a numerical nowcast.</p>
