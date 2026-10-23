@@ -100,3 +100,24 @@ These limits disable only the affected learning/feed contribution. The forecast 
 - [Met Office site-specific overview](https://datahub.metoffice.gov.uk/docs/f/category/site-specific/overview), [v2 API guide](https://datahub.metoffice.gov.uk/docs/f/category/site-specific/type/probabilistic-forecast-feature/api-user-guide), [parameter mapping](https://datahub.metoffice.gov.uk/downloads/bpf-v2-parameter-name-changes), [migration notices](https://datahub.metoffice.gov.uk/support/changes-and-updates), [free plan](https://datahub.metoffice.gov.uk/pricing/site-specific).
 - [AviationWeather.gov METAR observations](https://aviationweather.gov/data/api/).
 - This uses Environment Agency rainfall data from the real-time data API (Beta). [EA rainfall API](https://environment.data.gov.uk/flood-monitoring/doc/rainfall).
+
+## T1: live 18Z coverage probe (2026-10-23 UTC)
+
+Requested GFS Global Single Runs for `run=2026-10-22T18:00`,
+`forecast_days=7`, UTC, at 52.5739, -0.2417, with temperature and gusts.
+The returned axis starts **2026-10-22T18:00** and ends
+**2026-10-29T17:00** (168 hours). Both variables' first and last non-null
+values have those same timestamps; neither has any nulls. The initial
+2026-10-23T18:00 request was unavailable (HTTP 400), so the probe used the
+previous UTC day's published cycle.
+
+This live non-00Z axis is anchored at initialisation, unlike the 00Z fixture
+which cannot distinguish the two conventions. Keep `forecast_days=7` in the
+shared app/collector URL. Under the owner's conditional instruction, neither
+the extra day nor a completeness rewrite is warranted by this probe. A
+previous-day 18Z run reaches day index 6 through 17Z, but cannot promise a
+complete midnight-to-midnight day. Missing remaining hours stay unknown.
+
+Baseline `report:budget`: planned HTTP 476/620/692 and weighted
+644/788/860 for publication lag 0/6/9 h; scheduled weighted limit 1500,
+Met Office persistent cap 48 calls/day. No request changes in T1.

@@ -12,7 +12,7 @@
     "metOfficePublishedFreeDailyLimit": 55,
     "note": "Three sites assumes Peterborough, Wittering and one gauge. Forecast calls include one latest UKV product per site. Unsupported runs/diagnostics can add requests; persistent budget guards defer them. Existing browser scenarios below model sparse historical backfill only, not all metadata/latest-product checks. This is a plan, not observed traffic."
   },
-  "recordedAt": "2026-10-23T19:43:15.973Z",
+  "recordedAt": "2026-10-23T23:17:14.557Z",
   "ensembleCosts": [
     {
       "model": "ecmwf_ifs025",
