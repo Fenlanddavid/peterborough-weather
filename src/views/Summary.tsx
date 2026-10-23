@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import type { ForecastContext } from '../forecast/signals';
 import type { CachedRun } from '../types';
 import { buildForecastBriefing } from '../metrics/forecastSummary';
 import type { EnsembleIndex } from '../forecast/events';
@@ -11,14 +12,15 @@ interface Props {
   loading: boolean;
   hasError: boolean;
   ensembles: EnsembleIndex;
+  context?: ForecastContext;
 }
 
 const dateLabel = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'Europe/London' });
 
-export function Summary({ runs, loading, ensembles }: Props) {
+export function Summary({ runs, loading, ensembles, context }: Props) {
   const now = useLocalNow();
   const hour = Math.floor(now.getTime() / 3600_000);
-  const briefing = useMemo(() => buildForecastBriefing(runs, new Date(hour * 3600_000), { ensembles }), [runs, hour, ensembles]);
+  const briefing = useMemo(() => buildForecastBriefing(runs, new Date(hour * 3600_000), { ensembles, context }), [runs, hour, ensembles, context]);
   const topics: { title: string; icon: IconName; text: string }[] = [
     { title: 'Temperatures & how they change', icon: 'sun', text: briefing.temperature },
     { title: 'Rain/snow & drier spells', icon: 'drop', text: briefing.rainfall },
@@ -68,7 +70,7 @@ export function Summary({ runs, loading, ensembles }: Props) {
           </article>)}
         </div>
       </section>
-      <p className="summary-method">Available ECMWF, NOAA and UKMO families receive equal total weight; UKV contributes within its actual data range. Daily totals and extremes are calculated within each complete model/member window before combining. Ensemble probabilities are uncalibrated estimates; deterministic agreement and recent-run support have separate meanings. Missing values remain unknown. {briefing.latestRun && <>Newest contributing model run: {toLocalTime(briefing.latestRun, 'short')}.</>} Explore Trends for raw run comparisons.</p>
+      <p className="summary-method">The conservative default gives ECMWF, NOAA and UKMO equal family allocations; UKV contributes within its actual range, and a compatible processed Met Office estimate shares the UKMO allocation. Only observation-approved local policies can change these defaults. Daily totals and extremes are calculated within each complete model/member window before combining. Ensemble probabilities are uncalibrated estimates; deterministic agreement and recent-run support have separate meanings. Missing values remain unknown. {briefing.latestRun && <>Newest contributing model run: {toLocalTime(briefing.latestRun, 'short')}.</>} Explore Trends for raw run comparisons.</p>
     </>}
   </div>;
 }

@@ -251,15 +251,48 @@
 .sky-mode button { border: 1px solid #62718a; border-radius: 2rem; padding: .65rem 1rem; background: #1b2940; color: #ecf1fb; cursor: pointer; }
 .sky-mode button[aria-pressed=true] { background: #b8d7c4; color: #122b25; }
 .sky-window { padding: 1rem; background: #203b3e; border-radius: .7rem; }
-.sky-timeline { display: flex; overflow-x: auto; align-items: stretch; gap: .35rem; padding: 1rem 0; }
-.sky-period { flex: 0 0 156px; display: flex; flex-direction: column; gap: .6rem; padding: .85rem; border-radius: .6rem; border-top: 4px solid #62718a; background: #19283c; font-size: .8rem; }
-.sky-period strong { font-size: 1.6rem; }
-.sky-green { border-top-color: #91d4ac; }
-.sky-amber { border-top-color: #e9c77d; }
-.sky-red { border-top-color: #e59d9f; }
-.sky-unknown { color: #a7b3c8; border-top-style: dashed; }
-.sky-period time { font-size: 12px; color: #bac5d6; font-variant-numeric: tabular-nums; }
-.sky-period span { font-size: 12px; color: #a6b2c5; }
+.sky-hourly-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 27px 0 12px; }
+.sky-hourly-heading .nightsky-eyebrow { margin: 0 0 5px; font-size: 9px; color: #b4aacd; }
+.sky-hourly-heading h3 { margin: 0; color: #edf0f8; font-size: 19px; font-weight: 500; letter-spacing: -.4px; }
+.sky-scroll-actions { display: flex; gap: 6px; }
+.app--home .sky-scroll-actions button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; border: 1px solid #c5c2eb26; background: #a8a1ca08; color: #d0c7eb; cursor: pointer; transition: background .15s, border-color .15s; }
+.sky-scroll-actions button:first-child .weather-icon { transform: rotate(180deg); }
+.sky-scroll-actions .weather-icon { width: 17px; height: 17px; }
+.app--home .sky-scroll-actions button:hover:enabled { background: #c8c2ec18; border-color: #c8c2ec70; }
+.app--home .sky-scroll-actions button:disabled { opacity: .32; cursor: default; }
+.sky-timeline-shell { min-width: 0; position: relative; }
+.sky-timeline { display: flex; overflow-x: auto; align-items: stretch; gap: 10px; padding: 5px 3px 14px; margin: 0 -3px; max-width: calc(100% + 6px); overscroll-behavior-x: contain; scroll-snap-type: x proximity; scroll-padding-inline: 3px; scrollbar-width: thin; scrollbar-color: #6e68864d transparent; }
+.app--home .sky-period { --sky-symbol: #c1cbde; position: relative; display: flex; flex: 0 0 122px; flex-direction: column; align-items: center; gap: 0; padding: 13px 10px 12px; min-height: 215px; border-radius: 15px; border: 1px solid #bbbed51a; background: linear-gradient(160deg, #ffffff04, #ffffff00 60%), #1a2639; color: #e0e5f0; font: inherit; text-align: center; cursor: pointer; scroll-snap-align: start; transition: border-color .16s, background .16s, transform .16s; }
+.app--home .sky-period:hover { border-color: #c8c2ec60; background-color: #222d43; transform: translateY(-2px); }
+.app--home .sky-period.is-selected { border-color: #c8c2ec9c; background-color: #272f46; box-shadow: inset 0 0 0 1px #c8c2ec1a; }
+.sky-period:focus-visible, .sky-scroll-actions button:focus-visible, .sky-timeline:focus-visible { outline: 2px solid #d5c9f2; outline-offset: 3px; }
+.app--home .sky-period--clear { --sky-symbol: #eddbab; background: radial-gradient(ellipse at 50% 32%, #cfbb7c0d, transparent 72%), #1c283a; }
+.app--home .sky-period--mixed { --sky-symbol: #d5cbea; }
+.app--home .sky-period--unknown { --sky-symbol: #929db3; background-color: #182435; border-style: dashed; }
+.sky-period-top { display: flex; align-items: center; justify-content: center; position: relative; width: 100%; min-height: 18px; }
+.sky-period time { font-size: 10px; color: #bec7db; font-variant-numeric: tabular-nums; letter-spacing: .1px; }
+.sky-period-best { position: absolute; right: -3px; top: 0; color: #e6d4a5; }
+.sky-period-best .weather-icon { width: 10px; height: 10px; fill: #e6d4a51a; }
+.sky-period-symbol { display: grid; place-items: center; height: 70px; width: 100%; color: var(--sky-symbol); }
+.sky-period-symbol .weather-icon { width: 43px; height: 43px; stroke-width: 1.15; }
+.sky-period--clear .sky-period-symbol .weather-icon { filter: drop-shadow(0 0 12px #e9d59e20); }
+.sky-period-condition { min-height: 20px; font-size: 12px; font-weight: 500; line-height: 1.4; color: #e7eaf4; }
+.sky-period-cloud { margin-top: 3px; font-size: 10px; line-height: 1.4; color: #a6b2c7; font-variant-numeric: tabular-nums; }
+.sky-period-status { display: inline-flex; align-items: center; justify-content: center; gap: 5px; margin: 13px 0 10px; padding: 5px 7px; border: 1px solid transparent; border-radius: 20px; font-size: 9px; font-weight: 500; white-space: nowrap; }
+.sky-period-status i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.sky-period-status--good { background: #99d4ba0d; border-color: #99d4ba1c; color: #b2deca; }
+.sky-period-status--fair { background: #e9c77d0b; border-color: #e9c77d16; color: #e6cd9d; }
+.sky-period-status--poor { background: #e8a4a70a; border-color: #e8a4a716; color: #dfb7bd; }
+.sky-period-status--unknown, .sky-period-status--twilight { background: #b8b6d50c; border-color: #b8b6d514; color: #b4bdd1; }
+.sky-period-moon { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: auto; font-size: 10px; color: #a2aec4; }
+.sky-period-moon .weather-icon { width: 11px; height: 11px; stroke-width: 1.5; color: #bab5d2; }
+.sky-hour-details { color: #a7b3c8; font-size: 11px; line-height: 1.75; padding: 5px 2px 0; }
+.sky-hour-details.is-open { display: flex; flex-direction: column; gap: 3px; border: 1px solid #c8c2ec20; border-radius: 12px; background: #c8c2ec05; padding: 13px 15px; margin-top: 3px; }
+.sky-hour-details strong { font-size: 12px; font-weight: 500; color: #e0d9ef; }
+.sky-best-key { display: inline-flex; align-items: center; gap: 5px; margin-left: 6px; color: #d0c4a6; white-space: nowrap; }
+.sky-best-key .weather-icon { width: 11px; height: 11px; }
+@media (max-width: 400px) { .app--home .sky-period { flex-basis: 112px; padding-inline: 8px; } .sky-period-condition { font-size: 11px; } .sky-period-status { font-size: 9px; padding-inline: 6px; } }
+@media (prefers-reduced-motion: reduce) { .app--home .sky-period, .app--home .sky-scroll-actions button { transition: none; } .app--home .sky-period:hover { transform: none; } }
 
 /* Expandable event sections */
 .sky-events-expandable { border: 1px solid var(--ns-line); border-radius: 14px; background: #172332; margin-bottom: 12px; }

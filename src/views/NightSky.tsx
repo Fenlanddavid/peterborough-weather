@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Body } from 'astronomy-engine';
 import type { CachedRun } from '../types';
 import { useLocalNow } from '../hooks/useLocalTime';
-import { addDays, HOUR, localTime } from '../data/contracts';
+import { addDays, HOUR, localTime, eventPercent } from '../data/contracts';
 import type { EventEstimate } from '../data/contracts';
+import type { ForecastContext } from '../forecast/signals';
 import { buildForecastSignals, familyMean, familyWeights } from '../forecast/signals';
 import type { EnsembleIndex } from '../forecast/events';
 import { PRECIP_3H, CLEAR_CLOUD, eventTimes } from '../forecast/events';
@@ -18,6 +19,7 @@ import { DETERMINISTIC_MODELS } from '../config/models';
 import { useAuroraData } from '../hooks/useAuroraData';
 import { kpColour, kpLabel } from '../api/aurora';
 import { SkyEventsPanel } from '../components/SkyEventsPanel';
+import { skyHourlyPresentation } from '../sky/hourlyPresentation';
 import './NightSky.css';
 const loadIfs = (signal: AbortSignal) => fetchSkyModel('ecmwf_ifs025', signal);
 const loadGfs = (signal: AbortSignal) => fetchSkyModel('gfs_global', signal);
@@ -29,10 +31,13 @@ const nightLabel = (date: string, evening: string) => {
 };
 const ukDate = (date: string) => new Date(`${date}T12:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'Europe/London' });
 function savedMode(): ObservingMode { try { return localStorage.getItem('pb-weather:observing-mode') === 'moon-planets' ? 'moon-planets' : 'deep-sky'; } catch { return 'deep-sky'; } }
-export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: boolean; hasError: boolean; ensembles: EnsembleIndex }) {
+export function NightSky({ runs, ensembles, context }: { runs: CachedRun[]; loading: boolean; hasError: boolean; context?: ForecastContext; ensembles: EnsembleIndex }) {
   const now = useLocalNow(); const time = now.getTime();
   const [mode, setMode] = useState<ObservingMode>(savedMode);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedHour, setSelectedHour] = useState<number | null>(null);
+  const timeline = useRef<HTMLDivElement>(null);
+  const [scrollEdges, setScrollEdges] = useState({ start: true, end: false });
   const { aurora, loading: auroraLoading, refresh: refreshAurora } = useAuroraData();
   const ifs = useVisibleResource('sky:ecmwf_ifs025', HOUR, loadIfs);
   const gfs = useVisibleResource('sky:gfs_global', HOUR, loadGfs);
@@ -40,7 +45,7 @@ export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: bool
   const air = useVisibleResource('air-quality', 6 * HOUR, fetchAirQuality);
   const weather = useMemo(() => buildSkyIndex([ifs, gfs, ukmo].flatMap(r => r?.data ? [r.data] : [])), [ifs, gfs, ukmo]);
   const aerosol = useMemo(() => buildSkyIndex(air?.data ? [air.data] : [])[0], [air]);
-  const signals = useMemo(() => buildForecastSignals(runs, time), [runs, time]);
+  const signals = useMemo(() => buildForecastSignals(runs, time, context), [runs, time, context]);
   const evening = observingNight(time);
   const ephemerides = useMemo(() => Array.from({ length: 7 }, (_, i) => { const date = addDays(evening, i); return { date, darkness: darknessTimes(date), moon: moonEvents(date) }; }), [evening]);
   const nights = useMemo(() => ephemerides.map(night => {
@@ -98,6 +103,19 @@ export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: bool
     return { ...night, hourly, darkInterval: darkness, twilightOnly, periods, windows, rating: windows ? rateNight(windows, twilightOnly) : 'Limited data' };
   }), [ephemerides, mode, weather, aerosol, signals, ensembles, time, evening]);
   const selected = nights.find(n => n.date === selectedDate) ?? nights[0];
+  const chosenHour = selected.hourly.find(p => p.start === selectedHour);
+  const updateScrollEdges = () => {
+    const strip = timeline.current;
+    if (strip) setScrollEdges({ start: strip.scrollLeft < 4, end: strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4 });
+  };
+  useEffect(() => {
+    timeline.current?.scrollTo({ left: 0 });
+    updateScrollEdges();
+    const observer = new ResizeObserver(updateScrollEdges);
+    if (timeline.current) observer.observe(timeline.current);
+    return () => observer.disconnect();
+  }, [selected.date]);
+  const scrollHours = (direction: number) => timeline.current?.scrollBy({ left: direction * 260, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   const bestByWindow = [...nights].filter(n => n.windows?.best).sort((a, b) => b.windows!.best!.duration * b.windows!.best!.mean - a.windows!.best!.duration * a.windows!.best!.mean)[0];
   const bestByRating = [...nights].filter(n => n.rating && n.rating !== 'Limited data').sort((a, b) => { const order = ['Excellent', 'Good', 'Fair', 'Poor', 'Unsuitable']; return order.indexOf(a.rating) - order.indexOf(b.rating); })[0];
   const best = bestByWindow ?? bestByRating;
@@ -114,17 +132,23 @@ export function NightSky({ runs, ensembles }: { runs: CachedRun[]; loading: bool
       <p>Civil darkness {selected.darkness.civil ? `${localTime(selected.darkness.civil.start)}–${localTime(selected.darkness.civil.end)}` : 'not reached'} · nautical {selected.darkness.nautical ? `${localTime(selected.darkness.nautical.start)}–${localTime(selected.darkness.nautical.end)}` : 'not reached'} · astronomical {selected.darkness.astronomical ? `${localTime(selected.darkness.astronomical.start)}–${localTime(selected.darkness.astronomical.end)}` : 'not reached'}</p>
       <div className="nightsky-moon-main"><MoonDisc illumination={selected.moon.illumination} waxing={selected.moon.waxing} /><p>{selected.moon.label} · {Math.round(selected.moon.illumination * 100)}% illuminated at 22:00 Europe/London.<br />Moonrise {selected.moon.rise === null ? 'none in this observing night' : localTime(selected.moon.rise)} · moonset {selected.moon.set === null ? 'none in this observing night' : localTime(selected.moon.set)}</p></div>
       <p className="sky-window">{window ? `Best window ${localTime(window.start)}–${localTime(window.end)} · ${duration(window.duration)} · mean score ${Math.round(window.mean)} · ${moonBelowThroughout(window) ? 'Moon down throughout' : 'Moon above horizon for part or all of window'}` : 'No consecutive eligible green window. Valid individual hours still appear below.'}</p>
-      <div className="sky-timeline" tabIndex={0} role="region" aria-label="Hourly observing conditions, scroll horizontally">{selected.hourly.map(p => {
-        const clearCount = p.models.filter(m => m.cloud !== null && m.cloud < 0.3).length;
-        const totalCount = p.models.filter(m => m.cloud !== null).length;
-        return <div key={p.start} className={`sky-period ${p.score === null ? 'sky-unknown' : p.score >= 55 ? 'sky-green' : p.score >= 35 ? 'sky-amber' : 'sky-red'}`}>
-          <time>{localTime(p.start)}</time>
-          <strong>{p.score === null ? '—' : Math.round(p.score)}</strong>
-          <span>Cloud {p.cloud === null ? '?' : `${Math.round(p.cloud * 100)}%`}</span>
-          <span>Clear {clearCount}/{totalCount} models</span>
-          <span>{moonAboveHorizon(p.sky.time) ? 'Moon up' : 'Moon down'} · {Math.round(p.sky.illumination * 100)}%</span>
-        </div>;
-      })}</div><p className="nightsky-hourly-caption">Green ≥55 · amber 35–54 · red &lt;35 · grey unknown/twilight.</p>
+      <div className="sky-hourly-heading"><div><p className="nightsky-eyebrow">A glance through the night</p><h3>Hour by hour</h3></div><div className="sky-scroll-actions"><button type="button" onClick={() => scrollHours(-1)} disabled={scrollEdges.start} aria-label="Earlier observing hours"><WeatherIcon name="arrow" /></button><button type="button" onClick={() => scrollHours(1)} disabled={scrollEdges.end} aria-label="Later observing hours"><WeatherIcon name="arrow" /></button></div></div>
+      <div className="sky-timeline-shell"><div className="sky-timeline" ref={timeline} onScroll={updateScrollEdges} tabIndex={0} role="region" aria-label="Hourly observing conditions, scroll horizontally">{selected.hourly.map(p => {
+        const cloud = familyMean(p.models.flatMap(m => m.inputs.cloud === null ? [] : [{ modelId: m.modelId, family: m.family, value: m.inputs.cloud }]));
+        const presentation = skyHourlyPresentation(cloud, p.score, p.eligibleMinutes);
+        const bestHour = !!window && p.start < window.end && p.end > window.start;
+        const moonUp = moonAboveHorizon(p.sky.time);
+        return <button type="button" key={p.start} className={`sky-period sky-period--${presentation.tone} ${selectedHour === p.start ? 'is-selected' : ''}`} aria-expanded={chosenHour?.start === p.start} aria-controls="sky-hour-details" aria-label={`${localTime(p.start)}: ${presentation.label}, ${presentation.suitability.label}, ${presentation.cloudLabel}, Moon ${moonUp ? 'up' : 'down'}${bestHour ? ', best viewing window' : ''}. Show details.`} onClick={() => setSelectedHour(selectedHour === p.start ? null : p.start)}>
+          <span className="sky-period-top"><time dateTime={new Date(p.start).toISOString()}>{localTime(p.start)}</time>{bestHour && <span className="sky-period-best" title="Best viewing window"><WeatherIcon name="star" /></span>}</span>
+          <span className="sky-period-symbol"><WeatherIcon name={presentation.icon} /></span>
+          <strong className="sky-period-condition">{presentation.label}</strong>
+          <span className="sky-period-cloud">{presentation.cloudLabel}</span>
+          <span className={`sky-period-status sky-period-status--${presentation.suitability.tone}`}><i />{presentation.suitability.label}</span>
+          <span className="sky-period-moon"><WeatherIcon name="moon" />Moon {moonUp ? 'up' : 'down'}</span>
+        </button>;
+      })}</div></div>
+      <div id="sky-hour-details" className={`sky-hour-details ${chosenHour ? 'is-open' : ''}`} aria-live="polite">{chosenHour ? <><strong>{localTime(chosenHour.start)}–{localTime(chosenHour.end)}</strong><span>{chosenHour.score === null ? 'Observing score unavailable' : `Observing score ${Math.round(chosenHour.score)}/100`} · {chosenHour.eligibleMinutes} dark minutes · Moon {Math.round(chosenHour.sky.illumination * 100)}% illuminated</span><span>{chosenHour.models.filter(m => m.inputs.cloud !== null && m.inputs.cloud < 0.3).length}/{chosenHour.models.filter(m => m.inputs.cloud !== null).length} models indicate less than 30% cloud. {chosenHour.precipitation.basis === 'ensemble-probability' ? 'Rain probability' : 'Wet model agreement'}: {chosenHour.precipitation.value === null ? 'unavailable' : eventPercent(chosenHour.precipitation.value)} over 3 hours.</span></> : <span>Select an hour for moonlight, model agreement and viewing detail.</span>}</div>
+      <p className="nightsky-hourly-caption">Stars mean mostly clear skies; clouds show cloud cover. The viewing label also accounts for moonlight, rain, wind and darkness. <span className="sky-best-key"><WeatherIcon name="star" /> Best viewing window</span></p>
     </section>
     <SkyEventsPanel date={selected.date} darkness={selected.darkness} best={window ?? null} moonIllumination={selected.moon.illumination} now={time} />
     <section className="nightsky-aurora" aria-labelledby="nightsky-aurora-title">

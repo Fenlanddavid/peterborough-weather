@@ -36,6 +36,10 @@ export interface EventEstimate {
   expectedAmount: number | null;
   conditionalAmount: number | null;
   provenance: Provenance[];
+  components?: { family: Family; modelId: string; value: number }[];
+  metOfficeProbability?: number;
+  upperAmount?: number | null;
+  nativeHours?: number;
 }
 export function provenanceOf(source: Provenance): Provenance {
   const { provider, modelId, family, issuedAt, fetchedAt, sourceTime, validFrom, validTo, units, coverage } = source;

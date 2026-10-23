@@ -51,7 +51,7 @@ See [the phase-by-phase implementation report](docs/implementation-report.md) fo
 
 Forecast and Summary now use complete-window family-weighted deterministic signals and separately cached IFS/GEFS/MOGREPS-G ensemble estimates. UKV contributes within its actual forecast range while remaining an overlay in Trends. Percentages explicitly distinguish ensemble estimates, deterministic agreement and recent-run support; none is calibrated.
 
-Night Sky loads Astronomy Engine and satellite.js only when opened. It calculates local darkness, Moon events, planet visibility, local eclipse portions and ISS visible segments, with weather-based observing windows and separate aurora products. Scores and geographic aurora tiers are configurable planning heuristics, not measured seeing or verified visibility probabilities. Optional observation verification appears in Trends; corrections and reweighting stay disabled.
+Night Sky loads Astronomy Engine and satellite.js only when opened. It calculates local darkness, Moon events, planet visibility, local eclipse portions and ISS visible segments, with weather-based observing windows and separate aurora products. Scores and geographic aurora tiers are configurable planning heuristics, not measured seeing or verified visibility probabilities. Legacy observation verification appears in Trends. The automatic learning described below is a separate system with observation-based gates.
 
 ```sh
 npm test
@@ -65,8 +65,16 @@ npm run report:budget
 
 Live probes are **separate** from unit tests: `npm run probe:sources` and `npm run probe:browser`. The browser probe defaults to the real published Pages origin. Set `CHROMIUM_PATH` to an installed Chromium executable when needed. Run production browser checks against `npm run preview -- --host 127.0.0.1 --port 5187 --base /peterborough-weather/` with `npm run smoke:browser`.
 
-Optional collectors are disabled unless repository variables `COLLECT_METAR`, `COLLECT_VERIFICATION`, `COLLECT_AURORAWATCH` or `COLLECT_ISS` are `true`. One workflow collects hourly when enabled and publishes a fresh build when data changes. Code pushes always build and publish. The `data` branch stores only the current generated snapshot in one root commit; it is replaced on each change. There is no retained application-shell artifact to expire. Only the Pages deployment artifact is uploaded.
+METAR and app forecast collection run automatically on the hourly schedule. Legacy Previous Runs verification, AuroraWatch and ISS collection remain optional through `COLLECT_VERIFICATION`, `COLLECT_AURORAWATCH` and `COLLECT_ISS`. The workflow publishes a fresh build when data changes. Code pushes always build and publish. The `data` branch stores only the current generated snapshot in one root commit; it is replaced on each change. There is no retained application-shell artifact to expire. Only the Pages deployment artifact is uploaded.
 
 Verification collects temperature once per 20 hours, retaining 100 days of compact model/time/lead/value rows. The same station-matched scoring function produces the client results. Daily history keeps the last score set for each UTC collection date, rather than an hourly copy of the full evaluation. Failed source requests retain the previous usable data; a failed data-branch lookup stops the job.
 
 Generated `public/data` files are ignored on `main`. Run `npm run data:pull` to restore the current snapshot for local development; this replaces the local generated directory after a successful fetch and extraction. Changes to collection/publishing code belong on `main`, while generated files belong only on `data`. See [the archive migration notes](docs/data-archive-migration.md) for validation and recovery.
+
+## Forecast accuracy and Night Sky cards (23 October 2026)
+
+See [the upgrade documentation](docs/forecast-accuracy-upgrade.md) for all seven areas, defaults, automatic promotion/rollback, attribution and current source limits. The new learning pipeline archives scheduled app forecasts and verifies compatible observations; Wittering temperature corrections stay at Wittering. Missing compatible observations leave that variable/location on the default policy. No measured accuracy improvement is claimed.
+
+The optional processed Met Office feed uses the **Site-Specific Blended Probabilistic Forecast v2 Free plan** and one repository Actions secret, **`MET_OFFICE_API_KEY`**. Once connected, collection and policy management are automatic. The feed shares the UKMO allocation and recovers the original blend when unavailable, stale or incompatible.
+
+Night Sky hour cards now use stars and cloud symbols, short viewing labels and selectable details. `npm run smoke:upgrade` checks the forecast and these cards at desktop and phone widths using fixtures.

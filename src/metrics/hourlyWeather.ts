@@ -9,6 +9,7 @@ export interface HourlyCondition {
   label: string;
   description?: string;
   icon: IconName | null;
+  risks?: { label: string; support: number }[];
 }
 
 const UNAVAILABLE: HourlyCondition = { label: 'Unavailable', description: 'Weather conditions unavailable', icon: null };
@@ -57,14 +58,17 @@ export function conditionForCode(code: number | null, isDay: number | null): Hou
 }
 
 /** Codes are categorical. Ties use the lower code, independent of model/run order. */
-export function rankedWeatherCodes(samples: ModelValue[]): number[] {
+export function weightedWeatherCodes(samples: ModelValue[]): { code: number; support: number }[] {
   const votes = new Map<number, number>();
   const valid = samples.filter(source => Number.isInteger(source.value) && ([0, 1, 2].includes(source.value) || CONDITIONS[source.value]));
   for (const { source, weight } of familyWeights(valid)) {
     votes.set(source.value, (votes.get(source.value) ?? 0) + weight);
   }
-  return [...votes].sort((a, b) => b[1] - a[1] || a[0] - b[0]).map(([code]) => code);
+  return [...votes].sort((a, b) => b[1] - a[1] || a[0] - b[0]).map(([code, support]) => ({ code, support }));
 }
+
+export const rankedWeatherCodes = (samples: ModelValue[]) => weightedWeatherCodes(samples).map(v => v.code);
+export const CONDITION_CONFIG = { hazardSupport: 0.5 };
 
 export const PRECIPITATION_THRESHOLD_MM = 0.1;
 // No numerical-noise tolerance: every finite positive amount remains distinguishable
@@ -81,8 +85,11 @@ export function formatPrecipitation(value: number | null): string {
 interface ConditionEvidence {
   /** Valid codes in descending family-weighted order. */
   codes: readonly number[];
+  support?: readonly { code: number; support: number }[];
+  hazardThreshold?: number;
   precipitation: number | null;
   snowfall: number | null;
+  snowSupport?: number;
   cloud: number | null; // ForecastSignals fraction, already 0–1
   daylight: number | null;
 }
@@ -101,15 +108,21 @@ export function getHourlyCondition(input: ConditionEvidence): HourlyCondition {
   const { codes, precipitation, snowfall, cloud, daylight } = input;
   const kind = precipitationKind(precipitation);
   const isDay = daylight === 0 || daylight === 1 ? daylight : null;
-  const code = codes[0] ?? null;
+  const code = codes.find(c => ![...thunder, ...freezing, ...snow].includes(c)) ?? null;
   const dryCode = codes.find(c => c >= 0 && c <= 3);
   const sky = conditionForCode(dryCode ?? (cloud === null || !Number.isFinite(cloud) || cloud < 0 || cloud > 1 ? null : cloud < 0.15 ? 0 : cloud < 0.65 ? 2 : 3), isDay);
-  const hazard = codes.find(c => thunder.includes(c) || freezing.includes(c) || snow.includes(c));
+  const hazards = [thunder, freezing, snow];
+  const evidence = input.support ?? codes.map((code, i) => ({ code, support: i === 0 ? 1 : 0 }));
+  const threshold = input.hazardThreshold ?? CONDITION_CONFIG.hazardSupport;
+  const riskGroups = hazards.map(group => ({ group, support: evidence.filter(v => group.includes(v.code)).reduce((s, v) => s + v.support, 0) }));
+  const dominant = riskGroups.filter(v => v.support >= threshold).sort((a, b) => b.support - a.support)[0];
+  const hazard = dominant ? codes.find(c => dominant.group.includes(c)) : undefined;
+  const risks = riskGroups.filter(v => v.support > 0 && v !== dominant).map(v => ({ label: conditionForCode(codes.find(c => v.group.includes(c))!, isDay).label, support: v.support }));
   let result: HourlyCondition;
   if (hazard !== undefined) {
     const condition = conditionForCode(hazard, isDay);
     result = { ...condition, description: `${condition.label} indicated at the shown time; may not persist throughout the hour` };
-  } else if (snowfall !== null && Number.isFinite(snowfall) && snowfall > 0) {
+  } else if (snowfall !== null && Number.isFinite(snowfall) && snowfall > 0 && (input.snowSupport ?? (input.support ? 0 : 1)) >= threshold) {
     result = { label: 'Snow', description: 'Snowfall indicated during the hour', icon: 'snow' };
   } else if (kind === 'wet') {
     const wet = codes.find(c => ordinaryWet.includes(c));
@@ -132,6 +145,8 @@ export function getHourlyCondition(input: ConditionEvidence): HourlyCondition {
   }
   if (kind === 'trace') result = { ...result, description: `${result.description ?? result.label}; Trace precipitation` };
   if (kind === 'missing') result = { ...result, description: `${result.description ?? result.label}; hourly precipitation unavailable` };
+  if (snowfall !== null && snowfall > 0 && input.snowSupport !== undefined && input.snowSupport > 0 && input.snowSupport < threshold && !risks.some(r => /snow/i.test(r.label))) risks.push({ label: 'Snowfall', support: input.snowSupport });
+  if (risks.length) result = { ...result, risks, description: `${result.description ?? result.label}; lower-support risk: ${risks.map(r => `${r.label} (${Math.round(r.support * 100)}% family support, not probability)`).join('; ')}` };
   return result;
 }
 
@@ -139,14 +154,11 @@ export function getHourlyCondition(input: ConditionEvidence): HourlyCondition {
 export function getDailyCondition(input: CachedRun[] | ForecastSignals, validTime: string, precipitation?: EventEstimate): HourlyCondition {
   const index = Array.isArray(input) ? buildForecastSignals(input) : input;
   const time = utc(validTime);
-  const ranked = rankedWeatherCodes(index.samples('weather_code', time, true));
-  const hazard = ranked.find(c => [...fog, ...freezing, ...thunder].includes(c));
-  const code = hazard ?? ranked[0] ?? null;
+  const support = weightedWeatherCodes(index.samples('weather_code', time, true));
   const daylight = index.mean('is_day', time, true);
-  const isDay = daylight === null ? null : Math.round(daylight);
-  if (code !== null && code >= 45) return conditionForCode(code, isDay);
-  if (precipitation?.value !== null && precipitation?.value !== undefined && precipitation.value > 0) return { label: 'Precipitation', icon: 'precipitation' };
-  if (code !== null) return conditionForCode(code, isDay);
-  const cloud = index.mean('cloud_cover', time, true);
-  return conditionForCode(cloud === null ? null : cloud < 0.15 ? 0 : cloud < 0.65 ? 2 : 3, isDay);
+  const snowValues = index.samples('snowfall', time + 3600_000, true);
+  const snowSupport = familyWeights(snowValues).filter(v => v.source.value > 0).reduce((sum, v) => sum + v.weight, 0);
+  const condition = getHourlyCondition({ snowSupport, codes: support.map(v => v.code), support, precipitation: index.mean('precipitation', time + 3600_000, true), snowfall: index.mean('snowfall', time + 3600_000, true), cloud: index.mean('cloud_cover', time, true), daylight: daylight === null ? null : Math.round(daylight) });
+  if ((condition.icon === null || ['sun', 'moon', 'partly-cloudy', 'cloud-moon', 'cloud', 'clear-sky'].includes(condition.icon)) && precipitation?.value !== null && precipitation?.value !== undefined && precipitation.value > 0) return { label: 'Precipitation', icon: 'precipitation' };
+  return condition;
 }

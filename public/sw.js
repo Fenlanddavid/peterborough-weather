@@ -1,5 +1,5 @@
 const CACHE_PREFIX = `pb-weather:${self.registration.scope}:`;
-const CACHE_NAME = `${CACHE_PREFIX}v5`;
+const CACHE_NAME = `${CACHE_PREFIX}v6`;
 const DATA_CACHE = `${CACHE_PREFIX}changing-data`;
 const INDEX_URL = new URL('index.html', self.registration.scope).href;
 const MANIFEST_URL = new URL('manifest.json?v=2', self.registration.scope).href;
@@ -34,7 +34,7 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || url.origin !== scope.origin || !url.pathname.startsWith(scope.pathname)) return;
 
   const relativePath = url.pathname.slice(scope.pathname.length);
-  if (/^data\/(aurorawatch\.json|iss-tle\.txt|obs\/.*\.json|verification\/.*\.json)$/.test(relativePath)) {
+  if (/^data\/(aurorawatch\.json|iss-tle\.txt|obs\/.*\.json|verification\/.*\.json|forecast\/(?:latest|policy|metoffice|metoffice-status|diagnostics)\.json)$/.test(relativePath)) {
     event.respondWith((async () => {
       const cache = await caches.open(DATA_CACHE);
       try {

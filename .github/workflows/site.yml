@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   collect:
-    if: github.event_name != 'push' && (vars.COLLECT_METAR == 'true' || vars.COLLECT_AURORAWATCH == 'true' || vars.COLLECT_ISS == 'true' || vars.COLLECT_VERIFICATION == 'true')
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     concurrency:
       group: weather-data-archive
@@ -33,7 +33,6 @@ jobs:
       - name: Restore complete data snapshot
         run: bash scripts/data-branch.sh public/data
       - name: Collect METAR independently
-        if: vars.COLLECT_METAR == 'true' || vars.COLLECT_VERIFICATION == 'true'
         continue-on-error: true
         run: node --experimental-strip-types scripts/collect.ts metar
       - name: Collect AuroraWatch independently
@@ -48,6 +47,11 @@ jobs:
         if: vars.COLLECT_VERIFICATION == 'true'
         continue-on-error: true
         run: node --experimental-strip-types scripts/collect.ts verification
+      - name: Collect app forecasts and evaluate automatic policies
+        continue-on-error: true
+        env:
+          MET_OFFICE_API_KEY: ${{ secrets.MET_OFFICE_API_KEY }}
+        run: node --experimental-strip-types scripts/collect.ts forecast
       - name: Replace changed data snapshot
         id: snapshot
         env:

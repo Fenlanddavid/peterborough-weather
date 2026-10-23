@@ -1,20 +1,20 @@
 {
-  "recordedAt": "2026-10-22T20:02:21.755Z",
+  "recordedAt": "2026-10-23T19:40:58.044Z",
   "results": [
     {
       "timezone": "UTC",
-      "files": 18,
+      "files": 20,
       "exitCode": 0,
-      "milliseconds": 2514,
-      "passedFiles": 18,
+      "milliseconds": 8110,
+      "passedFiles": 20,
       "failedFiles": 0
     },
     {
       "timezone": "Europe/London",
-      "files": 18,
+      "files": 20,
       "exitCode": 0,
-      "milliseconds": 2582,
-      "passedFiles": 18,
+      "milliseconds": 8151,
+      "passedFiles": 20,
       "failedFiles": 0
     }
   ]

@@ -17,7 +17,8 @@
     "smoke:hourly": "node --experimental-strip-types scripts/check-hourly-browser.ts",
     "smoke:browser": "node --experimental-strip-types scripts/smoke-browser.ts",
     "report:budget": "node --experimental-strip-types scripts/request-budget.ts",
-    "report:bundle": "node --experimental-strip-types scripts/bundle-report.ts"
+    "report:bundle": "node --experimental-strip-types scripts/bundle-report.ts",
+    "smoke:upgrade": "node --experimental-strip-types scripts/smoke-upgrade.ts"
   },
   "dependencies": {
     "astronomy-engine": "2.1.19",

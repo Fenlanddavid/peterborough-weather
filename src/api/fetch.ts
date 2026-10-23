@@ -1,62 +1,51 @@
-import { LOCATION } from '../config/models';
-import type { VariableId } from '../config/models';
-import type { CachedRun } from '../types';
-import { putCachedRuns, pruneOldRuns } from './db';
-import { BASE_VARIABLES, getRunTasks, makeRunKey } from './runSchedule';
-import { scheduledFetch } from '../data/scheduler';
+import { DETERMINISTIC_MODELS } from '../config/models.ts';
+import type { VariableId } from '../config/models.ts';
+import type { CachedRun } from '../types.ts';
+import { getAllCachedRuns, putCachedRuns, pruneOldRuns, readStore, writeStore } from './db.ts';
+import { BASE_VARIABLES, getRunTasks, makeRunKey } from './runSchedule.ts';
+import { scheduledFetch, HttpError } from '../data/scheduler.ts';
+import { parseModelUpdate, latestRunCandidates } from './modelUpdates.ts';
+import type { ModelUpdates, ModelUpdate } from './modelUpdates.ts';
+import { operationalUrl, parseOperational } from './operational.ts';
+import type { OperationalForecast } from './operational.ts';
+import { LOCATION } from '../config/models.ts';
+import { FORECAST_VARIABLES, parseRun, runUrl } from './runSource.ts';
 
-const SINGLE_RUNS_BASE = 'https://single-runs-api.open-meteo.com/v1/forecast';
-
-type FetchResult = 'ok' | 'unavailable' | 'network';
-
-/**
- * Fetch every variable for one model run in a single request (Open-Meteo counts a request
- * with up to 10 variables and 7 days as one call), then store one record per variable.
- */
-async function fetchModelRun(modelId: string, runTime: string, variables: VariableId[]): Promise<FetchResult> {
-  const params = new URLSearchParams({
-    latitude: String(LOCATION.latitude),
-    longitude: String(LOCATION.longitude),
-    hourly: variables.join(','),
-    models: modelId,
-    run: runTime,
-    forecast_days: '7',
-    timezone: 'UTC',
-    wind_speed_unit: 'ms',
-    temperature_unit: 'celsius',
-    precipitation_unit: 'mm',
-  });
-
-  let res: Response;
+type FetchResult = 'ok' | 'unavailable' | 'network' | 'deferred';
+const attempts = new Map<string, { failures: number; retryAt: number }>();
+export async function fetchUpdates(): Promise<ModelUpdates> {
+  const entries = await Promise.all(DETERMINISTIC_MODELS.map(async model => {
+    try {
+      const raw = await (await scheduledFetch(`https://api.open-meteo.com/data/${model.id}/static/meta.json`, { retries: 0 })).json();
+      return [model.id, parseModelUpdate(raw)] as const;
+    } catch { return null; }
+  }));
+  return Object.fromEntries(entries.filter(e => e !== null));
+}
+async function fetchModelRun(modelId: string, runTime: string, variables: VariableId[], update?: ModelUpdate): Promise<FetchResult> {
+  const key = `${modelId}:${runTime}`;
+  const attempt = attempts.get(key);
+  if (attempt && Date.now() < attempt.retryAt) return 'deferred';
   try {
-    res = await scheduledFetch(`${SINGLE_RUNS_BASE}?${params}`);
-  } catch {
-    return 'network';
-  }
-  if (res.status === 429 || res.status >= 500) return 'network';
-  if (!res.ok) return 'unavailable'; // run not published yet, or not offered for this model
-
-  try {
-    const data = await res.json();
-    const hourly = data?.hourly;
-    if (!hourly || !Array.isArray(hourly.time) || data.utc_offset_seconds !== 0) return 'unavailable';
-    const units: Record<string, string> = { temperature_2m: '°C', precipitation: 'mm', snowfall: 'cm', wind_speed_10m: 'm/s', wind_gusts_10m: 'm/s', pressure_msl: 'hPa', cloud_cover: '%', is_day: '', weather_code: 'wmo code' };
-    if (hourly.time.some((t: unknown, i: number) => typeof t !== 'string' || !Number.isFinite(Date.parse(`${t}Z`)) || (i > 0 && t <= hourly.time[i - 1]))) return 'unavailable';
-    const fetchedAt = Date.now();
-    const records: CachedRun[] = variables
-      .filter((variable) => data.hourly_units?.[variable] === units[variable] && Array.isArray(hourly[variable]) && hourly[variable].length === hourly.time.length && hourly[variable].every((v: unknown) => v === null || typeof v === 'number' && Number.isFinite(v)) && hourly[variable].some((v: unknown) => typeof v === 'number'))
-      .map((variable) => ({
-        key: makeRunKey(modelId, runTime, variable),
-        modelId, runTime, variable,
-        times: hourly.time,
-        values: hourly[variable],
-        fetchedAt,
-      }));
-    if (!records.length) return 'unavailable';
+    let response: Response;
+    try { response = await scheduledFetch(runUrl(modelId, runTime, variables), { retries: 0 }); }
+    catch (error) {
+      // A rejected optional diagnostic must not cost the core forecast. A genuine
+      // unavailable run/429/server failure gets backoff rather than a second request.
+      if (!(error instanceof HttpError) || error.status !== 400 || variables.length <= BASE_VARIABLES.length) throw error;
+      response = await scheduledFetch(runUrl(modelId, runTime, BASE_VARIABLES), { retries: 0 });
+    }
+    const records = parseRun(await response.json(), modelId, runTime, variables, Date.now(), update);
+    if (!records.length) throw new RangeError('Run not published');
     await putCachedRuns(records);
+    const complete = records.length === variables.length && records.every(r => !r.values.includes(null));
+    if (complete) attempts.delete(key);
+    else { const failures = (attempt?.failures ?? 0) + 1; attempts.set(key, { failures, retryAt: Date.now() + Math.min(120, 15 * 2 ** (failures - 1)) * 60_000 }); }
     return 'ok';
-  } catch {
-    return 'network';
+  } catch (error) {
+    const failures = (attempt?.failures ?? 0) + 1;
+    attempts.set(key, { failures, retryAt: Date.now() + Math.min(120, 15 * 2 ** (failures - 1)) * 60_000 });
+    return error instanceof HttpError && error.status < 500 && error.status !== 429 ? 'unavailable' : 'network';
   }
 }
 
@@ -65,38 +54,54 @@ export interface FetchSummary {
   ok: number;
   unavailable: number;
   failed: number;
+  updates: ModelUpdates;
+  operational?: OperationalForecast;
 }
 
 /** Fetch new or still-publishing runs for all deterministic models. */
 export async function fetchAllDeterministicRuns(
   cached: CachedRun[],
-  onProgress?: (done: number, total: number) => void
+  onProgress?: (done: number, total: number) => void,
+  onLatest?: (updates: ModelUpdates, operational?: OperationalForecast) => Promise<void>
 ): Promise<FetchSummary> {
   await pruneOldRuns();
-
-  const tasks = getRunTasks(cached).sort((a, b) => b.runTime.localeCompare(a.runTime));
-
-  const summary: FetchSummary = { requested: tasks.length, ok: 0, unavailable: 0, failed: 0 };
+  const updates = await fetchUpdates();
+  const summary: FetchSummary = { requested: 0, ok: 0, unavailable: 0, failed: 0, updates };
+  try {
+    const update = updates.ukmo_uk_deterministic_2km;
+    if (update && Date.now() >= update.availableAt + 10 * 60_000) {
+      const previous = await readStore<OperationalForecast>('datasets', 'ukv-operational');
+      if (previous && (Date.now() - previous.checkedAt < 15 * 60_000 || previous.metadata.initialisedAt === update.initialisedAt && Date.now() - previous.checkedAt < 60 * 60_000)) summary.operational = previous;
+      else { summary.operational = await parseOperational(await (await scheduledFetch(operationalUrl(LOCATION), { retries: 0 })).json(), update, previous ?? undefined); await writeStore('datasets', 'ukv-operational', summary.operational); }
+    }
+  } catch { /* single-run data remains available */ }
+  const tried = new Set<string>();
+  const count = (result: FetchResult) => { if (result === 'deferred') return; summary.requested++; if (result === 'ok') summary.ok++; else if (result === 'unavailable') summary.unavailable++; else summary.failed++; };
+  // Complete the newest usable forecast for every model before comparison backfill.
+  await Promise.all(DETERMINISTIC_MODELS.map(async model => {
+    for (const runTime of latestRunCandidates(model.id, updates[model.id], Date.now())) {
+      if (typeof document !== 'undefined' && document.hidden) return;
+      const existing = cached.filter(r => r.modelId === model.id && r.runTime === runTime);
+      if (existing.length >= FORECAST_VARIABLES.length && existing.every(r => !r.values.includes(null))) break;
+      tried.add(`${model.id}:${runTime}`);
+      const result = await fetchModelRun(model.id, runTime, FORECAST_VARIABLES, updates[model.id]);
+      count(result);
+      if (result === 'ok') break;
+    }
+  }));
+  await onLatest?.(updates, summary.operational);
+  const tasks = getRunTasks(await getAllCachedRuns(), Date.now(), updates).filter(t => !tried.has(`${t.modelId}:${t.runTime}`)).sort((a, b) => b.runTime.localeCompare(a.runTime));
   let done = 0;
   onProgress?.(0, tasks.length);
-
-  // ~120 requests on a cold start, a handful afterwards; stay well under 600/min.
   const BATCH_SIZE = 6;
   for (let i = 0; i < tasks.length; i += BATCH_SIZE) {
     if (typeof document !== 'undefined' && document.hidden) break;
-    const batch = tasks.slice(i, i + BATCH_SIZE);
-    await Promise.all(batch.map(async (t) => {
-      let result = await fetchModelRun(t.modelId, t.runTime, t.variables);
-      // If a model rejects one of the optional variables, don't lose its core data.
-      if (result === 'unavailable' && t.variables.length > BASE_VARIABLES.length) {
-        result = await fetchModelRun(t.modelId, t.runTime, BASE_VARIABLES);
-      }
-      if (result === 'ok') summary.ok++;
-      else if (result === 'unavailable') summary.unavailable++;
-      else summary.failed++;
+    await Promise.all(tasks.slice(i, i + BATCH_SIZE).map(async t => {
+      const result = await fetchModelRun(t.modelId, t.runTime, t.variables, updates[t.modelId]);
+      count(result);
       onProgress?.(++done, tasks.length);
     }));
-    if (i + BATCH_SIZE < tasks.length) await new Promise((r) => setTimeout(r, 200));
+    if (i + BATCH_SIZE < tasks.length) await new Promise(r => setTimeout(r, 200));
   }
   return summary;
 }

@@ -1,3 +1,4 @@
+import { collectForecastUpgrade } from './lib/forecastCollector.ts';
 /** Optional public-repository collectors. No browser credentials or paid service. */
 import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { scheduledFetch } from '../src/data/scheduler.ts';
@@ -122,9 +123,9 @@ async function collectVerification() {
   await save('verification/results.json', JSON.stringify(compactResults({ ...history, station, provider: 'AviationWeather / Open-Meteo Previous Runs', sourceTime: archive.sourceTime, collectedAt: now, results, correctionEnabled: false, reweightingEnabled: false, failures }, now)));
 }
 const requested = process.argv.slice(2);
-if (!requested.length) throw new Error('Specify metar, aurorawatch, iss or verification');
+if (!requested.length) throw new Error('Specify metar, aurorawatch, iss, verification or forecast');
 for (const source of requested) {
   try {
-    if (source === 'metar') await collectMetars(); else if (source === 'aurorawatch') await collectWatch(); else if (source === 'iss') await collectIss(); else if (source === 'verification') await collectVerification(); else throw new Error(`Unknown collector ${source}`);
+    if (source === 'metar') await collectMetars(); else if (source === 'aurorawatch') await collectWatch(); else if (source === 'iss') await collectIss(); else if (source === 'verification') await collectVerification(); else if (source === 'forecast') await collectForecastUpgrade(root, process.env.MET_OFFICE_API_KEY); else throw new Error(`Unknown collector ${source}`);
   } catch (error) { console.error(`${source}: ${String(error)}; existing valid files retained`); process.exitCode = 1; }
 }

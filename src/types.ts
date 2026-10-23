@@ -30,6 +30,13 @@ export interface CachedRun {
   times: string[];
   values: (number | null)[];
   fetchedAt: number;     // Date.now() when cached
+  availableAt?: number;  // Provider publication time, only when matched to this run
+  checkedAt?: number;
+  nativeHours?: number;
+  forecastLocation?: { latitude: number; longitude: number; elevation: number };
+  product?: 'latest-forecast';
+  issueConfirmed?: false;
+  firstSeenAt?: number;
   unitState?: 'unknown-legacy'; // v1 wind units were not trustworthy; keep records, exclude calculations.
 }
 

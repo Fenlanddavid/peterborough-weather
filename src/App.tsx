@@ -24,7 +24,7 @@ const SourceProbe = import.meta.env.DEV ? lazy(() => import('./views/SourceProbe
 function App() {
   const [view, setView] = useState('forecast');
   const isOverview = ['forecast', 'summary', 'nightsky', 'seasonal'].includes(view);
-  const { runs, loading, progress, lastUpdated, error, refresh } = useWeatherData();
+  const { runs, loading, progress, lastUpdated, error, refresh, context, sourceNotes } = useWeatherData();
   const ensembles = useEnsembles(['forecast', 'summary', 'nightsky'].includes(view));
 
   return (
@@ -56,9 +56,9 @@ function App() {
       <InstallApp />
 
       <main className="app-main">
-        {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} ensembles={ensembles.index} />}
-        {view === 'summary' && <Summary runs={runs} loading={loading} hasError={!!error} ensembles={ensembles.index} />}
-        {view === 'nightsky' && <Suspense fallback={<p role="status">Loading Night Sky…</p>}><NightSky runs={runs} loading={loading} hasError={!!error} ensembles={ensembles.index} /></Suspense>}
+        {view === 'forecast' && <Forecast runs={runs} loading={loading} hasError={!!error} lastUpdated={lastUpdated} sourceNotes={sourceNotes} ensembles={ensembles.index} context={context} />}
+        {view === 'summary' && <Summary runs={runs} loading={loading} hasError={!!error} ensembles={ensembles.index} context={context} />}
+        {view === 'nightsky' && <Suspense fallback={<p role="status">Loading Night Sky…</p>}><NightSky runs={runs} loading={loading} hasError={!!error} ensembles={ensembles.index} context={context} /></Suspense>}
         {view === 'trends' && <Suspense fallback={<p className="forecast-status" role="status">Loading charts…</p>}><Trends runs={runs} /></Suspense>}
         {view === 'seasonal' && <Seasonal />}
         {view === 'teleconnections' && <Teleconnections />}
@@ -72,7 +72,7 @@ function App() {
           <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">
             Open-Meteo
           </a>
-          {' · '}<a href={`${import.meta.env.BASE_URL}THIRD_PARTY_NOTICES.txt`}>Library notices</a>
+          {' · '}<a href="https://datahub.metoffice.gov.uk/" target="_blank" rel="noopener noreferrer">Met Office (when connected)</a>{' · '}<a href={`${import.meta.env.BASE_URL}THIRD_PARTY_NOTICES.txt`}>Library notices</a>
         </span>
       </footer>
     </div>

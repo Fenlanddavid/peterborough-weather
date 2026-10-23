@@ -24,7 +24,7 @@ test('uses latest forecast runs including UKV, and converts wind from m/s to mph
   assert.equal(briefing.days[0].temperatureSpread, 8);
   assert.equal(briefing.days[0].modelCount, 3);
   assert.ok(Math.abs(briefing.days[0].windMph! - 22.3694) < 0.001);
-  assert.equal(briefing.days[0].gustTime, '14:00');
+  assert.equal(briefing.days[0].gustTime, '13:00–14:00'); // end-labelled 14:00 maximum covers 13:00–14:00
   assert.match(briefing.wind, /45 mph/);
   assert.match(briefing.agreement, /at least 4°C/);
 });
@@ -163,19 +163,21 @@ test('daily precipitation symbol retains daily-period evidence when the represen
   ], winterNow);
   assert.equal(briefing.days[0].rainMm, 2);
   assert.equal(briefing.days[0].precipitation.value, 1);
-  assert.equal(briefing.days[0].condition.icon, 'precipitation');
-  assert.equal(briefing.days[0].condition.label, 'Precipitation');
+  assert.equal(briefing.days[0].condition.icon, 'partly-cloudy');
+  assert.equal(briefing.days[0].condition.label, 'Partly cloudy');
+  assert.match(briefing.days[0].rainTiming!, /afternoon/);
 });
 
 // A dry representative hour should not hide a known precipitation type later in the day.
-test('daily cards use simple supported weather labels from wet hours', () => {
-  for (const [code, label] of [[51, 'Light drizzle'], [61, 'Light rain'], [63, 'Rain'], [80, 'Rain showers']] as const) {
+test('a brief shower does not replace the duration-weighted daily condition and its timing stays visible', () => {
+  for (const [code] of [[51, 'Light drizzle'], [61, 'Light rain'], [63, 'Rain'], [80, 'Rain showers']] as const) {
     const briefing = buildForecastBriefing([
       run('precipitation', winterAccumulations, winterAccumulations.map(t => t === '2026-12-07T18:00' ? 2 : 0)),
       run('weather_code', winterDay, winterDay.map(t => t === '2026-12-07T17:00' ? code : 2)),
       run('is_day', winterDay, winterDay.map(() => 1)),
     ], winterNow);
-    assert.equal(briefing.days[0].condition.label, label);
-    assert.equal(briefing.days[0].condition.icon, 'rain');
+    assert.equal(briefing.days[0].condition.label, 'Partly cloudy');
+    assert.equal(briefing.days[0].condition.icon, 'partly-cloudy');
+    assert.match(briefing.days[0].rainTiming!, /afternoon/);
   }
 });
