@@ -147,3 +147,15 @@ P(>=0.5 cm) >=30%. Deterministic agreement alone cannot trigger it. Trace
 amounts remain in day detail. Hourly snow support counts only amounts >=0.1 cm
 per hour, in both hourly slots and daily-condition sampling. No new banner,
 box or explanatory home sentence is added.
+
+## Rain occurrence and icons
+
+Hourly rain support is the equal-family share of fresh models with at least
+0.1 mm in the hour. A rain icon/label requires >=50% support, and its wet code
+comes from those wet models. Positive support below that threshold retains
+the sky condition and adds “Showers possible” through the existing risks
+mechanism, explicitly described as family support, never probability. Trace
+plus a lone drizzle/shower code no longer suffices. Daily headlines use the
+same hourly evidence. Displayed amounts remain unchanged; missing amounts
+retain their unavailable description. Cached-only rainfall cannot supply
+fresh occurrence support. No UI elements or styles are added.

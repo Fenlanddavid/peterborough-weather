@@ -137,9 +137,9 @@ test('minority thunder/snow/freezing signals remain risks until family support r
   assert.notEqual(slot.condition.icon, 'storm'); assert.equal(slot.condition.risks?.[0].label, 'Thunderstorm');
   const support = weightedWeatherCodes(buildForecastSignals(runs, now).samples('weather_code', now));
   assert.ok(Math.abs(support.find(v => v.code === 95)!.support - 1 / 3) < 1e-12);
-  const plurality = getHourlyCondition({ codes: [95, 2, 3], support: [{ code: 95, support: 0.4 }, { code: 2, support: 0.3 }, { code: 3, support: 0.3 }], precipitation: null, snowfall: 0, cloud: 0.4, daylight: 0 });
+  const plurality = getHourlyCondition({ rainSupport: 0, codes: [95, 2, 3], support: [{ code: 95, support: 0.4 }, { code: 2, support: 0.3 }, { code: 3, support: 0.3 }], precipitation: null, snowfall: 0, cloud: 0.4, daylight: 0 });
   assert.notEqual(plurality.icon, 'storm'); assert.equal(plurality.risks?.length, 1);
-  const majority = getHourlyCondition({ codes: [71, 73, 2], support: [{ code: 71, support: 1 / 3 }, { code: 73, support: 1 / 3 }, { code: 2, support: 1 / 3 }], precipitation: 0.1, snowfall: 0, cloud: 0.4, daylight: 0 });
+  const majority = getHourlyCondition({ rainSupport: 0, codes: [71, 73, 2], support: [{ code: 71, support: 1 / 3 }, { code: 73, support: 1 / 3 }, { code: 2, support: 1 / 3 }], precipitation: 0.1, snowfall: 0, cloud: 0.4, daylight: 0 });
   assert.equal(majority.icon, 'snow');
 });
 

@@ -5,7 +5,7 @@ import { familyWeights } from '../forecast/policy.ts';
 import { PRECIP_3H, PRECIP_6H, GUST } from '../forecast/events.ts';
 import type { EnsembleIndex } from '../forecast/events.ts';
 import type { ForecastSignals } from '../forecast/signals.ts';
-import { forecastDaylight, formatPrecipitation, getHourlyCondition, weightedWeatherCodes } from './hourlyWeather.ts';
+import { forecastDaylight, formatPrecipitation, getHourlyCondition, rainOccurrence, weightedWeatherCodes } from './hourlyWeather.ts';
 
 export const formatHourlySpeed = (ms: number | null) => ms === null || !Number.isFinite(ms) || ms < 0 ? '—' : `${Math.round(msToMph(ms))} mph`;
 const localDateTime = (time: number) => new Intl.DateTimeFormat('en-GB', {
@@ -37,7 +37,8 @@ export function buildHourlySlot(signals: ForecastSignals, time: string, ensemble
   const support = weightedWeatherCodes(samples('weather_code', start));
   const codes = support.map(v => v.code);
   const snowSupport = familyWeights(samples('snowfall', end)).filter(v => v.source.value >= SNOW_HOURLY_THRESHOLD_CM).reduce((sum, v) => sum + v.weight, 0);
-  const resolved = getHourlyCondition({ codes, support, snowSupport, precipitation, snowfall, cloud, daylight });
+  const rain = rainOccurrence(signals.samples('precipitation', end), signals.samples('weather_code', start));
+  const resolved = getHourlyCondition({ ...rain, codes, support, snowSupport, precipitation, snowfall, cloud, daylight });
   const windowHours = Math.max(3, ...samples('precipitation', end).map(s => s.nativeHours ?? 1)) > 3 ? 6 : 3;
   const windowStart = Math.floor(start / (windowHours * HOUR)) * windowHours * HOUR;
   const rainWindow = signals.event(windowHours === 6 ? PRECIP_6H : PRECIP_3H, windowStart, windowStart + windowHours * HOUR, ensembles);

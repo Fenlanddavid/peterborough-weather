@@ -4,7 +4,6 @@ import type { IconName } from '../components/WeatherIcon';
 import { buildForecastSignals, familyWeights } from '../forecast/signals.ts';
 import type { ModelValue, ForecastSignals } from '../forecast/signals.ts';
 import { utc } from '../data/contracts.ts';
-import type { EventEstimate } from '../data/contracts.ts';
 
 export interface HourlyCondition {
   label: string;
@@ -69,7 +68,7 @@ export function weightedWeatherCodes(samples: ModelValue[]): { code: number; sup
 }
 
 export const rankedWeatherCodes = (samples: ModelValue[]) => weightedWeatherCodes(samples).map(v => v.code);
-export const CONDITION_CONFIG = { hazardSupport: 0.5 };
+export const CONDITION_CONFIG = { hazardSupport: 0.5, wetSupport: 0.5 };
 
 /** Missing or conflicting daylight flags use neutral artwork. */
 export function forecastDaylight(samples: ModelValue[]): number | null {
@@ -90,7 +89,7 @@ export function formatPrecipitation(value: number | null): string {
   return kind === 'missing' ? '—' : kind === 'zero' ? '0.0 mm' : kind === 'trace' ? '<0.1 mm' : `${value!.toFixed(1)} mm`;
 }
 
-interface ConditionEvidence {
+export interface ConditionEvidence {
   /** Valid codes in descending family-weighted order. */
   codes: readonly number[];
   support?: readonly { code: number; support: number }[];
@@ -98,6 +97,8 @@ interface ConditionEvidence {
   precipitation: number | null;
   snowfall: number | null;
   snowSupport?: number;
+  rainSupport: number;
+  wetCodes?: readonly number[];
   cloud: number | null; // ForecastSignals fraction, already 0–1
   daylight: number | null;
 }
@@ -106,7 +107,7 @@ const snow = [71, 73, 75, 77, 85, 86];
 const thunder = [95, 96, 97, 99];
 const fog = [45, 48];
 const ordinaryWet = [51, 53, 55, 61, 63, 65, 80, 81, 82];
-const lightWet = [51, 53, 55, 80, 81, 82];
+
 
 /** Resolve one slot from the same unrounded evidence used for its displayed values.
  * Instantaneous codes can describe hazards at the start, not promise a wet whole hour.
@@ -116,15 +117,15 @@ export function getHourlyCondition(input: ConditionEvidence): HourlyCondition {
   const { codes, precipitation, snowfall, cloud, daylight } = input;
   const kind = precipitationKind(precipitation);
   const isDay = daylight === 0 || daylight === 1 ? daylight : null;
-  const code = codes.find(c => ![...thunder, ...freezing, ...snow].includes(c)) ?? null;
   const dryCode = codes.find(c => c >= 0 && c <= 3);
   const sky = conditionForCode(dryCode ?? (cloud === null || !Number.isFinite(cloud) || cloud < 0 || cloud > 1 ? null : cloud < 0.15 ? 0 : cloud < 0.65 ? 2 : 3), isDay);
   const hazards = [thunder, freezing, snow];
   const evidence = input.support ?? codes.map((code, i) => ({ code, support: i === 0 ? 1 : 0 }));
   const threshold = input.hazardThreshold ?? CONDITION_CONFIG.hazardSupport;
   const riskGroups = hazards.map(group => ({ group, support: evidence.filter(v => group.includes(v.code)).reduce((s, v) => s + v.support, 0) }));
-  const dominant = riskGroups.filter(v => v.support >= threshold).sort((a, b) => b.support - a.support)[0];
-  const hazard = dominant ? codes.find(c => dominant.group.includes(c)) : undefined;
+  const dominant = riskGroups.filter(v => v.support >= threshold && (v.group !== freezing || input.rainSupport >= CONDITION_CONFIG.wetSupport)).sort((a, b) => b.support - a.support)[0];
+  const hazardCodes = dominant?.group === freezing ? input.wetCodes ?? codes : codes;
+  const hazard = dominant ? hazardCodes.find(c => dominant.group.includes(c)) : undefined;
   const risks = riskGroups.filter(v => v.support > 0 && v !== dominant).map(v => ({ label: conditionForCode(codes.find(c => v.group.includes(c))!, isDay).label, support: v.support }));
   let result: HourlyCondition;
   if (hazard !== undefined) {
@@ -132,25 +133,21 @@ export function getHourlyCondition(input: ConditionEvidence): HourlyCondition {
     result = { ...condition, description: `${condition.label} indicated at the shown time; may not persist throughout the hour` };
   } else if (snowfall !== null && Number.isFinite(snowfall) && snowfall > 0 && (input.snowSupport ?? (input.support || snowfall < SNOW_HOURLY_THRESHOLD_CM ? 0 : 1)) >= threshold) {
     result = { label: 'Snow', description: 'Snowfall indicated during the hour', icon: 'snow' };
-  } else if (kind === 'wet') {
-    const wet = codes.find(c => ordinaryWet.includes(c));
+  } else if (input.rainSupport >= CONDITION_CONFIG.wetSupport) {
+    const wet = (input.wetCodes ?? codes).find(c => [...ordinaryWet, ...freezing].includes(c));
     result = wet === undefined ? { label: 'Precipitation', description: 'Precipitation; type uncertain', icon: 'precipitation' } : conditionForCode(wet, isDay);
     const fogCode = codes.find(c => fog.includes(c));
     if (fogCode !== undefined) result = { ...result, description: `${result.description ?? result.label}; ${conditionForCode(fogCode, isDay).label} indicated at the shown time` };
   } else if (codes.some(c => fog.includes(c))) {
     const condition = conditionForCode(codes.find(c => fog.includes(c))!, isDay);
     result = { ...condition, description: `${condition.label} indicated at the shown time` };
-  } else if (kind === 'trace' && codes.some(c => lightWet.includes(c))) {
-    result = conditionForCode(codes.find(c => lightWet.includes(c))!, isDay);
-  } else if (kind === 'missing' && code !== null) {
-    result = conditionForCode(code, isDay);
-    if (ordinaryWet.includes(code)) result = { ...result, description: `${result.label} indicated at the shown time; may not persist throughout the hour` };
   } else {
     result = sky;
     if (kind === 'zero' && codes.some(c => ordinaryWet.includes(c))) {
       result = { ...result, description: `${result.description ?? result.label}; instantaneous wet code conflicts with zero precipitation for this slot` };
     }
   }
+  if (input.rainSupport > 0 && input.rainSupport < CONDITION_CONFIG.wetSupport) risks.push({ label: 'Showers possible', support: input.rainSupport });
   if (kind === 'trace') result = { ...result, description: `${result.description ?? result.label}; Trace precipitation` };
   if (kind === 'missing') result = { ...result, description: `${result.description ?? result.label}; hourly precipitation unavailable` };
   if (snowfall !== null && snowfall > 0 && input.snowSupport !== undefined && input.snowSupport > 0 && input.snowSupport < threshold && !risks.some(r => /snow/i.test(r.label))) risks.push({ label: 'Snowfall', support: input.snowSupport });
@@ -158,8 +155,17 @@ export function getHourlyCondition(input: ConditionEvidence): HourlyCondition {
   return result;
 }
 
+/** Occurrence uses equal-family fresh model support, independent of amount priors. */
+export function rainOccurrence(amounts: ModelValue[], codes: ModelValue[]) {
+  const fresh = amounts.filter(v => !v.stale);
+  const wetModels = new Set(fresh.filter(v => v.value >= PRECIPITATION_THRESHOLD_MM).map(v => v.modelId));
+  const rainSupport = familyWeights(fresh).filter(v => wetModels.has(v.source.modelId)).reduce((sum, v) => sum + v.weight, 0);
+  const wetCodes = weightedWeatherCodes(codes.filter(v => !v.stale && wetModels.has(v.modelId) && [...ordinaryWet, ...freezing].includes(v.value))).map(v => v.code);
+  return { rainSupport, wetCodes };
+}
+
 /** Daily event interpretation stays separate from hourly amount thresholds. */
-export function getDailyCondition(input: CachedRun[] | ForecastSignals, validTime: string, precipitation?: EventEstimate): HourlyCondition {
+export function getDailyCondition(input: CachedRun[] | ForecastSignals, validTime: string): HourlyCondition {
   const index = Array.isArray(input) ? buildForecastSignals(input) : input;
   const time = utc(validTime);
   const preferFresh = (samples: ModelValue[]) => samples.some(v => !v.stale) ? samples.filter(v => !v.stale) : samples;
@@ -167,7 +173,6 @@ export function getDailyCondition(input: CachedRun[] | ForecastSignals, validTim
   const daylight = forecastDaylight(index.samples('is_day', time));
   const snowValues = preferFresh(index.samples('snowfall', time + 3600_000));
   const snowSupport = familyWeights(snowValues).filter(v => v.source.value >= SNOW_HOURLY_THRESHOLD_CM).reduce((sum, v) => sum + v.weight, 0);
-  const condition = getHourlyCondition({ snowSupport, codes: support.map(v => v.code), support, precipitation: index.mean('precipitation', time + 3600_000), snowfall: index.mean('snowfall', time + 3600_000), cloud: index.mean('cloud_cover', time), daylight });
-  if ((condition.icon === null || ['sun', 'moon', 'partly-cloudy', 'cloud-moon', 'cloud', 'clear-sky'].includes(condition.icon)) && precipitation?.value !== null && precipitation?.value !== undefined && precipitation.value > 0) return { label: 'Precipitation', icon: 'precipitation' };
-  return condition;
+  const rain = rainOccurrence(index.samples('precipitation', time + 3600_000), index.samples('weather_code', time));
+  return getHourlyCondition({ ...rain, snowSupport, codes: support.map(v => v.code), support, precipitation: index.mean('precipitation', time + 3600_000), snowfall: index.mean('snowfall', time + 3600_000), cloud: index.mean('cloud_cover', time), daylight });
 }

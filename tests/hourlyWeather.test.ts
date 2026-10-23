@@ -14,7 +14,7 @@ function run(variable: CachedRun['variable'], values: (number | null)[], modelId
   return { key: `${modelId}:${variable}:${age}`, modelId, variable, runTime: new Date(start - age * HOUR).toISOString(), fetchedAt: start,
     times: values.map((_, i) => new Date(start + i * HOUR).toISOString()), values };
 }
-const evidence = { codes: [2], precipitation: 0, snowfall: 0, cloud: 0.4, daylight: 1 };
+const evidence = { rainSupport: 0, codes: [2], precipitation: 0, snowfall: 0, cloud: 0.4, daylight: 1 };
 
 test('later rain and nonzero three-hour agreement cannot wet a dry slot', () => {
   const signals = buildForecastSignals([run('precipitation', [9, 0, 0, 2]), run('weather_code', [2]), run('cloud_cover', [40]), run('is_day', [1])], start);
@@ -23,7 +23,7 @@ test('later rain and nonzero three-hour agreement cannot wet a dry slot', () => 
   const slot = buildHourlySlot(signals, time);
   assert.equal(slot.precipitation, 0); assert.equal(slot.display.precipitation, '0.0 mm');
   assert.equal(slot.condition.icon, 'partly-cloudy');
-  assert.equal(getDailyCondition(signals, time, event).icon, 'precipitation', 'daily period retains its separate event interpretation');
+  assert.equal(getDailyCondition(signals, time).icon, 'partly-cloudy', 'daily sampling inherits the hourly occurrence rule');
   const withProbability = { ...evidence, event: { ...event, basis: 'ensemble-probability', value: 0.001 } };
   assert.equal(getHourlyCondition(withProbability).icon, 'partly-cloudy');
 });
@@ -41,7 +41,7 @@ test('raw trace and 0.1 boundary have identical formatting and condition semanti
     [0.1 - Number.EPSILON, 'trace', '<0.1 mm'], [0.1, 'wet', '0.1 mm'], [0.1 + Number.EPSILON, 'wet', '0.1 mm'], [1.26, 'wet', '1.3 mm'],
   ] as const) {
     assert.equal(precipitationKind(value), kind); assert.equal(formatPrecipitation(value), formatted);
-    const condition = getHourlyCondition({ ...evidence, precipitation: value });
+    const condition = getHourlyCondition({ ...evidence, rainSupport: value >= 0.1 ? 1 : 0, precipitation: value });
     assert.equal(condition.icon, kind === 'wet' ? 'precipitation' : 'partly-cloudy');
     if (kind === 'trace') assert.match(condition.description!, /Trace precipitation/);
   }
@@ -50,25 +50,25 @@ test('raw trace and 0.1 boundary have identical formatting and condition semanti
 
 test('supported types, trace drizzle and instantaneous hazards retain explanations', () => {
   for (const [code, icon, label] of [[51, 'rain', /drizzle/], [61, 'rain', /rain/], [80, 'rain', /showers/], [71, 'snow', /snow/], [66, 'rain', /Freezing rain/], [95, 'storm', /Thunderstorm/]] as const) {
-    const condition = getHourlyCondition({ ...evidence, codes: [code], precipitation: 0.5 });
+    const condition = getHourlyCondition({ ...evidence, rainSupport: 1, codes: [code], precipitation: 0.5 });
     assert.equal(condition.icon, icon); assert.match(condition.label, label);
   }
   for (const code of [45, 48]) {
     assert.equal(getHourlyCondition({ ...evidence, codes: [code] }).icon, 'fog');
-    assert.match(getHourlyCondition({ ...evidence, codes: [code], precipitation: 0.5 }).description!, /fog|Fog/);
+    assert.match(getHourlyCondition({ ...evidence, rainSupport: 1, codes: [code], precipitation: 0.5 }).description!, /fog|Fog/);
   }
   for (const code of [51, 80]) {
     const condition = getHourlyCondition({ ...evidence, codes: [code], precipitation: 0.03 });
-    assert.equal(condition.icon, 'rain'); assert.match(condition.description!, /Trace precipitation/);
+    assert.equal(condition.icon, 'partly-cloudy'); assert.match(condition.description!, /Trace precipitation/);
   }
   assert.equal(getHourlyCondition({ ...evidence, codes: [61], precipitation: 0.03 }).icon, 'partly-cloudy');
-  for (const code of [56, 66, 71, 95]) {
+  for (const code of [71, 95]) {
     const condition = getHourlyCondition({ ...evidence, codes: [code] });
     assert.match(condition.description!, /shown time; may not persist/);
     assert.notEqual(condition.icon, 'partly-cloudy');
   }
   assert.equal(getHourlyCondition({ ...evidence, snowfall: 0.001 }).icon, 'partly-cloudy');
-  assert.equal(getHourlyCondition({ ...evidence, precipitation: 1, codes: [] }).icon, 'precipitation');
+  assert.equal(getHourlyCondition({ ...evidence, rainSupport: 1, precipitation: 1, codes: [] }).icon, 'precipitation');
 });
 
 test('dry codes work without cloud; daylight and missing values do not invent sun or dry weather', () => {
@@ -83,7 +83,7 @@ test('dry codes work without cloud; daylight and missing values do not invent su
     assert.ok(!['sun', 'partly-cloudy', 'showers'].includes(condition.icon!));
   }
   const missing = getHourlyCondition({ ...evidence, codes: [61], precipitation: null });
-  assert.equal(missing.icon, 'rain'); assert.match(missing.description!, /shown time.*unavailable/);
+  assert.equal(missing.icon, 'partly-cloudy'); assert.match(missing.description!, /unavailable/);
 });
 
 test('provider end timestamps supply amounts and gusts; instantaneous values stay at start', () => {
@@ -97,7 +97,7 @@ test('provider end timestamps supply amounts and gusts; instantaneous values sta
   assert.match(slot.accessible.gust, /blend of model maxima.*22 mph/);
   assert.match(slot.accessible.wind, /shown time 11 mph/);
   assert.match(slot.accessible.interval, /15:00 BST.*16:00 BST/);
-  assert.equal(slot.condition.icon, 'rain');
+  assert.notEqual(slot.condition.icon, 'rain');
 });
 
 test('missing endpoints, invalid/unknown-unit gusts and real zeros remain distinct; no clamping', () => {
@@ -121,7 +121,7 @@ test('family weighting and deterministic code ties are shared; fresh values excl
   const mixed = buildHourlySlot(buildForecastSignals([run('precipitation', [0, 0]), run('precipitation', [1, 1], 'ecmwf_ifs025', 40), run('weather_code', [2]), run('weather_code', [95], 'ecmwf_ifs025', 40)], start), time);
   assert.equal(mixed.precipitation, 0); assert.equal(mixed.condition.icon, 'cloud'); assert.equal(mixed.cached, false);
   const stale = buildHourlySlot(buildForecastSignals([run('precipitation', [0, 1], 'gfs_global', 40), run('weather_code', [61], 'gfs_global', 40)], start), time);
-  assert.equal(stale.precipitation, 1); assert.equal(stale.condition.icon, 'rain'); assert.match(stale.condition.description!, /cached/);
+  assert.equal(stale.precipitation, 1); assert.notEqual(stale.condition.icon, 'rain'); assert.match(stale.condition.description!, /cached/);
   assert.match(stale.accessible.precipitation, /cached/);
 });
 
@@ -144,18 +144,51 @@ test('slots retain UTC duration across midnight, 23/25-hour days and repeated lo
 test('hourly card names stay simple while descriptions retain trace, hazard and missing-data context', () => {
   for (const [input, label, description] of [
     [{ ...evidence, codes: [61] }, 'Partly cloudy', /conflicts with zero/],
-    [{ ...evidence, codes: [66] }, 'Freezing rain', /shown time/],
+    [{ ...evidence, codes: [66] }, 'Partly cloudy', /family support/],
     [{ ...evidence, codes: [95] }, 'Thunderstorm', /shown time/],
     [{ ...evidence, codes: [45] }, 'Fog', /shown time/],
     [{ ...evidence, snowfall: 0.1 }, 'Snow', /Snowfall/],
-    [{ ...evidence, codes: [], precipitation: 1 }, 'Precipitation', /type uncertain/],
-    [{ ...evidence, codes: [51], precipitation: 0.03 }, 'Light drizzle', /Trace precipitation/],
+    [{ ...evidence, rainSupport: 1, codes: [], precipitation: 1 }, 'Precipitation', /type uncertain/],
+    [{ ...evidence, codes: [51], precipitation: 0.03 }, 'Partly cloudy', /Trace precipitation/],
     [{ ...evidence, precipitation: 0.03 }, 'Partly cloudy', /Trace precipitation/],
-    [{ ...evidence, codes: [61], precipitation: null }, 'Light rain', /unavailable/],
+    [{ ...evidence, codes: [61], precipitation: null }, 'Partly cloudy', /unavailable/],
     [{ ...evidence, codes: [], cloud: null, precipitation: null }, 'Unavailable', /unavailable/],
   ] as const) {
     const condition = getHourlyCondition(input);
     assert.equal(condition.label, label);
     assert.match(condition.description!, description);
   }
+});
+
+test('a lone UKMO shower stays a sky icon with family-support risk; two wet families give rain', () => {
+  const models = ['ecmwf_ifs025', 'ecmwf_aifs025_single', 'gfs_global', 'ukmo_global_deterministic_10km', 'ukmo_uk_deterministic_2km'];
+  const rows = (wet: string[]) => models.flatMap(id => [run('precipitation', [0, wet.includes(id) ? 0.3 : 0], id), run('weather_code', [wet.includes(id) ? 80 : 2], id), run('is_day', [1], id)]);
+  const signals = buildForecastSignals(rows(['ukmo_global_deterministic_10km']), start);
+  const slot = buildHourlySlot(signals, time);
+  assert.ok(Math.abs(slot.precipitation! - 0.05) < 1e-10); // half of UK's one-third allocation
+  assert.equal(slot.condition.icon, 'partly-cloudy');
+  assert.match(slot.condition.description!, /Showers possible.*family support, not probability/);
+  assert.equal(getDailyCondition(signals, time).icon, 'partly-cloudy');
+  const wet = buildHourlySlot(buildForecastSignals(rows(['ecmwf_ifs025', 'ecmwf_aifs025_single', 'gfs_global']), start), time);
+  assert.equal(wet.condition.icon, 'rain'); assert.equal(wet.condition.label, 'Rain showers');
+  const traceSnow = buildHourlySlot(buildForecastSignals(models.flatMap(id => [run('snowfall', [0, id === models[0] ? 0.02 : 0], id), run('weather_code', [2], id), run('is_day', [1], id)]), start), time);
+  assert.equal(traceSnow.condition.icon, 'partly-cloudy');
+});
+
+test('reported 0.3 mm UKMO-only case keeps its blended amount and does not become rain showers', () => {
+  const ids = ['ecmwf_ifs025', 'ecmwf_aifs025_single', 'gfs_global', 'ncep_aigfs025', 'ukmo_global_deterministic_10km'];
+  // Use the configured NOAA AI identifier so all four dry models participate.
+  const rows = ids.flatMap(id => [run('precipitation', [0, id.startsWith('ukmo') ? 0.3 : 0], id), run('weather_code', [id.startsWith('ukmo') ? 80 : 2], id), run('is_day', [1], id)]);
+  const slot = buildHourlySlot(buildForecastSignals(rows, start), time);
+  assert.ok(Math.abs(slot.precipitation! - 0.1) < 1e-10);
+  assert.notEqual(slot.condition.icon, 'rain');
+  assert.ok(slot.condition.risks!.some(r => r.label === 'Showers possible' && Math.abs(r.support - 1 / 3) < 1e-10));
+});
+
+test('wet labels use wet-model codes, excluding a dry model even when its code ranks higher', () => {
+  const ids = ['ecmwf_ifs025', 'gfs_global', 'ukmo_global_deterministic_10km'];
+  const rows = ids.flatMap((id, i) => [run('precipitation', [0, i < 2 ? 0.2 : 0], id), run('weather_code', [i === 0 ? 51 : 80], id), run('is_day', [1], id)]);
+  const slot = buildHourlySlot(buildForecastSignals(rows, start), time);
+  assert.equal(slot.condition.label, 'Light drizzle', 'wet-only equal support ties use lower wet code; dry UKMO cannot boost code 80');
+  assert.equal(slot.condition.icon, 'rain');
 });
