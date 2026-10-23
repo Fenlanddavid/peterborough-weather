@@ -159,3 +159,9 @@ plus a lone drizzle/shower code no longer suffices. Daily headlines use the
 same hourly evidence. Displayed amounts remain unchanged; missing amounts
 retain their unavailable description. Cached-only rainfall cannot supply
 fresh occurrence support. No UI elements or styles are added.
+
+The existing day-card sentence checks incomplete rain coverage first, then
+uses “Keep an umbrella handy” for >=0.5 mm or ensemble P(>=1 mm) >=60%;
+“Some rain possible” for probability >=30%; otherwise “A mostly dry day”.
+With deterministic agreement only, >=50% agreement gives “Some rain possible”.
+No new elements are added.

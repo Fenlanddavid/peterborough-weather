@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import type { CachedRun } from '../types';
 import type { EnsembleIndex } from '../forecast/events';
 import type { ForecastContext } from '../forecast/signals';
-import { snowOutlook, windOutlook } from '../metrics/forecastMessages';
+import { rainOutlook, snowOutlook, windOutlook } from '../metrics/forecastMessages';
 import { formatPrecipitation } from '../metrics/hourlyWeather';
 import { DEFAULT_VERSION } from '../forecast/policy';
 import { eventPercent } from '../data/contracts';
@@ -38,7 +38,7 @@ export function Forecast({ runs, lastUpdated = null, ensembles, context, sourceN
     {snowyDays.length > 0 && <div className="forecast-warning snow-warning" role="status"><WeatherIcon name="snow" /><div><h2>Snow outlook</h2><p>Some forecasts indicate snowfall in the next 7 days; settling is uncertain.</p><ul>{snowyDays.map(d => <li key={d.date}>{d.label} · <strong>{d.snowCm === null ? '—' : d.snowCm < 0.1 ? '<0.1' : d.snowCm.toFixed(1)} cm</strong></li>)}</ul></div></div>}
     <div className="forecast-overview">
       <section className={`outlook-card ${day.high === null ? 'outlook-card--pending' : ''}`}><div className="outlook-topline"><span className="eyebrow">{day.label}'s outlook</span></div>
-        <div className="outlook-main"><div className="outlook-weather"><span className="daily-high-label">Daily high</span><div className="outlook-temperature">{number(day.high)}<span>°C</span></div><h2>{condition.label}</h2><p>{day.high === null ? 'Your daily outlook will appear here.' : <>Low of {number(day.low)}° · {day.rainMm === null || day.rainHours < day.expectedHours ? 'Rainfall data incomplete or unavailable' : day.rainMm >= 0.5 ? 'Keep an umbrella handy' : 'A mostly dry day'}</>}</p></div><SkyIllustration wet={day.rainMm !== null && day.rainMm >= 0.5} /></div>
+        <div className="outlook-main"><div className="outlook-weather"><span className="daily-high-label">Daily high</span><div className="outlook-temperature">{number(day.high)}<span>°C</span></div><h2>{condition.label}</h2><p>{day.high === null ? 'Your daily outlook will appear here.' : <>Low of {number(day.low)}° · {rainOutlook(day)}</>}</p></div><SkyIllustration wet={day.rainMm !== null && day.rainMm >= 0.5} /></div>
         <div className="outlook-stats"><div><WeatherIcon name="drop" /><span>Rainfall<strong>{formatPrecipitation(day.rainMm).replace(/ mm$/, '')} <small>mm</small></strong></span></div><div><WeatherIcon name="wind" /><span>Average wind<strong>{number(day.windMph)} <small>mph</small></strong></span></div><div><WeatherIcon name="wind" /><span>Peak gust<strong>{number(day.gustMph)} <small>mph</small></strong></span></div></div>
       </section>
       <aside className="week-briefing"><div className="briefing-heading"><span className="briefing-icon"><WeatherIcon name="sun" /></span><span className="eyebrow">The bigger picture</span></div><h2>A look at <br />the week ahead.</h2><p>{briefing.overview}</p></aside>

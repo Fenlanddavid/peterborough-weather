@@ -14,3 +14,11 @@ export function windOutlook(day: Pick<SummaryDay, 'gustMph' | 'gustEvent'>): str
 export const snowOutlook = (day: Pick<SummaryDay, 'snowCm' | 'snowEvent'>): boolean =>
   day.snowCm !== null && day.snowCm >= SNOW.threshold ||
   day.snowEvent.basis === 'ensemble-probability' && day.snowEvent.value !== null && day.snowEvent.value >= SNOW_BANNER_PROBABILITY;
+
+export function rainOutlook(day: Pick<SummaryDay, 'rainMm' | 'rainHours' | 'expectedHours' | 'precipitation'>): string {
+  if (day.rainMm === null || day.rainHours < day.expectedHours) return 'Rainfall data incomplete or unavailable';
+  const probability = day.precipitation.basis === 'ensemble-probability' ? day.precipitation.value : null;
+  if (day.rainMm >= 0.5 || probability !== null && probability >= 0.6) return 'Keep an umbrella handy';
+  if (probability !== null && probability >= 0.3 || day.precipitation.basis === 'deterministic-agreement' && day.precipitation.value !== null && day.precipitation.value >= 0.5) return 'Some rain possible';
+  return 'A mostly dry day';
+}

@@ -19,3 +19,16 @@ test('snow outlook ignores traces and accepts ensemble probability without a det
   assert.equal(snowOutlook({ snowCm: 0.5, snowEvent: event(0) }), true);
   assert.equal(snowOutlook({ snowCm: 0, snowEvent: event(1, 'deterministic-agreement') }), false);
 });
+
+test('day rain wording respects missing coverage, amounts, probability tiers and agreement', async () => {
+  const { rainOutlook } = await import('../src/metrics/forecastMessages.ts');
+  const day = { rainMm: 0.1, rainHours: 24, expectedHours: 24, precipitation: event(0.2) };
+  assert.equal(rainOutlook(day), 'A mostly dry day');
+  assert.equal(rainOutlook({ ...day, rainMm: 0.5 }), 'Keep an umbrella handy');
+  assert.equal(rainOutlook({ ...day, precipitation: event(0.6) }), 'Keep an umbrella handy');
+  assert.equal(rainOutlook({ ...day, precipitation: event(0.3) }), 'Some rain possible');
+  assert.equal(rainOutlook({ ...day, precipitation: event(1, 'deterministic-agreement') }), 'Some rain possible');
+  assert.equal(rainOutlook({ ...day, precipitation: event(0.49, 'deterministic-agreement') }), 'A mostly dry day');
+  assert.equal(rainOutlook({ ...day, rainHours: 23, precipitation: event(1) }), 'Rainfall data incomplete or unavailable');
+  assert.equal(rainOutlook({ ...day, rainMm: null }), 'Rainfall data incomplete or unavailable');
+});
