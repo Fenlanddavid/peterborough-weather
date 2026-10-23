@@ -78,3 +78,27 @@ See [the upgrade documentation](docs/forecast-accuracy-upgrade.md) for all seven
 The optional processed Met Office feed uses the **Site-Specific Blended Probabilistic Forecast v2 Free plan** and one repository Actions secret, **`MET_OFFICE_API_KEY`**. Once connected, collection and policy management are automatic. The feed shares the UKMO allocation and recovers the original blend when unavailable, stale or incompatible.
 
 Night Sky hour cards now use stars and cloud symbols, short viewing labels and selectable details. `npm run smoke:upgrade` checks the forecast and these cards at desktop and phone widths using fixtures.
+
+
+Forecast-quality fixes retain the existing compact home layout and styles.
+The live GFS 18Z probe returned 18Z–17Z over seven days with no leading nulls,
+so Single Runs stays at seven days and the conditional completeness change
+was not needed. Long BST event windows can shift by at most one hour to
+native boundaries, recorded in provenance and Summary.
+
+Deterministic central values use `lead-ecmwf-prior-v1`: ECMWF's factor is 1
+through 48 h, rises linearly to 2 by 96 h, then stays 2; NOAA/UKMO remain 1.
+Bounded learned factors multiply this prior. Probability mixtures, categorical
+votes and deterministic agreement retain equal-family defaults. This is a
+heuristic based on a nine-day Wittering rescore, not a measured optimum:
+24 h temperature MAE 0.675→0.675°C; 120 h 1.175→1.090°C (208 matched hours
+per lead, nearest eligible METAR within ±30 min). Full per-lead figures and
+reproduction instructions are in the upgrade documentation.
+
+The existing wind outlook requires central gust >=30 mph or ensemble chance
+>=40%, and displays the central figure. The existing snow outlook requires
+>=0.5 cm or ensemble chance >=30%; hourly snow support counts >=0.1 cm/hour.
+Rain icons require >=50% fresh family support for >=0.1 mm/hour; weaker
+occurrence uses the existing “Showers possible” risk mechanism. Displayed
+amounts stay unchanged. Day-card rain wording now uses amount and genuine
+ensemble probability tiers, with deterministic agreement labelled separately.

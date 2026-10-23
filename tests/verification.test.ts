@@ -40,3 +40,16 @@ test('proposals require training dates and hours, remain capped/disabled and use
   assert.equal(VERIFICATION_CONFIG.automaticCorrection, false); assert.equal(VERIFICATION_CONFIG.automaticReweighting, false); assert.equal(VERIFICATION_CONFIG.transferStationBiasToPeterborough, false);
   assert.equal(subsetGate(matchForecasts(forecasts.slice(0, 20), observations)), false);
 });
+
+test('held-out results retain equal-family baseline and add the lead-prior baseline on the same cohort', () => {
+  const rows = [
+    { ...forecast(base, 0), modelId: 'ecmwf_ifs025', family: 'ECMWF' as const, leadHours: 120 },
+    { ...forecast(base, 6), modelId: 'gfs_global', family: 'NOAA' as const, leadHours: 120 },
+    { ...forecast(base, 12), modelId: 'ukmo_global_deterministic_10km', family: 'UKMO' as const, leadHours: 120 },
+  ];
+  for (const result of evaluateVerification(rows, [observation(base)], base + 24 * HOUR)) {
+    assert.equal(result.heldOutBaseline.mae, 4);
+    assert.equal(result.heldOutDefault.mae, 5.5);
+    assert.equal(result.heldOutBaseline.n, result.heldOutDefault.n);
+  }
+});

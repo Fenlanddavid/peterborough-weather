@@ -1,0 +1,96 @@
+{
+  "defaultVersion": "lead-ecmwf-prior-v1",
+  "matching": "matchForecasts: nearest eligible METAR within ±30 min, one UTC-hour bucket; one score per valid time and lead, same sources/observations for both blends",
+  "range": [
+    "2026-10-14T00:00:00.000Z",
+    "2026-10-22T15:00:00.000Z"
+  ],
+  "leads": [
+    {
+      "leadHours": 24,
+      "equalFamily": {
+        "n": 208,
+        "days": 9,
+        "mae": 0.6753205128205129,
+        "mse": 0.7215758547008555,
+        "bias": -0.19118589743589812
+      },
+      "defaultPrior": {
+        "n": 208,
+        "days": 9,
+        "mae": 0.6753205128205129,
+        "mse": 0.7215758547008555,
+        "bias": -0.19118589743589812
+      }
+    },
+    {
+      "leadHours": 48,
+      "equalFamily": {
+        "n": 208,
+        "days": 9,
+        "mae": 0.7951923076923085,
+        "mse": 0.9499038461538465,
+        "bias": -0.33157051282051364
+      },
+      "defaultPrior": {
+        "n": 208,
+        "days": 9,
+        "mae": 0.7951923076923085,
+        "mse": 0.9499038461538465,
+        "bias": -0.33157051282051364
+      }
+    },
+    {
+      "leadHours": 72,
+      "equalFamily": {
+        "n": 208,
+        "days": 9,
+        "mae": 0.9718750000000012,
+        "mse": 1.492536057692309,
+        "bias": -0.4430288461538471
+      },
+      "defaultPrior": {
+        "n": 208,
+        "days": 9,
+        "mae": 0.9535370879120884,
+        "mse": 1.4576307397959196,
+        "bias": -0.42709478021978103
+      }
+    },
+    {
+      "leadHours": 120,
+      "equalFamily": {
+        "n": 208,
+        "days": 9,
+        "mae": 1.1753205128205133,
+        "mse": 2.020913461538462,
+        "bias": -0.18605769230769287
+      },
+      "defaultPrior": {
+        "n": 208,
+        "days": 9,
+        "mae": 1.0902043269230772,
+        "mse": 1.7347798978365394,
+        "bias": -0.22806490384615388
+      }
+    },
+    {
+      "leadHours": 168,
+      "equalFamily": {
+        "n": 208,
+        "days": 9,
+        "mae": 1.8747596153846156,
+        "mse": 5.680781250000001,
+        "bias": 0.07019230769230805
+      },
+      "defaultPrior": {
+        "n": 208,
+        "days": 9,
+        "mae": 1.7370192307692314,
+        "mse": 4.883723290598291,
+        "bias": 0.2365384615384611
+      }
+    }
+  ],
+  "caveat": "Small historical Wittering sample used to choose this heuristic, not an independent held-out optimum or proof of Peterborough improvement. Figures are descriptive, never a test gate."
+}

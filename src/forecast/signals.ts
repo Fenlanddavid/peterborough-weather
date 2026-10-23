@@ -139,7 +139,7 @@ export function buildForecastSignals(runs: CachedRun[], now = Date.now(), contex
       disagreements.push({ variable, start, end, original: raw, metOffice: reference.value, difference, flagged: Math.abs(difference) >= threshold });
     }
     const extra: ModelValue[] = reference && metOffice ? [{ ...metOffice, value: reference.value, family: 'UKMO', runTime: metOffice.issuedAt ?? metOffice.fetchedAt, validTime: end, validFrom: start, validTo: end, stale: false, gapFilled: false }] : [];
-    return blendValue([...eligible, ...extra], ruleFor(variable, start));
+    return blendValue([...eligible, ...extra], ruleFor(variable, start), (start - now) / HOUR);
   };
   const mean = (variable: VariableId, time: number, freshOnly = false) => {
     const preceding = ['precipitation', 'snowfall', 'wind_gusts_10m'].includes(variable);
@@ -154,7 +154,8 @@ export function buildForecastSignals(runs: CachedRun[], now = Date.now(), contex
     const value = variable === 'precipitation' ? null : aggregateEvent(points, operation);
     const extra: ModelValue[] = value !== null && metOffice && times.length ? [{ ...metOffice, family: 'UKMO', value, runTime: metOffice.issuedAt ?? metOffice.fetchedAt, validTime: times[0], validFrom: times[0], validTo: times.at(-1)!, stale: false, gapFilled: false }] : [];
     const eligible = values.some(v => !v.stale) ? values.filter(v => !v.stale) : values;
-    return blendValue([...eligible, ...extra], ruleFor(variable, times[0] ?? now));
+    const start = (times[0] ?? now) - (preceding ? HOUR : 0);
+    return blendValue([...eligible, ...extra], ruleFor(variable, start), (start - now) / HOUR);
   };
   return { samples, aggregate, modelAggregate, agreement, support, raw, groups, mean, blend, blendPeriod, processed, disagreements, context,
     event(spec: EventSpec, start: number, end: number, ensembles?: EnsembleIndex): EventEstimate {

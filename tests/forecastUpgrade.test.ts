@@ -167,7 +167,7 @@ test('policies reject non-finite, out-of-bounds, incompatible, expired or insuff
 });
 
 function syntheticCase(start: number, generatedAt = start - HOUR, value = 10): LearningCase {
-  return { id: `${start}:${generatedAt}`, generatedAt, location: 'EGXT', latitude: 52.61, longitude: -0.47, start, end: start, leadHours: (start - generatedAt) / HOUR, variable: 'temperature_2m', unit: '°C', definition: TEMPERATURE_DEFINITION, modelVersion: MODEL_VERSION, policyVersion: DEFAULT_VERSION, sources: [{ family: 'NOAA', modelId: 'gfs_global', value }], sourceVersions: [`gfs_global:${generatedAt}`], defaultValue: value, activeValue: value, candidates: {} };
+  return { id: `${start}:${generatedAt}`, generatedAt, location: 'EGXT', latitude: 52.61, longitude: -0.47, start, end: start, leadHours: (start - generatedAt) / HOUR, variable: 'temperature_2m', unit: '°C', definition: TEMPERATURE_DEFINITION, modelVersion: MODEL_VERSION, defaultVersion: DEFAULT_VERSION, policyVersion: DEFAULT_VERSION, sources: [{ family: 'NOAA', modelId: 'gfs_global', value }], sourceVersions: [`gfs_global:${generatedAt}`], defaultValue: value, activeValue: value, candidates: {} };
 }
 function observation(row: LearningCase, value = 9): LearningObservation {
   return { id: `obs:${row.start}`, location: row.location, latitude: row.latitude, longitude: row.longitude, start: row.start, end: row.end, variable: row.variable, unit: row.unit, definition: row.definition, value, quality: 'accepted', collectedAt: row.start + HOUR };

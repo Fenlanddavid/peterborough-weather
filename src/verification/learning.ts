@@ -10,6 +10,7 @@ export interface LearningCase {
   id: string; generatedAt: number; location: string; latitude: number; longitude: number;
   start: number; end: number; leadHours: number; variable: PolicyVariable; unit: string;
   definition: string; modelVersion: string; policyVersion: string;
+  defaultVersion?: string;
   sources: WeightedSource[]; defaultValue: number; activeValue: number;
   candidates: Record<string, number>; sourceVersions: string[];
   unadjustedValue?: number | null; metOfficeValue?: number;
@@ -26,14 +27,14 @@ export interface Scores { n: number; dates: number; primary: number; bias: numbe
 export interface EvaluationBlock { start: number; end: number; adequate: boolean; success: boolean; deteriorated: boolean; reason: string; baseline: Scores | null; candidate: Scores | null; coverage: number }
 export interface Candidate { id: string; rule: PolicyRule; createdAt: number; trainingEnd: number; trainingCases: number; trainingDates: number; signature: string; blocks: EvaluationBlock[]; state: 'pending' | 'rejected' | 'promoted' }
 export interface LearningState {
-  schema: 1; modelVersion: string; evaluatedAt: number; candidates: Candidate[];
+  schema: 1; modelVersion: string; defaultVersion: string; evaluatedAt: number; candidates: Candidate[];
   active?: BlendPolicy; monitoring: Record<string, EvaluationBlock[]>;
   changes: { time: number; version: string; reason: string }[];
 }
-export const newLearningState = (): LearningState => ({ schema: 1, modelVersion: MODEL_VERSION, evaluatedAt: 0, candidates: [], monitoring: {}, changes: [] });
+export const newLearningState = (): LearningState => ({ schema: 1, modelVersion: MODEL_VERSION, defaultVersion: DEFAULT_VERSION, evaluatedAt: 0, candidates: [], monitoring: {}, changes: [] });
 export function validateLearningState(raw: unknown, now = Date.now()): LearningState {
   const state = raw as LearningState;
-  if (!state || state.schema !== 1 || state.modelVersion !== MODEL_VERSION || !finite(state.evaluatedAt) || !Array.isArray(state.candidates) || !state.monitoring || !Array.isArray(state.changes)) throw new RangeError('Incompatible learning state');
+  if (!state || state.schema !== 1 || state.modelVersion !== MODEL_VERSION || state.defaultVersion !== DEFAULT_VERSION || !finite(state.evaluatedAt) || !Array.isArray(state.candidates) || !state.monitoring || !Array.isArray(state.changes)) throw new RangeError('Incompatible learning state');
   const validBlock = (b: EvaluationBlock) => b && finite(b.start) && finite(b.end) && b.end - b.start === WEEK && typeof b.adequate === 'boolean' && typeof b.success === 'boolean' && typeof b.deteriorated === 'boolean' && finite(b.coverage) && (!b.success || b.adequate && b.baseline && b.candidate && [b.baseline.primary, b.candidate.primary, b.baseline.n, b.candidate.n, b.baseline.dates, b.candidate.dates].every(finite) && b.baseline.n === b.candidate.n && b.baseline.dates >= 7 && b.candidate.primary < b.baseline.primary);
   for (const c of state.candidates) {
     if (!c || typeof c.id !== 'string' || !['pending', 'rejected', 'promoted'].includes(c.state) || !finite(c.createdAt) || c.createdAt > now || !finite(c.trainingEnd) || c.trainingEnd > c.createdAt || !finite(c.trainingCases) || !finite(c.trainingDates) || c.trainingCases < 200 || c.trainingDates < 20 || typeof c.signature !== 'string' || !Array.isArray(c.blocks) || c.blocks.some(b => !validBlock(b))) throw new RangeError('Malformed candidate/evaluation archive');
@@ -48,7 +49,7 @@ const probability = (variable: string) => variable === 'precipitation_probabilit
 const signature = (rows: LearningCase[]) => [...new Set(rows.flatMap(r => r.sources.map(s => `${s.family}:${s.modelId}`)))].sort().join('|');
 const applies = (r: LearningCase, rule: PolicyRule) => r.location === rule.location && r.variable === rule.variable && (rule.band === -1 || leadBand(r.leadHours) === rule.band);
 export function predictCase(row: LearningCase, rule?: PolicyRule): number {
-  const raw = blendValue(row.sources, rule)!;
+  const raw = blendValue(row.sources, rule, probability(row.variable) ? 0 : row.leadHours)!;
   return probability(row.variable) ? Math.max(0, Math.min(1, raw * (rule?.occurrenceSlope ?? 1) + (rule?.occurrenceIntercept ?? 0))) : raw;
 }
 export function matchLearning(cases: LearningCase[], observations: LearningObservation[]): PairedCase[] {
@@ -58,7 +59,7 @@ export function matchLearning(cases: LearningCase[], observations: LearningObser
     index.set(`${o.location}:${o.variable}:${o.start}:${o.end}:${o.unit}:${o.definition}`, o);
   }
   return cases.flatMap(c => {
-    if (c.modelVersion !== MODEL_VERSION || c.generatedAt > c.start || c.leadHours < 0 || c.leadHours > 168 || !finite(c.defaultValue) || !finite(c.activeValue) || !c.sources.length || c.sources.some(s => !finite(s.value)) || probability(c.variable) && !c.probabilityBasis) return [];
+    if ((c.defaultVersion ?? c.policyVersion) !== DEFAULT_VERSION || c.modelVersion !== MODEL_VERSION || c.generatedAt > c.start || c.leadHours < 0 || c.leadHours > 168 || !finite(c.defaultValue) || !finite(c.activeValue) || !c.sources.length || c.sources.some(s => !finite(s.value)) || probability(c.variable) && !c.probabilityBasis) return [];
     const o = index.get(`${c.location}:${c.variable}:${c.start}:${c.end}:${c.unit}:${c.definition}`);
     if (!o || Math.abs(o.latitude - c.latitude) > 0.001 || Math.abs(o.longitude - c.longitude) > 0.001) return [];
     return [{ ...c, observed: o.value, observationId: o.id }];
@@ -162,7 +163,7 @@ export function evaluateBlock(rows: PairedCase[], rule: PolicyRule, start: numbe
 }
 export function evaluateLearning(previous: LearningState, cases: LearningCase[], observations: LearningObservation[], now = Date.now()): LearningState {
   let state: LearningState = structuredClone(previous);
-  if (!state || state.schema !== 1 || state.modelVersion !== MODEL_VERSION || !Array.isArray(state.candidates)) state = newLearningState();
+  if (!state || state.schema !== 1 || state.modelVersion !== MODEL_VERSION || state.defaultVersion !== DEFAULT_VERSION || !Array.isArray(state.candidates)) state = newLearningState();
   const boundary = weekStart(now - 2 * DAY); // allow delayed rainfall/observation publication
   if (state.evaluatedAt >= boundary) return state;
   const pairs = matchLearning(cases, observations.filter(o => o.end <= now && o.collectedAt <= now));

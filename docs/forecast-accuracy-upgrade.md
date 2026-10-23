@@ -29,11 +29,11 @@ The adapter uses the documented `2.0.0` EDR/CoverageJSON service and v2 paramete
 
 `src/forecast/policy.ts` and `signals.ts` supply the forecast, hourly values, briefing and event estimates. Raw runs remain unchanged for Trends and legacy verification.
 
-ECMWF IFS/AIFS share one family allocation; GFS/AIGFS share NOAA; UKMO Global/UKV, MOGREPS and the processed Met Office product overlap within UKMO. Repeated runs and ensemble members do not create family votes. The default is equal families and equal models within each raw family, renormalised over eligible sources.
+ECMWF IFS/AIFS share one family allocation; GFS/AIGFS share NOAA; UKMO Global/UKV, MOGREPS and the processed Met Office product overlap within UKMO. Repeated runs and ensemble members do not create family votes. The deterministic default gives ECMWF a family factor of 1 through 48 h, rising linearly to 2 at 96 h and remaining 2 beyond; NOAA and UKMO stay at 1. Raw models split their family equally, renormalised over eligible sources. Ensemble mixtures, categorical votes and deterministic agreement keep equal-family defaults.
 
-Temperature, sustained wind, gusts, cloud, rainfall amounts and genuine occurrence probabilities have separate policies. Lead bands are 0–6, 6–24, 24–48, 48–120 and 120–168 hours; training merges them when necessary. Source weights remain non-negative and sum to one. Learned model factors are bounded to 0.5–1.5, family factors to 0.75–1.25, and the Met Office share to 0.25–0.75. Fitting shrinks towards defaults; temperature corrections are capped at ±1°C and remain specific to the observation location.
+Temperature, sustained wind, gusts, cloud, rainfall amounts and genuine occurrence probabilities have separate policies. Lead bands are 0–6, 6–24, 24–48, 48–120 and >=120 hours (negative leads use band 0); training merges them when necessary. Source weights remain non-negative and sum to one. Learned model factors are bounded to 0.5–1.5, family factors to 0.75–1.25, and the Met Office share to 0.25–0.75. Fitting shrinks towards defaults; temperature corrections are capped at ±1°C and remain specific to the observation location.
 
-When a compatible fresh Met Office central value exists, it receives half the UKMO allocation and the existing raw UKMO estimate receives half. With three families this is about one sixth of the final central estimate. Without compatible raw UKMO, it can supply that family alone. Without the optional feed, the default calculation recovers the original equal-family arithmetic exactly. This split is a heuristic, not a measured optimum.
+When a compatible fresh Met Office central value exists, it receives half the UKMO allocation and the existing raw UKMO estimate receives half. With three families this is one sixth through 48 h and one eighth from 96 h. Without compatible raw UKMO, it can supply that family alone. Without the optional feed, the deterministic lead prior still applies. This split is a heuristic, not a measured optimum.
 
 There is **no validated numerical radar nowcast** connected. Immediate forecasts use fresh model data; source details explain this limitation.
 
@@ -68,7 +68,7 @@ Ensemble expectations, wet-condition medians and deterministic central totals ha
 
 Sustained wind remains distinct from preceding-hour maximum gusts. The central estimate retains a blend of model maxima. Source peak times determine an honest peak window when timing differs. Compatible member distributions provide a genuine family-weighted mixture 90th percentile and threshold probability, including 30 mph. Percentiles are not averaged, and probabilities are not inferred from the gap between a mean and a percentile.
 
-Met Office source period 90th percentiles remain separately labelled references. Strong plausible outcomes can trigger the app's **Strong-wind outlook** even when the typical estimate is lower. App wind/snow advice is labelled separately from official warnings. The Forecast home keeps the owner’s preferred compact layout: one highest available gust per day, no explanatory wind-banner sentence and no separate rain/wind uncertainty box. Detailed statistics remain in Summary and diagnostics.
+Met Office source period 90th percentiles remain separately labelled references. The existing **Strong-wind outlook** requires central gust >=30 mph or ensemble P(>=30 mph) >=40%. App wind/snow advice is labelled separately from official warnings. The Forecast home keeps the owner’s preferred compact layout: one central gust figure per day (with the chance appended for probability-only triggers), no explanatory wind-banner sentence and no separate rain/wind uncertainty box. Detailed statistics remain in Summary and diagnostics.
 
 ## 6. Conditions and missing values
 
@@ -165,3 +165,38 @@ uses “Keep an umbrella handy” for >=0.5 mm or ensemble P(>=1 mm) >=60%;
 “Some rain possible” for probability >=30%; otherwise “A mostly dry day”.
 With deterministic agreement only, >=50% agreement gives “Some rain possible”.
 No new elements are added.
+
+
+## Default lead prior and descriptive evidence (T7)
+
+`lead-ecmwf-prior-v1` applies to deterministic central `blendValue`, `blend`,
+`blendPeriod` and `mean`, including temperature, wind/gusts, cloud and rainfall
+amounts. Lead is valid-start minus now in hours. Learned bounded family
+factors multiply the default prior; model factors and the Met Office UKMO
+split retain their existing bounds. Repeated runs still split one allocation.
+Probability mixtures, weather-code votes and deterministic agreement receive
+no lead prior. Percentiles are still calculated from member mixtures, never
+averaged.
+
+This is a heuristic chosen using a nine-day Wittering temperature rescore,
+not a measured optimum or an independent test of Peterborough skill. Reproduce
+with `node --experimental-strip-types scripts/rescore-default.ts` after
+restoring the generated data snapshot. `matchForecasts` selects the nearest
+eligible METAR within ±30 min; each UTC valid time/lead is scored once against
+the same observations and sources. Source period: 14–22 October 2026, 208
+matched hours across nine dates per lead. MAE (°C):
+
+| Lead | Equal-family | New prior |
+|---|---:|---:|
+| 24 h | 0.675 | 0.675 |
+| 48 h | 0.795 | 0.795 |
+| 72 h | 0.972 | 0.954 |
+| 120 h | 1.175 | 1.090 |
+| 168 h | 1.875 | 1.737 |
+
+Full descriptive metrics are in `default-prior-rescore.json`. These figures
+are not a test gate. Legacy verification adds `heldOutDefault` beside its
+unchanged equal-family baseline, using only subsequent dates as before.
+New learning cases archive `defaultVersion`; state with an older default is
+reset, and older cases are excluded from the new prior's promotion cohorts.
+Collection and diagnostics use the new default version without extra calls.

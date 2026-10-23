@@ -5,7 +5,7 @@ import type { Family } from '../data/contracts.ts';
 export const POLICY_SCHEMA = 1;
 export const SOURCE_FAMILIES: Record<string, Family> = { ...Object.fromEntries(DETERMINISTIC_MODELS.map(m => [m.id, m.family])), gfs025: 'NOAA', ukmo_global_ensemble_20km: 'UKMO', metoffice_blended: 'UKMO' };
 export const MODEL_VERSION = `${Object.entries(SOURCE_FAMILIES).map(([id, family]) => `${id}:${family}`).join('|')}|canonical-v1`;
-export const DEFAULT_VERSION = 'equal-family-metoffice-half-v1';
+export const DEFAULT_VERSION = 'lead-ecmwf-prior-v1';
 export const LEAD_BANDS = [0, 6, 24, 48, 120, 168] as const;
 export const POLICY_VARIABLES = ['temperature_2m', 'precipitation', 'precipitation_probability', 'wind_speed_10m', 'wind_gusts_10m', 'cloud_cover'] as const;
 export type PolicyVariable = typeof POLICY_VARIABLES[number];
@@ -24,9 +24,13 @@ export interface BlendPolicy {
   evidence: { observationThrough: number; trainingCases: number; trainingDates: number; heldOutDates: number; successfulBlocks: number };
 }
 export interface WeightedSource { modelId: string; family: Family; value: number }
-export const leadBand = (lead: number) => Math.max(0, Math.min(4, LEAD_BANDS.findIndex((b, i) => i < 5 && lead >= b && lead < LEAD_BANDS[i + 1])));
+export const leadBand = (lead: number) => lead < 6 ? 0 : lead < 24 ? 1 : lead < 48 ? 2 : lead < 120 ? 3 : 4;
+/** Heuristic from a nine-day Wittering rescore, not a measured optimum.
+ * Only deterministic central values pass a lead; probability/votes stay equal-family. */
+export const defaultFamilyFactor = (family: Family, lead = 0) => family === 'ECMWF' ? 1 + Math.max(0, Math.min(1, (lead - 48) / 48)) : 1;
 
-/** The original equal-family policy remains available byte-for-byte on fallback. */
+
+/** Equal-family allocation for agreement, categorical votes and raw ensembles. */
 export function familyWeights<T extends { family: Family; modelId: string }>(values: T[]): { source: T; weight: number }[] {
   const families = new Map<Family, Map<string, T[]>>();
   for (const value of values) {
@@ -61,9 +65,10 @@ export function policyRule(policy: BlendPolicy | undefined, variable: string, le
 }
 /** Repeated runs/members split a model allocation. The processed feed shares UKMO's
  * allocation, never creates a fourth family, and only enters after compatibility checks. */
-export function blendWeights<T extends WeightedSource>(sources: T[], rule?: PolicyRule): { source: T; weight: number }[] {
+export function blendWeights<T extends WeightedSource>(sources: T[], rule?: PolicyRule, lead = 0): { source: T; weight: number }[] {
   const families = [...new Set(sources.map(s => s.family))];
-  const total = families.reduce((sum, family) => sum + (rule?.familyFactors[family] ?? 1), 0);
+  const factor = (family: Family) => defaultFamilyFactor(family, lead) * (rule?.familyFactors[family] ?? 1);
+  const total = families.reduce((sum, family) => sum + factor(family), 0);
   const within = (group: T[], allocation: number) => {
     const entries = familyWeights(group).map(v => ({ ...v, weight: v.weight * (rule?.modelFactors[v.source.modelId] ?? 1) }));
     const sum = entries.reduce((s, v) => s + v.weight, 0);
@@ -71,7 +76,7 @@ export function blendWeights<T extends WeightedSource>(sources: T[], rule?: Poli
   };
   return families.flatMap(family => {
     const group = sources.filter(s => s.family === family);
-    const allocation = (rule?.familyFactors[family] ?? 1) / total;
+    const allocation = factor(family) / total;
     const processed = group.filter(s => s.modelId === 'metoffice_blended');
     const raw = group.filter(s => s.modelId !== 'metoffice_blended');
     if (family === 'UKMO' && processed.length && raw.length) {
@@ -81,9 +86,9 @@ export function blendWeights<T extends WeightedSource>(sources: T[], rule?: Poli
     return within(group, allocation);
   });
 }
-export function blendValue<T extends WeightedSource>(sources: T[], rule?: PolicyRule): number | null {
+export function blendValue<T extends WeightedSource>(sources: T[], rule?: PolicyRule, lead = 0): number | null {
   if (!sources.length) return null;
-  // Preserve exact original arithmetic when the optional feed and learning are absent.
-  if (!rule && !sources.some(v => v.modelId === 'metoffice_blended')) return familyMean(sources);
-  return blendWeights(sources, rule).reduce((s, v) => s + v.source.value * v.weight, 0) + (rule?.temperatureCorrection ?? 0);
+  // Preserve exact equal-family arithmetic while the default prior is equal.
+  if (lead <= 48 && !rule && !sources.some(v => v.modelId === 'metoffice_blended')) return familyMean(sources);
+  return blendWeights(sources, rule, lead).reduce((s, v) => s + v.source.value * v.weight, 0) + (rule?.temperatureCorrection ?? 0);
 }

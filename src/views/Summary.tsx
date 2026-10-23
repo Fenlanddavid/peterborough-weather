@@ -70,7 +70,7 @@ export function Summary({ runs, loading, ensembles, context }: Props) {
           </article>)}
         </div>
       </section>
-      <p className="summary-method">The conservative default gives ECMWF, NOAA and UKMO equal family allocations; UKV contributes within its actual range, and a compatible processed Met Office estimate shares the UKMO allocation. Only observation-approved local policies can change these defaults. Daily totals and extremes are calculated within each complete model/member window before combining. Ensemble probabilities are uncalibrated estimates; deterministic agreement and recent-run support have separate meanings. Missing values remain unknown. {briefing.latestRun && <>Newest contributing model run: {toLocalTime(briefing.latestRun, 'short')}.</>} Explore Trends for raw run comparisons.</p>
+      <p className="summary-method">The default gives equal family allocations through 48 hours, then increases ECMWF linearly to twice NOAA and UKMO by 96 hours; UKV contributes within its actual range, and a compatible processed Met Office estimate shares the UKMO allocation. This lead prior is a heuristic; observation-approved local factors multiply it. Probability mixtures and categorical votes retain equal-family defaults. Daily totals and extremes are calculated within each complete model/member window before combining. Ensemble probabilities are uncalibrated estimates; deterministic agreement and recent-run support have separate meanings. Missing values remain unknown. {briefing.latestRun && <>Newest contributing model run: {toLocalTime(briefing.latestRun, 'short')}.</>} Explore Trends for raw run comparisons.</p>
     </>}
   </div>;
 }
