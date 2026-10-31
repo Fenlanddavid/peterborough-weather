@@ -1,0 +1,1 @@
+{"schema":1,"modelVersion":"ecmwf_ifs025:ECMWF|ecmwf_aifs025_single:ECMWF|gfs_global:NOAA|ncep_aigfs025:NOAA|ukmo_global_deterministic_10km:UKMO|ukmo_uk_deterministic_2km:UKMO|gfs025:NOAA|ukmo_global_ensemble_20km:UKMO|metoffice_blended:UKMO|canonical-v1","defaultVersion":"lead-ecmwf-prior-v1","evaluatedAt":1792972800000,"candidates":[],"monitoring":{},"changes":[]}
